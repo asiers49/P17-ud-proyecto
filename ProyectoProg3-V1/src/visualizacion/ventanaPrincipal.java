@@ -242,12 +242,12 @@ public class ventanaPrincipal extends JFrame {
 
 			if (user.getLiga() == null) {
 
-				txtpnBienvenidosALa = new JTextPane();
-				txtpnBienvenidosALa.setFont(new Font("Monospaced", Font.PLAIN, 16));
-				txtpnBienvenidosALa.setEditable(false);
-				txtpnBienvenidosALa.setText(
+				txtpnBienvenidos = new JTextPane();
+				txtpnBienvenidos.setFont(new Font("Monospaced", Font.PLAIN, 16));
+				txtpnBienvenidos.setEditable(false);
+				txtpnBienvenidos.setText(
 						"Bienvenidos a la Liga Fantasy Flex. Para ingresar o crear una liga pulse el boton de abajo.\r\nUna vez que ya tenga una liga se le asignara un equipo con el que buscara ganar su Liga.\r\n\r\nDesde el equipo detras de esta Liga Fantasy esperemos que disfrute.\r\n\r\n\t\t\t\t\t\t\t\t\tMucha suerte!!!");
-				PanelLigas.this.add(txtpnBienvenidosALa, "cell 1 1,alignx center,grow");
+				PanelLigas.this.add(txtpnBienvenidos, "cell 1 1,alignx center,grow");
 				JButton anadirLiga1 = new JButton("Añadir Ligas");
 				anadirLiga1.setFont(new Font("Monospaced", Font.PLAIN, 22));
 				anadirLiga1.setBounds(0, 0, 300, 150);

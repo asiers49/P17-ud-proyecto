@@ -92,7 +92,7 @@ public class VentanaCrearLiga extends JFrame {
 				Liga liga = new Liga(nLiga, clave);
 				user1.setLiga(liga);
 				createFile();
-				ventanaPrincipal vP=new ventanaPrincipal(user, ventanaanterior.);
+				ventanaPrincipal vP=new ventanaPrincipal(user, null);
 				vP.setVisible(true);
 				VentanaCrearLiga.this.setVisible(false);
 
