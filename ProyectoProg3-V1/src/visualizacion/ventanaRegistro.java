@@ -1,5 +1,6 @@
 package visualizacion;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -36,12 +37,14 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import java.awt.event.ActionEvent;
 import net.miginfocom.swing.MigLayout;
@@ -76,7 +79,7 @@ public class ventanaRegistro extends JFrame {
 	 * Create the frame.
 	 */
 	public ventanaRegistro(VentanaInicio ventanaanterior, ListaJugadores listaJugadores) {
-		Usuario=new Usuario();
+		Usuario = new Usuario();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 524, 303);
 		contentPane = new JPanel();
@@ -111,9 +114,10 @@ public class ventanaRegistro extends JFrame {
 		btnHasOlvidadoLa.setForeground(new Color(255, 255, 255));
 		btnHasOlvidadoLa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				File ListaUsuario = new File(File.pathSeparator + "Usuarios.txt");
 				String pass = null, email = null;
+				ArrayList<String> listamails=new ArrayList<>();
 				try {
 					FileReader fr = new FileReader(ListaUsuario);
 					BufferedReader bfr = new BufferedReader(fr);
@@ -122,6 +126,7 @@ public class ventanaRegistro extends JFrame {
 						String[] lineas = linea.split(";");
 						pass = lineas[1];
 						email = lineas[2];
+						listamails.add(email);
 						System.out.println(email);
 						linea = bfr.readLine();
 					}
@@ -130,18 +135,28 @@ public class ventanaRegistro extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				 correo =JOptionPane.showInputDialog("Indique su correo", "");
-				 boolean tieneArroba=false;
-				 for(int i = 0; i < correo.length() && !tieneArroba; i++){
-				 if(correo.charAt(i)=='@') {
-				 tieneArroba=true;
+				correo = JOptionPane.showInputDialog("Indique su correo", "");
+				boolean tieneArroba = false;
+				boolean correoexiste=false;
+				for (int i = 0; i < correo.length() && !tieneArroba; i++) {
+					if (correo.charAt(i) == '@') {
+						tieneArroba = true;
+
+					}
+				}
+				for (int j=0; j<listamails.size(); j++){
+					if (correo.equals(listamails.get(j))){
+						correoexiste=true;
+					}
+				}
+					if (correoexiste) {
+						JOptionPane.showMessageDialog(null, "Contraseña enviada");
+						enviarCorreo(pass, ventanaRegistro.this);
+						
+					} else {
+						JOptionPane.showMessageDialog(null, "Correo erroneo");
+					}
 				
-				 }
-				 if (correo.equals(email)){
-				 enviarCorreo(pass);
-				 }else{
-					 JOptionPane.showMessageDialog(null, "Correo erroneo");
-				 }}
 			}
 		});
 		panel_Mid.add(btnHasOlvidadoLa, "cell 1 3,alignx center,aligny center");
@@ -165,7 +180,7 @@ public class ventanaRegistro extends JFrame {
 		panel_1.add(btnVolver, "cell 1 0,alignx left,aligny top");
 		btnVolver.addActionListener(new ActionListener() {
 
-			@Override
+	@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ventanaRegistro.this.setVisible(false);
@@ -227,65 +242,48 @@ public class ventanaRegistro extends JFrame {
 		});
 	}
 
-	public static void enviarCorreo(String contrasenya) {
+	public static void enviarCorreo(String pass, ventanaRegistro vR) {
 		String to = correo;
 
-		// Sender's email ID needs to be mentioned
-		String user = "ligafantasyflex@gamil.com";
-
-		// Assuming you are sending email from localhost
-		String host = "";
-
-		// Get system properties
-		Properties properties = System.getProperties();
-
-		// Setup mail server
-		properties.setProperty("mail.smtp.host", host);
-
-		// Get the default Session object.
-		Session session = Session.getDefaultInstance(properties);
-
 		try {
-			// Create a default MimeMessage object.
-			MimeMessage message = new MimeMessage(session);
+			String host = "smtp.gmail.com";
+			String user = "ligafantasyflex@gmail.com";
+			String contrasenya1 = "candyflex";
+			String para = "anderjarauta@gmail.com";
+			String from = user;
+			String subject = "Recuperacion de contraseña";
+			String messageText = "Su contraseña es: "+"\n"+"	"+pass+"\n"+"\n"+"\n"+"El Equipo de LigaFantasyFlex";
+			boolean sessionDebug = false;
 
-			// Set From: header field of the header.
-			message.setFrom(new InternetAddress(user));
+			Properties props = System.getProperties();
 
-			// Set To: header field of the header.
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", host);
+			props.put("mail.smtp.port", "587");
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.required", "true");
 
-			// Set Subject: header field
-			message.setSubject("Contraseña liga fantasy");
+			// java.security.Security.addProvider(new
+			// com.sun.net.ssl.internal.ssl.Provider());
+			Session mailSession = Session.getDefaultInstance(props, null);
+			mailSession.setDebug(sessionDebug);
+			Message msg = new MimeMessage(mailSession);
+			msg.setFrom(new InternetAddress(from));
+			InternetAddress[] address = { new InternetAddress(para) };
+			msg.setRecipients(Message.RecipientType.TO, address);
+			msg.setSubject(subject);
+			msg.setSentDate(new Date());
+			msg.setText(messageText);
 
-			// Create the message part
-			BodyPart messageBodyPart = new MimeBodyPart();
-
-			// Fill the message
-			messageBodyPart.setText(contrasenya);
-
-			// Create a multipar message
-			Multipart multipart = new MimeMultipart();
-
-			// Set text message part
-			multipart.addBodyPart(messageBodyPart);
-
-			// Part two is attachment
-			messageBodyPart = new MimeBodyPart();
-			String filename = "file.txt";
-			DataSource source = new FileDataSource(filename);
-			messageBodyPart.setDataHandler(new DataHandler(source));
-			messageBodyPart.setFileName(filename);
-			multipart.addBodyPart(messageBodyPart);
-
-			// Send the complete message parts
-			message.setContent(multipart);
-
-			// Send message
-			Transport.send(message);
-			JOptionPane.showMessageDialog(null, "Contraseña enviada");
-		} catch (MessagingException mex) {
-			mex.printStackTrace();
+			Transport transport = mailSession.getTransport("smtp");
+			transport.connect(host, user, contrasenya1);
+			transport.sendMessage(msg, msg.getAllRecipients());
+			transport.close();
+			
+			// System.out.println("message send successfully");
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(vR, "Error");
 		}
+
 	}
 }

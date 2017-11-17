@@ -267,7 +267,7 @@ public class ventanaPrincipal extends JFrame {
 				btnClasificacion.setEnabled(false);
 				btnMiEquipo.setEnabled(false);
 
-			} else {
+			} else {    
 
 				String nombreLiga = user.getLiga().getNombre();
 				long dinero = user.getDinero();
