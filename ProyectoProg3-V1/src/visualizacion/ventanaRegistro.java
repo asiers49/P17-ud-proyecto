@@ -228,14 +228,13 @@ public class ventanaRegistro extends JFrame {
 	}
 
 	public static void enviarCorreo(String contrasenya) {
-		// Recipient's email ID needs to be mentioned.
 		String to = correo;
 
 		// Sender's email ID needs to be mentioned
-		String from = "ligafantasyflex@gamil.com";
+		String user = "ligafantasyflex@gamil.com";
 
 		// Assuming you are sending email from localhost
-		String host = "localhost";
+		String host = "";
 
 		// Get system properties
 		Properties properties = System.getProperties();
@@ -251,7 +250,7 @@ public class ventanaRegistro extends JFrame {
 			MimeMessage message = new MimeMessage(session);
 
 			// Set From: header field of the header.
-			message.setFrom(new InternetAddress(from));
+			message.setFrom(new InternetAddress(user));
 
 			// Set To: header field of the header.
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
