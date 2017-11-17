@@ -302,7 +302,9 @@ public class ventanaPrincipal extends JFrame {
 		private JButton btnDel2;
 		private JButton btnDel3;
 		private JButton btnDel1;
-
+  
+		//cambio
+		
 		public PanelMiEquipo() {
 			PanelMiEquipo.this.setBackground(new Color(255, 255, 255));
 			PanelMiEquipo.this
