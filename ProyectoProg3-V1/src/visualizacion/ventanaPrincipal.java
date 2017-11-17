@@ -264,7 +264,7 @@ public class ventanaPrincipal extends JFrame {
 					}
 				});
 				PanelLigas.this.add(anadirLiga1, "cell 1 2,alignx center,aligny top");
-				btnClasificacion.setEnabled(false);
+
 				btnMiEquipo.setEnabled(false);
 
 			} else {    
