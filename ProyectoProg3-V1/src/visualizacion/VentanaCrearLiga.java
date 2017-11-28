@@ -1,18 +1,14 @@
 package visualizacion;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import datos.Liga;
 import datos.Usuario;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.Window.Type;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -22,15 +18,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
 import java.awt.Color;
 
 public class VentanaCrearLiga extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ventanaPrincipal VP;
 	private JPanel contentPane;
 	private JTextField textField_nombre;
-	private Liga liga1;
 	private String nLiga = "";
 	double clave;
 	private JTextField textField_1;

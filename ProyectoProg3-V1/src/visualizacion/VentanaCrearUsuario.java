@@ -2,17 +2,13 @@ package visualizacion;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import datos.ListaJugadores;
 import datos.Usuario;
-
 import javax.swing.JLabel;
-import java.awt.GridLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -26,6 +22,10 @@ import java.awt.Color;
 
 public class VentanaCrearUsuario extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private VentanaInicio vI;
 	private JTextField textField_usuario;

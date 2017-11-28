@@ -1,6 +1,5 @@
 package visualizacion;
 
-import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -11,36 +10,22 @@ import javax.swing.border.EmptyBorder;
 import datos.ListaJugadores;
 import datos.Usuario;
 
-import java.awt.GridLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.BodyPart;
 import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,13 +35,13 @@ import java.awt.event.ActionEvent;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Color;
 
+@SuppressWarnings("serial")
 public class ventanaRegistro extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private Usuario Usuario;
-	private boolean correcto;
 	private static String correo;
 
 	/**
@@ -117,7 +102,7 @@ public class ventanaRegistro extends JFrame {
 
 				File ListaUsuario = new File(File.pathSeparator + "Usuarios.txt");
 				String pass = null, email = null;
-				ArrayList<String> listamails=new ArrayList<>();
+				ArrayList<String> listamails = new ArrayList<>();
 				try {
 					FileReader fr = new FileReader(ListaUsuario);
 					BufferedReader bfr = new BufferedReader(fr);
@@ -137,26 +122,26 @@ public class ventanaRegistro extends JFrame {
 				}
 				correo = JOptionPane.showInputDialog("Indique su correo", "");
 				boolean tieneArroba = false;
-				boolean correoexiste=false;
+				boolean correoexiste = false;
 				for (int i = 0; i < correo.length() && !tieneArroba; i++) {
 					if (correo.charAt(i) == '@') {
 						tieneArroba = true;
 
 					}
 				}
-				for (int j=0; j<listamails.size(); j++){
-					if (correo.equals(listamails.get(j))){
-						correoexiste=true;
+				for (int j = 0; j < listamails.size(); j++) {
+					if (correo.equals(listamails.get(j))) {
+						correoexiste = true;
 					}
 				}
-					if (correoexiste) {
-						JOptionPane.showMessageDialog(null, "Contraseña enviada");
-						enviarCorreo(pass, ventanaRegistro.this);
-						
-					} else {
-						JOptionPane.showMessageDialog(null, "Correo erroneo");
-					}
-				
+				if (correoexiste) {
+					JOptionPane.showMessageDialog(null, "Contraseña enviada");
+					enviarCorreo(pass, ventanaRegistro.this);
+
+				} else {
+					JOptionPane.showMessageDialog(null, "Correo erroneo");
+				}
+
 			}
 		});
 		panel_Mid.add(btnHasOlvidadoLa, "cell 1 3,alignx center,aligny center");
@@ -180,7 +165,7 @@ public class ventanaRegistro extends JFrame {
 		panel_1.add(btnVolver, "cell 1 0,alignx left,aligny top");
 		btnVolver.addActionListener(new ActionListener() {
 
-	@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ventanaRegistro.this.setVisible(false);
@@ -196,7 +181,6 @@ public class ventanaRegistro extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				correcto = false;
 				ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 				String usuario = textField.getText();
 				String contraseña = String.valueOf(passwordField.getPassword());
@@ -243,7 +227,6 @@ public class ventanaRegistro extends JFrame {
 	}
 
 	public static void enviarCorreo(String pass, ventanaRegistro vR) {
-		String to = correo;
 
 		try {
 			String host = "smtp.gmail.com";
@@ -252,7 +235,8 @@ public class ventanaRegistro extends JFrame {
 			String para = "anderjarauta@gmail.com";
 			String from = user;
 			String subject = "Recuperacion de contraseña";
-			String messageText = "Su contraseña es: "+"\n"+"	"+pass+"\n"+"\n"+"\n"+"El Equipo de LigaFantasyFlex";
+			String messageText = "Su contraseña es: " + "\n" + "	" + pass + "\n" + "\n" + "\n"
+					+ "El Equipo de LigaFantasyFlex";
 			boolean sessionDebug = false;
 
 			Properties props = System.getProperties();
@@ -279,7 +263,7 @@ public class ventanaRegistro extends JFrame {
 			transport.connect(host, user, contrasenya1);
 			transport.sendMessage(msg, msg.getAllRecipients());
 			transport.close();
-			
+
 			// System.out.println("message send successfully");
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(vR, "Error");
