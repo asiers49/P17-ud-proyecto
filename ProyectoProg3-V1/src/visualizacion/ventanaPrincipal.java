@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import datos.Liga;
 import datos.ListaJugadores;
 import datos.Usuario;
 import javax.swing.JLabel;
@@ -34,7 +32,6 @@ public class ventanaPrincipal extends JFrame {
 	private ArrayList<JButton> listaMenu;
 	private JButton btnLiga;
 	private JButton btnMiEquipo;
-	private JButton btnClasificacion;
 	private JPanel panel_Top;
 	private JLabel lblNombreUsuario;
 	private JPanel panel_User;
@@ -45,10 +42,10 @@ public class ventanaPrincipal extends JFrame {
 	private PanelMiEquipo panelEquipo;
 	private JLabel lblEsteEsTu;
 	private ArrayList<JPanel> listapaneles;
+	@SuppressWarnings("unused")
 	private ListaJugadores listajugadores;
 	private JPanel panel_1;
 	private JPanel panel_Jugador1;
-	private JLabel lblValorUsuario1;
 	private JLabel lblNombreUsuario1;
 	private JPanel panel_Pos1;
 	private JLabel lblPos1;
@@ -276,11 +273,8 @@ public class ventanaPrincipal extends JFrame {
 
 				btnMiEquipo.setEnabled(false);
 
-			} else {
+			} else { 		//FALTA
 
-				String nombreLiga = user.getLiga().getNombre();
-				long dinero = user.getDinero();
-				int puntos = user.getPuntos();
 				JPanel panel = new JPanel();
 				PanelLigas.this.add(panel, "cell 1 1, grow");
 				panel.setLayout(new MigLayout("", "[100px][200px,grow]", "[][][60px]"));
@@ -311,7 +305,7 @@ public class ventanaPrincipal extends JFrame {
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1605981510261014903L;
+		private static final long serialVersionUID = 1605981510261014903L;				//FALTA
 		private JPanel panel_Portero;
 		private JPanel panel_Defensa;
 		private JPanel panel_Centro;
@@ -396,12 +390,5 @@ public class ventanaPrincipal extends JFrame {
 		}
 	}
 
-	private class PanelClasificacion extends JPanel {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -8679370417530551485L;
-
-	}
+	
 }
