@@ -367,9 +367,13 @@ public class Crawler {
 	}
 
 	public static void crearJugador(String nombre1, String equipo1, String posicion1, int puntos1, long valor1) {
-
+		//Falta Base de Datos
 	}
-
+	
+	
+	/**Crea Fichero con la lista de los jugadores
+	 * 
+	 */
 	public static void aFichero(String a) {
 		File file = new File("jugadores.txt");
 		try {
@@ -384,11 +388,6 @@ public class Crawler {
 					fw.write("\n");
 				}
 			}
-			
-		
-			
-			
-			
 			fw.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Asier Salazar/Downloads/miglayout-3.5.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Asier Salazar/Downloads/javax.mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Asier Salazar/Downloads/htmlparser1_6/lib/htmlparser.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Asier Salazar/eclipse-workspace/Libraries/miglayout-3.5.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Asier Salazar/eclipse-workspace/Libraries/javax.mail.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Asier Salazar/Downloads/Prog/htmlparser1_6/lib/htmlparser.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

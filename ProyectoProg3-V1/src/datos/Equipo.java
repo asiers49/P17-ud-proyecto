@@ -27,4 +27,12 @@ public class Equipo {
 	public Equipo () {
 		
 	}
+	
+	public long getValorEquipo() {
+		long valortotal=0;
+		for (int i=0; i<equipo.size(); i++) {
+			valortotal=valortotal+equipo.get(i).getValor();
+		}
+		return valortotal;
+	}
 }

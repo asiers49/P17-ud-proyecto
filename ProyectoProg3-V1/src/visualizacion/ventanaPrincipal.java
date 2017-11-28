@@ -46,6 +46,12 @@ public class ventanaPrincipal extends JFrame {
 	private JLabel lblEsteEsTu;
 	private ArrayList<JPanel> listapaneles;
 	private ListaJugadores listajugadores;
+	private JPanel panel_1;
+	private JPanel panel_Jugador1;
+	private JLabel lblValorUsuario1;
+	private JLabel lblNombreUsuario1;
+	private JPanel panel_Pos1;
+	private JLabel lblPos1;
 
 	/**
 	 * Launch the application.
@@ -68,23 +74,23 @@ public class ventanaPrincipal extends JFrame {
 	 * 
 	 * @param user1
 	 *            The user that has logged in
-	 * @param listaJugadores 
+	 * @param listaJugadores
 	 */
 	public ventanaPrincipal(Usuario user1, ListaJugadores listaJugadores) {
-		
+
 		/*
 		 * Actualizamos/Inicializamos variables
 		 */
-		
-		user=user1;
+
+		user = user1;
 		menuselected = menus[0];
 		listaMenu = new ArrayList<JButton>();
-		listajugadores=listaJugadores;
-		
+		listajugadores = listaJugadores;
+
 		/*
 		 * Creates Frame
 		 */
-		
+
 		setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(150, 150, 900, 750);
@@ -175,10 +181,13 @@ public class ventanaPrincipal extends JFrame {
 		lblNombreUsuario.setText(user.getNombre());
 		panel_User.add(lblNombreUsuario, "cell 1 2,alignx left,aligny top");
 
+		panel_1 = new JPanel();
+		contentPane.add(panel_1, BorderLayout.CENTER);
+
 		/*
 		 * Panel Liga
 		 */
-		
+
 		listapaneles = new ArrayList<>();
 		panelLigas = new PanelLigas();
 		listapaneles.add(panelLigas);
@@ -253,28 +262,44 @@ public class ventanaPrincipal extends JFrame {
 				anadirLiga1.setBounds(0, 0, 300, 150);
 				anadirLiga1.setBackground(new Color(255, 255, 255));
 				anadirLiga1.addActionListener(new ActionListener() {
-					
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
 						ventanaPrincipal.this.setVisible(false);
-						VentanaCrearLiga vCL =new VentanaCrearLiga(ventanaPrincipal.this, user);
+						VentanaCrearLiga vCL = new VentanaCrearLiga(ventanaPrincipal.this, user);
 						vCL.setVisible(true);
-					
+
 					}
 				});
 				PanelLigas.this.add(anadirLiga1, "cell 1 2,alignx center,aligny top");
 
 				btnMiEquipo.setEnabled(false);
 
-			} else {    
+			} else {
 
 				String nombreLiga = user.getLiga().getNombre();
 				long dinero = user.getDinero();
 				int puntos = user.getPuntos();
 				JPanel panel = new JPanel();
 				PanelLigas.this.add(panel, "cell 1 1, grow");
+				panel.setLayout(new MigLayout("", "[100px][200px,grow]", "[][][60px]"));
+				panel_Pos1 = new JPanel();
+				panel.add(panel_Pos1, "cell 0 2,alignx center,aligny center");
+				lblPos1 = new JLabel("1");
+				lblPos1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				lblPos1.setHorizontalAlignment(SwingConstants.RIGHT);
+				panel_Pos1.add(lblPos1);
 
+				panel_Jugador1 = new JPanel();
+				panel.add(panel_Jugador1, "cell 1 2,grow");
+				panel_Jugador1.setLayout(new MigLayout("", "[56px][56px][56px][][][][][][][]", "[16px][]"));
+
+				lblNombreUsuario1 = new JLabel(user.getNombre());
+				panel_Jugador1.add(lblNombreUsuario1, "cell 0 0,alignx left,aligny top");
+
+				// lblValorUsuario1 = new JLabel(" Valor:"+user.getMiEquipo().getValorEquipo());
+				// panel_Jugador1.add(lblValorUsuario1, "cell 9 0,alignx left,aligny top");
 			}
 
 			contentPane.add(PanelLigas.this, BorderLayout.CENTER);
@@ -302,9 +327,8 @@ public class ventanaPrincipal extends JFrame {
 		private JButton btnDel2;
 		private JButton btnDel3;
 		private JButton btnDel1;
-  
-		//cambio
-		
+
+
 		public PanelMiEquipo() {
 			PanelMiEquipo.this.setBackground(new Color(255, 255, 255));
 			PanelMiEquipo.this
