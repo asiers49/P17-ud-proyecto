@@ -101,6 +101,7 @@ public class VentanaInicio extends JFrame {
 				VentanaInicio.this.setVisible(false);
 				VentanaCrearUsuario vCr=new VentanaCrearUsuario(VentanaInicio.this, listaJugadores);
 				vCr.setVisible(true);
+				
 			}
 		});
 		

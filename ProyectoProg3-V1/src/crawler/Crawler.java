@@ -43,6 +43,16 @@ public class Crawler {
 	public ProcesadoLaLiga p;
 	private static ArrayList<String> Equipos = new ArrayList<>();
 	private static int n;
+	private static boolean actualizar;
+	
+	public static boolean isActualizar() {
+		return actualizar;
+	}
+
+	public static void setActualizar(boolean actualizar) {
+		Crawler.actualizar = actualizar;
+	}
+
 	public static void main(String[] args) {
 
 		// Analisis de la web de comuniazo. Poner aquí la URL con la que trabajar:
@@ -151,10 +161,24 @@ public class Crawler {
 				equipo1 = tag.getText();
 				for (int i = 0; i < Equipos.size(); i++) {
 					String equipocomparar = Equipos.get(i).toLowerCase();
-					if (equipo1.contains(equipocomparar) || equipo1.contains("leganes") || equipo1.contains("real")
-							|| equipo1.contains("las-palmas") || equipo1.contains("at") || equipo1.contains("alaves")
-							|| equipo1.contains("malaga")) {
+					if (equipo1.contains(equipocomparar) ) {
 						equipo1 = Equipos.get(i);
+					}else if (equipo1.contains("leganes")) {
+						equipo1="Leganes";
+					}else if (equipo1.contains("real-madrid")) {
+						equipo1="Real Madrid";
+					}else if (equipo1.contains("atletico")) {
+						equipo1="Atletico";
+					}else if (equipo1.contains("athletic")) {
+						equipo1="Athletic";
+					}else if (equipo1.contains("alaves")) {
+						equipo1="Alaves";
+					}else if (equipo1.contains("real-sociedad")) {
+						equipo1="Real Sociedad";
+					}else if (equipo1.contains("las-palmas")) {
+						equipo1="Las Palmas";
+					}else if (equipo1.contains("malaga")) {
+						equipo1="Malaga";
 					}
 				}
 			} else if (jugador && tag.getTagName().equals("TD") && tag.getText().equals("td class=\"aright font-m\"")) {
@@ -420,8 +444,8 @@ public class Crawler {
 	public static void crearJugador(int k, String nombre1, String equipo1, String posicion1, int puntos1, int puntosJ,
 			int valor1) throws SQLException {
 		Jugador j = new Jugador(n, nombre1, equipo1, posicion1, puntos1, puntosJ, valor1);
-		BD.insertJugador(conn, j);
-//		BD.actualizarJugador(conn, j);
+//		BD.insertJugador(conn, j);
+		BD.actualizarJugador(conn, j);
 		System.out.println("Jugador guardado "+n );
 		n++;
 	}

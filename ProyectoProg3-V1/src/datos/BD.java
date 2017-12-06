@@ -44,9 +44,16 @@ public class BD {
 		int valor = j.getValor();
 		int puntos = j.getPuntos();
 		int puntosjornada = j.getPuntosJornada();
+		String update="UPDATE JUGADOR SET COD_JUGADOR = ? ";
 		try {
-			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("UPDATE JUGADOR SET COD_Jugador='"+cod+"';");
+			PreparedStatement preparedStatement = conn.prepareStatement(update);
+
+			preparedStatement.setInt(1, cod);
+
+			// execute update SQL stetement
+			preparedStatement.executeUpdate();
+
+			System.out.println("Record is updated to table!");
 		} catch (SQLException e) {	
 			// TODO Auto-generated catch block
 			e.printStackTrace();
