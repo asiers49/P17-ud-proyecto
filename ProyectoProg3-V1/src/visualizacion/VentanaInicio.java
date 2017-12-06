@@ -44,7 +44,7 @@ public class VentanaInicio extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaInicio() {
+	public VentanaInicio() {				//Al iniciar se actualiza la base de datos
 		listaJugadores=new ListaJugadores();
 //		listaJugadores.actualizar();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

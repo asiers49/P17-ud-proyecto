@@ -7,6 +7,7 @@ import java.io.IOException;
 //Imports relacionados con el proceso
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,6 +21,9 @@ import org.htmlparser.lexer.Page;
 import org.htmlparser.nodes.TextNode;
 
 import crawler.VentanaColorConsola;
+import datos.Jugador;
+import datos.BD;
+import java.sql.*;
 
 /**
  * Clase de scrapping de una página web para procesar su contenido Programación
@@ -34,18 +38,24 @@ import crawler.VentanaColorConsola;
  * 
  */
 public class Crawler {
-
+	private static Connection conn;
 	private static boolean MOSTRAR_TODOS_LOS_TAGS = false;
 	public ProcesadoLaLiga p;
 	private static ArrayList<String> Equipos = new ArrayList<>();
-
+	private static int n;
 	public static void main(String[] args) {
 
 		// Analisis de la web de comuniazo. Poner aquí la URL con la que trabajar:
 
 		// String urlAAnalizar2 = "http://www.comuniazo.com/comunio/jugadores";
 		// revisaWeb( urlAAnalizar2 );
-
+		try {
+			conn = BD.getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		n=0;
 		ProcesadoLaLiga pLaLiga = new ProcesadoLaLiga();
 		String urlLaLiga = "http://www.comuniazo.com/comunio/jugadores";
 		procesaWeb(urlLaLiga, pLaLiga);
@@ -69,8 +79,12 @@ public class Crawler {
 		private String posicion1;
 		private String equipo1;
 		private int puntos1;
-		private long valor1;
+		private int puntosj;
+		private int valor1;
 		private boolean listaequipos;
+		private Jugador j;
+		private int i;
+		
 
 		@Override
 		public void procesaTexto(TextNode texto, LinkedList<Tag> pilaTags) {
@@ -79,24 +93,32 @@ public class Crawler {
 					if (equipo) {
 						// aFichero(texto.getText());
 						nombre1 = texto.getText();
-						System.out.println(" Nombre:" + texto.getText());
 						nombre = true;
 						equipo = false;
 					} else if (nombre) {
-						System.out.println(" Puntos:" + texto.getText());
+						puntos1 = Integer.parseInt(Crawler.removeDot(texto.getText()));
 						nombre = false;
-					} else if (puntos) {
-						System.out.println(" Valor:" + texto.getText());
-						System.out.println("Fin Jugador ");
-						System.out.println("");
+					} else if (puntos && i == 1) {
+						if (!texto.getText().contains(" ") || !texto.getText().contains("-")) {
+							valor1 = Integer.parseInt(Crawler.removeDot(texto.getText()));
+						}
+					}
+					if (i == 5) {
+						if (!texto.getText().contains(" ") || !texto.getText().contains("-")) {
+							puntosj = Integer.parseInt(Crawler.removeDot(texto.getText()));
+						}
 						jugador = false;
 						puntos = false;
-						crearJugador(nombre1, equipo1, posicion1, puntos1, valor1);
+						try {
+							crearJugador(n, nombre1, equipo1, posicion1, puntos1, puntosj, valor1);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}
 			if (listaequipos) {
-				System.out.println(texto.getText());
 				actualizarListaEquipos(texto.getText());
 			}
 
@@ -107,25 +129,39 @@ public class Crawler {
 			// TODO programación del método (si procede)
 			if (tag.getTagName().equals("TR") && tag.getText().contains("tr class=\"head\"")) { // Empieza la lista
 				lista = true;
-				// aFichero("Lista");
-				System.out.println("Lista: ");
-
 			} else if (lista && tag.getTagName().equals("TR")) { // Empieza el jugado
 				jugador = true;
-				// aFichero("Jugador: ");
-				System.out.println("Jugador: ");
+				i = 0;
 			} else if (jugador && tag.getTagName().equals("SPAN") && tag.getText().contains("pos")) {
 				posicion1 = tag.getText();
 				posicion = true;
-				System.out.println("Posicion:  " + tag.getText());
+
+				if (posicion1.equals("span class=\"pos-1\"")) {
+					posicion1 = "Portero";
+				} else if (posicion1.equals("span class=\"pos-2\"")) {
+					posicion1 = "Defensa";
+				} else if (posicion1.equals("span class=\"pos-3\"")) {
+					posicion1 = "Mediocentro";
+				} else if (posicion1.equals("span class=\"pos-4\"")) {
+					posicion1 = "Delantero";
+				}
+				i = i + 1;
 			} else if (posicion && tag.getTagName().equals("A") && tag.getText().contains("equipos")) {
 				equipo = true;
-				aFichero(tag.getText());
 				equipo1 = tag.getText();
+				for (int i = 0; i < Equipos.size(); i++) {
+					String equipocomparar = Equipos.get(i).toLowerCase();
+					if (equipo1.contains(equipocomparar) || equipo1.contains("leganes") || equipo1.contains("real")
+							|| equipo1.contains("las-palmas") || equipo1.contains("at") || equipo1.contains("alaves")
+							|| equipo1.contains("malaga")) {
+						equipo1 = Equipos.get(i);
+					}
+				}
 			} else if (jugador && tag.getTagName().equals("TD") && tag.getText().equals("td class=\"aright font-m\"")) {
 				puntos = true;
+			} else if (jugador && tag.getTagName().equals("SPAN")) {
+				i = i + 1;
 			}
-
 			if (tag.getText().equals("ul class=\"sub\"")) {
 				listaequipos = true;
 			} else if (tag.getText().equals("i class=\"icon-menu\"")) {
@@ -362,38 +398,32 @@ public class Crawler {
 		return ret;
 	}
 
+	public static String removeDot(String s) {
+		String r = "";
+		if (s.equals("-")) {
+			r = "0";
+		} else {
+			for (int i = 0; i < s.length(); i++) {
+				if (s.charAt(i) == '.') {
+				} else {
+					r = r + s.charAt(i);
+				}
+			}
+		}
+		return r;
+	}
+
 	public static void actualizarListaEquipos(String string) {
 		Equipos.add(string);
 	}
 
-	public static void crearJugador(String nombre1, String equipo1, String posicion1, int puntos1, long valor1) {
-		//Falta Base de Datos
-	}
-	
-	
-	/**Crea Fichero con la lista de los jugadores
-	 * 
-	 */
-	public static void aFichero(String a) {
-		File file = new File("jugadores.txt");
-		try {
-			FileWriter fw = new FileWriter(file, true);
-			for (int i = 0; i < Equipos.size(); i++) {
-				String equipocomparar = Equipos.get(i).toLowerCase();
-				if (a.contains(equipocomparar) || a.contains("leganes") || a.contains("real")
-						|| a.contains("las-palmas") || a.contains("at") || a.contains("alaves")
-						|| a.contains("malaga")) {
-					a = Equipos.get(i);
-					fw.write(" Equipo: "+a);
-					fw.write("\n");
-				}
-			}
-			fw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+	public static void crearJugador(int k, String nombre1, String equipo1, String posicion1, int puntos1, int puntosJ,
+			int valor1) throws SQLException {
+		Jugador j = new Jugador(n, nombre1, equipo1, posicion1, puntos1, puntosJ, valor1);
+		BD.insertJugador(conn, j);
+//		BD.actualizarJugador(conn, j);
+		System.out.println("Jugador guardado "+n );
+		n++;
 	}
 
 	public ArrayList<String> getEquipos() {

@@ -57,7 +57,7 @@ public class VentanaCrearLiga extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaCrearLiga(ventanaPrincipal ventanaanterior, Usuario user1) {
+	public VentanaCrearLiga(ventanaPrincipal ventanaanterior, Usuario user1) {	//Cuando se crea una liga se inicia la base de datos.
 		user=user1;
 		setFont(new Font("Monospaced", Font.PLAIN, 16));
 		setType(Type.UTILITY);

@@ -63,7 +63,7 @@ public class ventanaRegistro extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ventanaRegistro(VentanaInicio ventanaanterior, ListaJugadores listaJugadores) {
+	public ventanaRegistro(VentanaInicio ventanaanterior, ListaJugadores listaJugadores) {		//Al iniciar sesion se carga la alineacion del usuario, mercado...
 		Usuario = new Usuario();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 524, 303);
