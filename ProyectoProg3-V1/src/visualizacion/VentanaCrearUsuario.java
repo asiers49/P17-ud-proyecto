@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import datos.BD;
 import datos.ListaJugadores;
 import datos.Usuario;
 import javax.swing.JLabel;
@@ -17,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 
@@ -54,6 +57,7 @@ public class VentanaCrearUsuario extends JFrame {
 	 * @param listaJugadores 
 	 */
 	public VentanaCrearUsuario(VentanaInicio ventanaanterior, ListaJugadores listaJugadores) {
+		
 		vI = ventanaanterior;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 464, 329);
@@ -125,17 +129,24 @@ public class VentanaCrearUsuario extends JFrame {
 				String usuario = textField_usuario.getText();
 				String password = String.valueOf(passwordField.getPassword());
 				String email = textField_email.getText();
-				user = new Usuario(usuario, password, email);
+				System.out.println(email);
+				user = new Usuario(0,usuario, password, email);
 				ventanaPrincipal vP =new ventanaPrincipal(user, listaJugadores);
 				vP.setVisible(true);
 				VentanaCrearUsuario.this.setVisible(false);
-				createFile();
+				try {
+					BD.getConnection();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				BD.nuevoUsuario(user);
 				
 			}
 		});
 
 	}
-public void createFile(){
+public void aBD(){
 		
 		File usuarios=new File(File.pathSeparator+"Usuarios.txt");
 		try {

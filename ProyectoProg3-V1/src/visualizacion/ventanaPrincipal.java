@@ -22,9 +22,6 @@ import java.awt.FlowLayout;
 
 public class ventanaPrincipal extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4429640112774618601L;
 	private JPanel contentPane;
 	private Usuario user;

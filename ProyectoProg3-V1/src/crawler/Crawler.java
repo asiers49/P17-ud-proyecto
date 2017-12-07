@@ -44,7 +44,7 @@ public class Crawler {
 	private static ArrayList<String> Equipos = new ArrayList<>();
 	private static int n;
 	private static boolean actualizar;
-	
+
 	public static boolean isActualizar() {
 		return actualizar;
 	}
@@ -60,12 +60,12 @@ public class Crawler {
 		// String urlAAnalizar2 = "http://www.comuniazo.com/comunio/jugadores";
 		// revisaWeb( urlAAnalizar2 );
 		try {
-			conn = BD.getConnection();
+			BD.getConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		n=0;
+		n = 1;
 		ProcesadoLaLiga pLaLiga = new ProcesadoLaLiga();
 		String urlLaLiga = "http://www.comuniazo.com/comunio/jugadores";
 		procesaWeb(urlLaLiga, pLaLiga);
@@ -94,7 +94,6 @@ public class Crawler {
 		private boolean listaequipos;
 		private Jugador j;
 		private int i;
-		
 
 		@Override
 		public void procesaTexto(TextNode texto, LinkedList<Tag> pilaTags) {
@@ -161,24 +160,24 @@ public class Crawler {
 				equipo1 = tag.getText();
 				for (int i = 0; i < Equipos.size(); i++) {
 					String equipocomparar = Equipos.get(i).toLowerCase();
-					if (equipo1.contains(equipocomparar) ) {
+					if (equipo1.contains(equipocomparar)) {
 						equipo1 = Equipos.get(i);
-					}else if (equipo1.contains("leganes")) {
-						equipo1="Leganes";
-					}else if (equipo1.contains("real-madrid")) {
-						equipo1="Real Madrid";
-					}else if (equipo1.contains("atletico")) {
-						equipo1="Atletico";
-					}else if (equipo1.contains("athletic")) {
-						equipo1="Athletic";
-					}else if (equipo1.contains("alaves")) {
-						equipo1="Alaves";
-					}else if (equipo1.contains("real-sociedad")) {
-						equipo1="Real Sociedad";
-					}else if (equipo1.contains("las-palmas")) {
-						equipo1="Las Palmas";
-					}else if (equipo1.contains("malaga")) {
-						equipo1="Malaga";
+					} else if (equipo1.contains("leganes")) {
+						equipo1 = "Leganes";
+					} else if (equipo1.contains("real-madrid")) {
+						equipo1 = "Real Madrid";
+					} else if (equipo1.contains("atletico")) {
+						equipo1 = "Atletico";
+					} else if (equipo1.contains("athletic")) {
+						equipo1 = "Athletic";
+					} else if (equipo1.contains("alaves")) {
+						equipo1 = "Alaves";
+					} else if (equipo1.contains("real-sociedad")) {
+						equipo1 = "Real Sociedad";
+					} else if (equipo1.contains("las-palmas")) {
+						equipo1 = "Las Palmas";
+					} else if (equipo1.contains("malaga")) {
+						equipo1 = "Malaga";
 					}
 				}
 			} else if (jugador && tag.getTagName().equals("TD") && tag.getText().equals("td class=\"aright font-m\"")) {
@@ -444,9 +443,7 @@ public class Crawler {
 	public static void crearJugador(int k, String nombre1, String equipo1, String posicion1, int puntos1, int puntosJ,
 			int valor1) throws SQLException {
 		Jugador j = new Jugador(n, nombre1, equipo1, posicion1, puntos1, puntosJ, valor1);
-//		BD.insertJugador(conn, j);
-		BD.actualizarJugador(conn, j);
-		System.out.println("Jugador guardado "+n );
+		BD.actualizarJugador(j);
 		n++;
 	}
 

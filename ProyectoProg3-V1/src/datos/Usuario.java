@@ -3,6 +3,7 @@ package datos;
 import java.util.ArrayList;
 
 public class Usuario {
+	private int cod_usuario;
 	private String nombre;
 	private String contraseña;
 	private String email;
@@ -10,12 +11,13 @@ public class Usuario {
 	private Liga liga;
 	private long dinero;
 	private int puntos;
-	
+
 	public Usuario() {
-		
+
 	}
 
-	public Usuario(String nombre, String contraseña, String email){
+	public Usuario(int n, String nombre, String contraseña, String email) {
+		this.setCod_usuario(n);
 		this.setNombre(nombre);
 		this.setContraseña(contraseña);
 		this.setEmail(email);
@@ -44,16 +46,15 @@ public class Usuario {
 	}
 
 	public void setEmail(String email) {
-		boolean tieneArroba=false;
-		for(int i = 0; i < email.length() && !tieneArroba; i++){
-			if(email.charAt(i)=='@') {
-				tieneArroba=true;
-				this.email=email;
+		boolean tieneArroba = false;
+		for (int i = 0; i < email.length() && !tieneArroba; i++) {
+			if (email.charAt(i) == '@') {
+				tieneArroba = true;
+				this.email = email;
 			}
 		}
-		
-	}
 
+	}
 
 	public Equipo getMiEquipo() {
 		return miEquipo;
@@ -62,7 +63,7 @@ public class Usuario {
 	public void setMiEquipo(Equipo miEquipo) {
 		this.miEquipo = miEquipo;
 	}
-	
+
 	public Liga getLiga() {
 		return liga;
 	}
@@ -86,5 +87,13 @@ public class Usuario {
 	public void setPuntos(int puntos) {
 		this.puntos = puntos;
 	}
-	
+
+	public int getCod_usuario() {
+		return cod_usuario;
+	}
+
+	public void setCod_usuario(int cod_usuario) {
+		this.cod_usuario = cod_usuario;
+	}
+
 }
