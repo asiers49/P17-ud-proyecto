@@ -195,7 +195,7 @@ public class ventanaRegistro extends JFrame {
 						user = lineas[0];
 						pass = lineas[1];
 						email = lineas[2];
-						usuarios.add(new Usuario(user, pass, email));
+						usuarios.add(new Usuario(0,user, pass, email));
 						linea = bfr.readLine();
 					}
 					bfr.close();

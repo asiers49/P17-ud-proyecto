@@ -84,11 +84,9 @@ public class VentanaInicio extends JFrame {
 				VentanaInicio.this.setVisible(false);
 				ventanaRegistro vR=new ventanaRegistro(VentanaInicio.this, listaJugadores);
 				vR.setVisible(true);
-				
 			}
 		});
 		panel_MID.add(btnIniSesison, "cell 1 1,grow");
-		
 		JButton btnRegistrar = new JButton("Registrarse");
 		btnRegistrar.setForeground(Color.WHITE);
 		btnRegistrar.setBackground(new Color(0, 102, 204));

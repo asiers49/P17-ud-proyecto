@@ -17,10 +17,10 @@ public class Usuario {
 	}
 
 	public Usuario(int n, String nombre, String contraseña, String email) {
-		this.setCod_usuario(n);
+		this.cod_usuario=n;
 		this.setNombre(nombre);
 		this.setContraseña(contraseña);
-		this.setEmail(email);
+		this.email=email;
 		this.setMiEquipo(null);
 		this.setLiga(null);
 	}

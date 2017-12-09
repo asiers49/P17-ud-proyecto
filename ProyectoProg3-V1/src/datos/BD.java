@@ -15,9 +15,8 @@ public class BD {
 		} catch (ClassNotFoundException ex) {
 			System.out.println("Where is your PostgreSQL JDBC Driver? " + "Include in your library path!");
 		}
-		conn = DriverManager.getConnection("jdbc:postgresql://" + URL + "?sslmode=require", USERNAME,
-				PASSWORD);
-		
+		conn = DriverManager.getConnection("jdbc:postgresql://" + URL + "?sslmode=require", USERNAME, PASSWORD);
+
 	}
 
 	public static void insertJugador(Jugador j) {
@@ -39,7 +38,7 @@ public class BD {
 
 	}
 
-	public static void actualizarJugador( Jugador j) {
+	public static void actualizarJugador(Jugador j) {
 		int cod = j.getCod_jugador();
 		String nombre = j.getNombre();
 		String equipo = j.getEquipo();
@@ -61,27 +60,65 @@ public class BD {
 		}
 
 	}
+
 	public static ArrayList<Jugador> obtenerJugadores() {
-		
-		
-		
+
 		return null;
-		
+
 	}
-	
-	public static void nuevoUsuario( Usuario user) {
-		int cod=user.getCod_usuario();
-		String nombre=user.getNombre();
-		String contrasenya=user.getContraseña();
-		String mail=user.getEmail();
-		System.out.println(mail);
+
+	public static void nuevoUsuario(Usuario user) {
+		int cod = user.getCod_usuario();
+		String nombre = user.getNombre();
+		String contrasenya = user.getContraseña();
+		String mail = user.getEmail();
 		try {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate("INSERT INTO USUARIOS VALUES (" + cod + ",'" + nombre + "', '" + contrasenya + "', '"
-					+ mail +"')");
+					+ mail + "')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private static ArrayList<Integer> codsJugadores;
+	private static ArrayList<Integer> codsUsuarios;
+
+	public static int crearCodigo(int tipo) {
+		boolean igual = false;
+		int n = 0;
+		if (tipo == 0) {
+			n = (int) Math.random();
+			for (int i = 0; i < codsJugadores.size(); i++) {
+				if (codsJugadores.get(i) != n) {
+				} else {
+					igual = true;
+				}
+			}
+			if (!igual) {
+				return n;
+
+			} else {
+				crearCodigo(0);
+			}
+
+		} else if (tipo == 1) {
+			n = (int) Math.random();
+			for (int i = 0; i < codsUsuarios.size(); i++) {
+				if (codsUsuarios.get(i) != n) {
+				} else {
+					igual = true;
+				}
+			}
+			if (!igual) {
+				return n;
+
+			} else {
+				crearCodigo(1);
+			}
+		}
+		return n;
+		
 	}
 }

@@ -35,6 +35,7 @@ public class VentanaCrearUsuario extends JFrame {
 	private JPasswordField passwordField;
 	private JTextField textField_email;
 	private Usuario user;
+	private int n=1;
 
 	/**
 	 * Launch the application.
@@ -129,8 +130,8 @@ public class VentanaCrearUsuario extends JFrame {
 				String usuario = textField_usuario.getText();
 				String password = String.valueOf(passwordField.getPassword());
 				String email = textField_email.getText();
-				System.out.println(email);
-				user = new Usuario(0,usuario, password, email);
+				System.out.println(n);
+				user = new Usuario(n,usuario, password, email);
 				ventanaPrincipal vP =new ventanaPrincipal(user, listaJugadores);
 				vP.setVisible(true);
 				VentanaCrearUsuario.this.setVisible(false);
@@ -141,7 +142,7 @@ public class VentanaCrearUsuario extends JFrame {
 					e1.printStackTrace();
 				}
 				BD.nuevoUsuario(user);
-				
+				n++;
 			}
 		});
 
