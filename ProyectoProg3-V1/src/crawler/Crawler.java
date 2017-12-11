@@ -25,25 +25,13 @@ import datos.Jugador;
 import datos.BD;
 import java.sql.*;
 
-/**
- * Clase de scrapping de una página web para procesar su contenido Programación
- * II y III - IEIAII
- * 
- * Utiliza la librería externa htmlparser 1.6 Descargada en feb de 2016 de
- * https://sourceforge.net/projects/htmlparser/files/htmlparser/1.6/htmlparser1_6_20060610.zip
- * Web del proyecto: https://sourceforge.net/projects/htmlparser/ Descomprimir,
- * guardar y enlazar fichero: htmlparser.jar
- * 
- * Programada para procesar estadísticas de jugadores desde la web comuniazo.com
- * 
- */
 public class Crawler {
-	private static Connection conn;
 	private static boolean MOSTRAR_TODOS_LOS_TAGS = false;
 	public ProcesadoLaLiga p;
 	private static ArrayList<String> Equipos = new ArrayList<>();
 	private static int n;
 	private static boolean actualizar;
+	private static LinkedList<Tag> pilaTags;
 
 	public static boolean isActualizar() {
 		return actualizar;
@@ -94,7 +82,10 @@ public class Crawler {
 		private boolean listaequipos;
 		private Jugador j;
 		private int i;
-
+		
+		/**
+		 * 
+		 */
 		@Override
 		public void procesaTexto(TextNode texto, LinkedList<Tag> pilaTags) {
 			if (pilaContieneTags(pilaTags, tagBuscado)) {
@@ -198,11 +189,7 @@ public class Crawler {
 		}
 	}
 
-	//
-	// Métodos de utilidad generales
-	//
-
-	private static LinkedList<Tag> pilaTags;
+	
 
 	/**
 	 * Procesa una web y muestra en una ventana de consola coloreada sus contenidos

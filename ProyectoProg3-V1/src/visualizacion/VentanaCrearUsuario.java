@@ -28,6 +28,7 @@ public class VentanaCrearUsuario extends JFrame {
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private VentanaInicio vI;
@@ -35,7 +36,6 @@ public class VentanaCrearUsuario extends JFrame {
 	private JPasswordField passwordField;
 	private JTextField textField_email;
 	private Usuario user;
-	private int n=1;
 
 	/**
 	 * Launch the application.
@@ -130,37 +130,19 @@ public class VentanaCrearUsuario extends JFrame {
 				String usuario = textField_usuario.getText();
 				String password = String.valueOf(passwordField.getPassword());
 				String email = textField_email.getText();
-				System.out.println(n);
-				user = new Usuario(n,usuario, password, email);
-				ventanaPrincipal vP =new ventanaPrincipal(user, listaJugadores);
-				vP.setVisible(true);
-				VentanaCrearUsuario.this.setVisible(false);
+				user = new Usuario(usuario, password, email);
 				try {
 					BD.getConnection();
+					BD.nuevoUsuario(user);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				BD.nuevoUsuario(user);
-				n++;
-			}
+				VentanaPrincipal vP =new VentanaPrincipal(user, listaJugadores);
+				vP.setVisible(true);
+				VentanaCrearUsuario.this.setVisible(false);
+				}
 		});
 
-	}
-public void aBD(){
-		
-		File usuarios=new File(File.pathSeparator+"Usuarios.txt");
-		try {
-			FileWriter fw=new FileWriter(usuarios,true);
-			fw.write(user.getNombre()+";"+user.getContraseña()+";"+user.getEmail());
-			fw.write("\n");
-			fw.flush();
-			fw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
 	}
 }

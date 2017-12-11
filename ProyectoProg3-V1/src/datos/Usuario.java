@@ -1,9 +1,6 @@
 package datos;
 
-import java.util.ArrayList;
-
 public class Usuario {
-	private int cod_usuario;
 	private String nombre;
 	private String contraseña;
 	private String email;
@@ -16,11 +13,10 @@ public class Usuario {
 
 	}
 
-	public Usuario(int n, String nombre, String contraseña, String email) {
-		this.cod_usuario=n;
+	public Usuario(String nombre, String contraseña, String email) {
 		this.setNombre(nombre);
 		this.setContraseña(contraseña);
-		this.email=email;
+		this.email = email;
 		this.setMiEquipo(null);
 		this.setLiga(null);
 	}
@@ -86,14 +82,6 @@ public class Usuario {
 
 	public void setPuntos(int puntos) {
 		this.puntos = puntos;
-	}
-
-	public int getCod_usuario() {
-		return cod_usuario;
-	}
-
-	public void setCod_usuario(int cod_usuario) {
-		this.cod_usuario = cod_usuario;
 	}
 
 }

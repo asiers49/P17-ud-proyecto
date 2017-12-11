@@ -9,6 +9,11 @@ public class BD {
 	private static final String PASSWORD = "8be9eab9ba5530cc1b79809fe9310e3f318c1ecf5ec0ec96150cffc457d37c2c";
 	private static Connection conn;
 
+	/**
+	 * 
+	 * @throws SQLException
+	 */
+	
 	public static void getConnection() throws SQLException {
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -18,6 +23,11 @@ public class BD {
 		conn = DriverManager.getConnection("jdbc:postgresql://" + URL + "?sslmode=require", USERNAME, PASSWORD);
 
 	}
+	
+	/**
+	 * 
+	 * @param j
+	 */
 
 	public static void insertJugador(Jugador j) {
 		int cod = j.getCod_jugador();
@@ -37,6 +47,11 @@ public class BD {
 		}
 
 	}
+	
+	/**
+	 * 
+	 * @param j
+	 */
 
 	public static void actualizarJugador(Jugador j) {
 		int cod = j.getCod_jugador();
@@ -60,65 +75,70 @@ public class BD {
 		}
 
 	}
-
+	
+	/*
+	 * 
+	 */
 	public static ArrayList<Jugador> obtenerJugadores() {
 
 		return null;
 
 	}
-
+	
+	/**
+	 * 
+	 * @param user
+	 */
+	
 	public static void nuevoUsuario(Usuario user) {
-		int cod = user.getCod_usuario();
 		String nombre = user.getNombre();
 		String contrasenya = user.getContraseña();
 		String mail = user.getEmail();
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO USUARIOS VALUES (" + cod + ",'" + nombre + "', '" + contrasenya + "', '"
+			stmt.executeUpdate("INSERT INTO USUARIOS VALUES ('" + nombre + "', '" + contrasenya + "', '"
 					+ mail + "')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-	private static ArrayList<Integer> codsJugadores;
-	private static ArrayList<Integer> codsUsuarios;
-
-	public static int crearCodigo(int tipo) {
-		boolean igual = false;
-		int n = 0;
-		if (tipo == 0) {
-			n = (int) Math.random();
-			for (int i = 0; i < codsJugadores.size(); i++) {
-				if (codsJugadores.get(i) != n) {
-				} else {
-					igual = true;
-				}
-			}
-			if (!igual) {
-				return n;
-
-			} else {
-				crearCodigo(0);
-			}
-
-		} else if (tipo == 1) {
-			n = (int) Math.random();
-			for (int i = 0; i < codsUsuarios.size(); i++) {
-				if (codsUsuarios.get(i) != n) {
-				} else {
-					igual = true;
-				}
-			}
-			if (!igual) {
-				return n;
-
-			} else {
-				crearCodigo(1);
-			}
+	
+	/*
+	 * 
+	 */
+	
+	public static Usuario buscarUsuario(Usuario u) {
+		Usuario user=new Usuario();
+		try {
+			Statement stmt=conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM usuarios");
+	        while (rs.next()) {
+	            if (rs.getString(1).equals(u.getNombre())) {
+	            	user.setNombre(rs.getString(1));
+	            	System.out.println(user.getNombre());
+	            }
+	        }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return n;
 		
+		
+		
+		
+		
+		
+		return user;
+		
+	}
+	public static void main (String[] args) {
+		try {
+			getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		buscarUsuario(new Usuario("garrix"," pass", ""));
 	}
 }

@@ -20,7 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
 import java.awt.FlowLayout;
 
-public class ventanaPrincipal extends JFrame {
+public class VentanaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 4429640112774618601L;
 	private JPanel contentPane;
@@ -54,7 +54,7 @@ public class ventanaPrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ventanaPrincipal frame = new ventanaPrincipal(null, null);
+					VentanaPrincipal frame = new VentanaPrincipal(null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -70,7 +70,7 @@ public class ventanaPrincipal extends JFrame {
 	 *            The user that has logged in
 	 * @param listaJugadores
 	 */
-	public ventanaPrincipal(Usuario user1, ListaJugadores listaJugadores) {
+	public VentanaPrincipal(Usuario user1, ListaJugadores listaJugadores) {
 
 		/*
 		 * Actualizamos/Inicializamos variables
@@ -260,8 +260,8 @@ public class ventanaPrincipal extends JFrame {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						ventanaPrincipal.this.setVisible(false);
-						VentanaCrearLiga vCL = new VentanaCrearLiga(ventanaPrincipal.this, user);
+						VentanaPrincipal.this.setVisible(false);
+						VentanaCrearLiga vCL = new VentanaCrearLiga(VentanaPrincipal.this, user);
 						vCL.setVisible(true);
 
 					}

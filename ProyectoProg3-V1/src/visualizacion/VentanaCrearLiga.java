@@ -26,7 +26,7 @@ public class VentanaCrearLiga extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ventanaPrincipal VP;
+	private VentanaPrincipal VP;
 	private JPanel contentPane;
 	private JTextField textField_nombre;
 	private String nLiga = "";
@@ -57,7 +57,7 @@ public class VentanaCrearLiga extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaCrearLiga(ventanaPrincipal ventanaanterior, Usuario user1) {	//Cuando se crea una liga se inicia la base de datos.
+	public VentanaCrearLiga(VentanaPrincipal ventanaanterior, Usuario user1) {	//Cuando se crea una liga se inicia la base de datos.
 		user=user1;
 		setFont(new Font("Monospaced", Font.PLAIN, 16));
 		setType(Type.UTILITY);
@@ -89,8 +89,7 @@ public class VentanaCrearLiga extends JFrame {
 				clave = Math.random() * 999999 + 1;
 				Liga liga = new Liga(nLiga, clave);
 				user1.setLiga(liga);
-				createFile();
-				ventanaPrincipal vP=new ventanaPrincipal(user, null);
+				VentanaPrincipal vP=new VentanaPrincipal(user, null);
 				vP.setVisible(true);
 				VentanaCrearLiga.this.setVisible(false);
 
@@ -135,34 +134,4 @@ public class VentanaCrearLiga extends JFrame {
 		contentPane.add(btnNewButton, "cell 1 7");
 	}
 
-	public void createFile() {
-
-		File usuarios = new File(File.pathSeparator + "Usuarios.txt");
-		try {
-			FileReader fr = new FileReader(usuarios);
-			BufferedReader bfr = new BufferedReader(fr);
-			FileWriter fw = new FileWriter(usuarios, true);
-			String linea = bfr.readLine();
-		
-			while (linea != null) {
-				String[] lineas = linea.split(";");
-				System.out.println(lineas[0]+" ,"+user.getNombre());
-				if (lineas[0].equals(user.getNombre())) { //
-					fw.write(";"+nLiga + ";" + clave);
-					fw.flush();
-					fw.close();
-				}
-				linea = bfr.readLine();
-			}
-
-			bfr.close();
-			fr.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
-	
-	
-}

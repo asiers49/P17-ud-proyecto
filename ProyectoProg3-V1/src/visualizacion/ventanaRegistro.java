@@ -63,8 +63,7 @@ public class ventanaRegistro extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ventanaRegistro(VentanaInicio ventanaanterior, ListaJugadores listaJugadores) {		//Al iniciar sesion se carga la alineacion del usuario, mercado...
-		Usuario = new Usuario();
+	public ventanaRegistro(VentanaInicio ventanaanterior, ListaJugadores listaJugadores) {		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 524, 303);
 		contentPane = new JPanel();
@@ -98,6 +97,12 @@ public class ventanaRegistro extends JFrame {
 		btnHasOlvidadoLa.setBackground(new Color(0, 102, 204));
 		btnHasOlvidadoLa.setForeground(new Color(255, 255, 255));
 		btnHasOlvidadoLa.addActionListener(new ActionListener() {
+			
+			/*
+			 * (non-Javadoc)
+			 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+			 */
+			
 			public void actionPerformed(ActionEvent arg0) {
 
 				File ListaUsuario = new File(File.pathSeparator + "Usuarios.txt");
@@ -178,54 +183,34 @@ public class ventanaRegistro extends JFrame {
 		btnIniciarSesion.setForeground(new Color(255, 255, 255));
 		panel_1.add(btnIniciarSesion, "cell 2 0,alignx left,aligny top");
 		btnIniciarSesion.addActionListener(new ActionListener() {
-
+			
+			/*
+			 * (non-Javadoc)
+			 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+			 */
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 				String usuario = textField.getText();
 				String contraseña = String.valueOf(passwordField.getPassword());
-				File ListaUsuario = new File(File.pathSeparator + "Usuarios.txt");
-				String user = null, pass = null, email = null;
-				try {
-					FileReader fr = new FileReader(ListaUsuario);
-					BufferedReader bfr = new BufferedReader(fr);
-					String linea = bfr.readLine();
-					while (linea != null) {
-						String[] lineas = linea.split(";");
-						user = lineas[0];
-						pass = lineas[1];
-						email = lineas[2];
-						usuarios.add(new Usuario(0,user, pass, email));
-						linea = bfr.readLine();
-					}
-					bfr.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				for (int i = 0; i < usuarios.size(); i++) {
-					if (usuario.equals(usuarios.get(i).getNombre())) {
-						if (contraseña.equals(usuarios.get(i).getContraseña())) {
-							Usuario.setNombre(user);
-							Usuario.setContraseña(pass);
-							Usuario.setEmail(email);
-							ventanaPrincipal vP = new ventanaPrincipal(Usuario, listaJugadores);
-							vP.setVisible(true);
-							ventanaRegistro.this.setVisible(false);
-						} else {
-							JOptionPane.showMessageDialog(ventanaRegistro.this, "Contraseña incorrecta");
-						}
-					} else {
-						JOptionPane.showMessageDialog(ventanaRegistro.this, "Usuario incorrecto");
-					}
+				Usuario user=new Usuario(usuario, contraseña, "");
+				
+				VentanaPrincipal vP = new VentanaPrincipal(Usuario, listaJugadores);
+				vP.setVisible(true);
+				ventanaRegistro.this.setVisible(false);
+					
 
 				}
 
-			}
+			
 		});
 	}
-
+	
+	/**
+	 * 
+	 */
+	
 	public static void enviarCorreo(String pass, ventanaRegistro vR) {
 
 		try {
@@ -246,9 +231,6 @@ public class ventanaRegistro extends JFrame {
 			props.put("mail.smtp.port", "587");
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.required", "true");
-
-			// java.security.Security.addProvider(new
-			// com.sun.net.ssl.internal.ssl.Provider());
 			Session mailSession = Session.getDefaultInstance(props, null);
 			mailSession.setDebug(sessionDebug);
 			Message msg = new MimeMessage(mailSession);
@@ -258,13 +240,11 @@ public class ventanaRegistro extends JFrame {
 			msg.setSubject(subject);
 			msg.setSentDate(new Date());
 			msg.setText(messageText);
-
 			Transport transport = mailSession.getTransport("smtp");
 			transport.connect(host, user, contrasenya1);
 			transport.sendMessage(msg, msg.getAllRecipients());
 			transport.close();
 
-			// System.out.println("message send successfully");
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(vR, "Error");
 		}
