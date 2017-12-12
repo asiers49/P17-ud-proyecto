@@ -105,48 +105,9 @@ public class ventanaRegistro extends JFrame {
 			 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 			 */
 
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {	// Falta
 
-				String pass = null, email = null;
-				ArrayList<String> listamails = new ArrayList<>();
-				try {
-					FileReader fr = new FileReader(ListaUsuario);
-					BufferedReader bfr = new BufferedReader(fr);
-					String linea = bfr.readLine();
-					while (linea != null) {
-						String[] lineas = linea.split(";");
-						pass = lineas[1];
-						email = lineas[2];
-						listamails.add(email);
-						System.out.println(email);
-						linea = bfr.readLine();
-					}
-					bfr.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				correo = JOptionPane.showInputDialog("Indique su correo", "");
-				boolean tieneArroba = false;
-				boolean correoexiste = false;
-				for (int i = 0; i < correo.length() && !tieneArroba; i++) {
-					if (correo.charAt(i) == '@') {
-						tieneArroba = true;
-
-					}
-				}
-				for (int j = 0; j < listamails.size(); j++) {
-					if (correo.equals(listamails.get(j))) {
-						correoexiste = true;
-					}
-				}
-				if (correoexiste) {
-					JOptionPane.showMessageDialog(null, "Contraseña enviada");
-					enviarCorreo(pass, ventanaRegistro.this);
-
-				} else {
-					JOptionPane.showMessageDialog(null, "Correo erroneo");
-				}
+			
 
 			}
 		});
