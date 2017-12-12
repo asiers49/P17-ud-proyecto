@@ -75,7 +75,6 @@ public class Crawler {
 		private int puntosj;
 		private int valor1;
 		private boolean listaequipos;
-		private Jugador j;
 		private int i;
 		
 		/**
