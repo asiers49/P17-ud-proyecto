@@ -142,6 +142,25 @@ public class BD {
 	        return cal;
 	    }
 	
+	public static void nuevaLiga (Usuario u, String nombre, String clave){
+		boolean encontrado = false;
+		try {
+			Statement stmt=conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM usuarios");
+	        while (rs.next()) {
+	            if (rs.getString(1).equals(u.getNombre())) {
+	            	if(rs.getString(2).equals(u.getContraseña())){
+	            	encontrado = true;
+	            	}
+	            }else{
+	            	
+	            }
+	        }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 	public static void main (String[] args) {
