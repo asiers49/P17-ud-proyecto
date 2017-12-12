@@ -2,6 +2,7 @@ package datos;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class BD {
 	private static final String URL = "ec2-184-73-206-155.compute-1.amazonaws.com:5432/dacbprtaga7o1f";
@@ -117,6 +118,7 @@ public class BD {
 	            if (rs.getString(1).equals(u.getNombre())) {
 	            	user.setNombre(rs.getString(1));
 	            	System.out.println(user.getNombre());
+	            
 	            }
 	        }
 		} catch (SQLException e) {
@@ -132,6 +134,17 @@ public class BD {
 		return user;
 		
 	}
+	
+	   
+
+	    public static void contrasenyaAleatoria() {
+	        String cal = UUID.randomUUID().toString().substring(28);
+	        //return cal.substring(8);
+	        System.out.println(cal);
+	    }
+	
+	
+	
 	public static void main (String[] args) {
 		try {
 			getConnection();
@@ -140,5 +153,6 @@ public class BD {
 			e.printStackTrace();
 		}
 		buscarUsuario(new Usuario("garrix"," pass", ""));
+		contrasenyaAleatoria();
 	}
 }
