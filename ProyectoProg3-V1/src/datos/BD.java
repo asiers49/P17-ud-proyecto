@@ -14,7 +14,7 @@ public class BD {
 	 * 
 	 * @throws SQLException
 	 */
-	
+
 	public static void getConnection() throws SQLException {
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -24,7 +24,7 @@ public class BD {
 		conn = DriverManager.getConnection("jdbc:postgresql://" + URL + "?sslmode=require", USERNAME, PASSWORD);
 
 	}
-	
+
 	/**
 	 * 
 	 * @param j
@@ -48,7 +48,7 @@ public class BD {
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 * @param j
@@ -76,7 +76,7 @@ public class BD {
 		}
 
 	}
-	
+
 	/*
 	 * 
 	 */
@@ -85,91 +85,100 @@ public class BD {
 		return null;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param user
 	 */
-	
+
 	public static void nuevoUsuario(Usuario user) {
 		String nombre = user.getNombre();
 		String contrasenya = user.getContraseña();
 		String mail = user.getEmail();
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO USUARIOS VALUES ('" + nombre + "', '" + contrasenya + "', '"
-					+ mail + "')");
+			stmt.executeUpdate("INSERT INTO USUARIOS VALUES ('" + nombre + "', '" + contrasenya + "', '" + mail + "')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*
 	 * 
 	 */
-	
+
 	public static Usuario buscarUsuario(Usuario u) {
-		Usuario user=new Usuario();
+		Usuario user = new Usuario();
 		try {
-			Statement stmt=conn.createStatement();
+			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM usuarios");
-	        while (rs.next()) {
-	            if (rs.getString(1).equals(u.getNombre())) {
-	            	user.setNombre(rs.getString(1));
-	            	System.out.println(user.getNombre());
-	            
-	            }
-	        }
+
+			while (rs.next()) {
+				if (rs.getString(1).equals(u.getNombre())) {
+					user.setNombre(rs.getString(1));
+					System.out.println(user.getNombre());
+
+				}
+			}
+
+			while (rs.next()) {
+				if (rs.getString(1).equals(u.getNombre())) {
+					user.setNombre(rs.getString(1));
+					System.out.println(user.getNombre());
+					if (rs.getString(2).equals(u.getContraseña())) {
+						user.setContraseña(u.getContraseña());
+						user.setEmail(u.getContraseña());
+					}
+				}
+			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
-		return user;
-		
-	}
-	
-	   
 
-	    public static String contrasenyaAleatoria() {
-	        String cal = UUID.randomUUID().toString().substring(28); // String aleatoria de 8 alfanumerics chars
-	        return cal;
-	    }
-	
-	public static void nuevaLiga (Usuario u, String nombre, String clave){
+		return user;
+
+	}
+
+	public static String contrasenyaAleatoria() {
+		String cal = UUID.randomUUID().toString().substring(28); // String
+																	// aleatoria
+																	// de 8
+																	// alfanumerics
+																	// chars
+		return cal;
+	}
+
+	public static void nuevaLiga(Usuario u, String nombre, String clave) {
 		boolean encontrado = false;
 		try {
-			Statement stmt=conn.createStatement();
+			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM usuarios");
-	        while (rs.next()) {
-	            if (rs.getString(1).equals(u.getNombre())) {
-	            	if(rs.getString(2).equals(u.getContraseña())){
-	            	encontrado = true;
-	            	}
-	            }else{
-	            	
-	            }
-	        }
+			while (rs.next()) {
+				if (rs.getString(1).equals(u.getNombre())) {
+					if (rs.getString(2).equals(u.getContraseña())) {
+						encontrado = true;
+					}
+				} else {
+
+				}
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	
-	public static void main (String[] args) {
+
+	public static void main(String[] args) {
+
 		try {
 			getConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		buscarUsuario(new Usuario("garrix"," pass", ""));
+		buscarUsuario(new Usuario("garrix", " pass", ""));
 	}
 }

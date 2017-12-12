@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import datos.BD;
 import datos.ListaJugadores;
 import datos.Usuario;
 
@@ -41,7 +42,6 @@ public class ventanaRegistro extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
-	private Usuario Usuario;
 	private static String correo;
 
 	/**
@@ -63,7 +63,7 @@ public class ventanaRegistro extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ventanaRegistro(VentanaInicio ventanaanterior, ListaJugadores listaJugadores) {		
+	public ventanaRegistro(VentanaInicio ventanaanterior, ListaJugadores listaJugadores) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 524, 303);
 		contentPane = new JPanel();
@@ -97,55 +97,17 @@ public class ventanaRegistro extends JFrame {
 		btnHasOlvidadoLa.setBackground(new Color(0, 102, 204));
 		btnHasOlvidadoLa.setForeground(new Color(255, 255, 255));
 		btnHasOlvidadoLa.addActionListener(new ActionListener() {
-			
+
 			/*
 			 * (non-Javadoc)
-			 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+			 * 
+			 * @see
+			 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 			 */
+
+			public void actionPerformed(ActionEvent arg0) {	// Falta
+
 			
-			public void actionPerformed(ActionEvent arg0) {
-
-				File ListaUsuario = new File(File.pathSeparator + "Usuarios.txt");
-				String pass = null, email = null;
-				ArrayList<String> listamails = new ArrayList<>();
-				try {
-					FileReader fr = new FileReader(ListaUsuario);
-					BufferedReader bfr = new BufferedReader(fr);
-					String linea = bfr.readLine();
-					while (linea != null) {
-						String[] lineas = linea.split(";");
-						pass = lineas[1];
-						email = lineas[2];
-						listamails.add(email);
-						System.out.println(email);
-						linea = bfr.readLine();
-					}
-					bfr.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				correo = JOptionPane.showInputDialog("Indique su correo", "");
-				boolean tieneArroba = false;
-				boolean correoexiste = false;
-				for (int i = 0; i < correo.length() && !tieneArroba; i++) {
-					if (correo.charAt(i) == '@') {
-						tieneArroba = true;
-
-					}
-				}
-				for (int j = 0; j < listamails.size(); j++) {
-					if (correo.equals(listamails.get(j))) {
-						correoexiste = true;
-					}
-				}
-				if (correoexiste) {
-					JOptionPane.showMessageDialog(null, "Contraseña enviada");
-					enviarCorreo(pass, ventanaRegistro.this);
-
-				} else {
-					JOptionPane.showMessageDialog(null, "Correo erroneo");
-				}
 
 			}
 		});
@@ -183,34 +145,38 @@ public class ventanaRegistro extends JFrame {
 		btnIniciarSesion.setForeground(new Color(255, 255, 255));
 		panel_1.add(btnIniciarSesion, "cell 2 0,alignx left,aligny top");
 		btnIniciarSesion.addActionListener(new ActionListener() {
-			
+
 			/*
 			 * (non-Javadoc)
-			 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+			 * 
+			 * @see
+			 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 			 */
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 				String usuario = textField.getText();
 				String contraseña = String.valueOf(passwordField.getPassword());
-				Usuario user=new Usuario(usuario, contraseña, "");
-				
-				VentanaPrincipal vP = new VentanaPrincipal(Usuario, listaJugadores);
-				vP.setVisible(true);
-				ventanaRegistro.this.setVisible(false);
-					
-
+				Usuario user = new Usuario(usuario, contraseña, "");
+				Usuario u = BD.buscarUsuario(user);
+				if (u != null) {
+					VentanaPrincipal vP = new VentanaPrincipal(u, listaJugadores);
+					vP.setVisible(true);
+					ventanaRegistro.this.setVisible(false);
+				} else {
+					JOptionPane.showInternalMessageDialog(ventanaRegistro.this,
+							"Usuario o Contraseña incorrecto. Intentelo de nuevo");
 				}
 
-			
+			}
+
 		});
 	}
-	
+
 	/**
 	 * 
 	 */
-	
+
 	public static void enviarCorreo(String pass, ventanaRegistro vR) {
 
 		try {
