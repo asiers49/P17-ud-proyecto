@@ -137,10 +137,9 @@ public class BD {
 	
 	   
 
-	    public static void contrasenyaAleatoria() {
-	        String cal = UUID.randomUUID().toString().substring(28);
-	        //return cal.substring(8);
-	        System.out.println(cal);
+	    public static String contrasenyaAleatoria() {
+	        String cal = UUID.randomUUID().toString().substring(28); // String aleatoria de 8 alfanumerics chars
+	        return cal;
 	    }
 	
 	
@@ -153,6 +152,5 @@ public class BD {
 			e.printStackTrace();
 		}
 		buscarUsuario(new Usuario("garrix"," pass", ""));
-		contrasenyaAleatoria();
 	}
 }
