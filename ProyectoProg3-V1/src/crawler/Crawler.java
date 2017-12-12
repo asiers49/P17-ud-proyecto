@@ -1,16 +1,12 @@
 package crawler;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 //Imports relacionados con el proceso
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 //Imports de librería externa  -  https://sourceforge.net/projects/htmlparser/
@@ -23,7 +19,6 @@ import org.htmlparser.nodes.TextNode;
 import crawler.VentanaColorConsola;
 import datos.Jugador;
 import datos.BD;
-import java.sql.*;
 
 public class Crawler {
 	private static boolean MOSTRAR_TODOS_LOS_TAGS = false;
@@ -110,7 +105,7 @@ public class Crawler {
 						jugador = false;
 						puntos = false;
 						try {
-							crearJugador(n, nombre1, equipo1, posicion1, puntos1, puntosj, valor1);
+							actualizarJugador(n, nombre1, equipo1, posicion1, puntos1, puntosj, valor1);
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -427,7 +422,7 @@ public class Crawler {
 		Equipos.add(string);
 	}
 
-	public static void crearJugador(int k, String nombre1, String equipo1, String posicion1, int puntos1, int puntosJ,
+	public static void actualizarJugador(int k, String nombre1, String equipo1, String posicion1, int puntos1, int puntosJ,
 			int valor1) throws SQLException {
 		Jugador j = new Jugador(n, nombre1, equipo1, posicion1, puntos1, puntosJ, valor1);
 		BD.actualizarJugador(j);
