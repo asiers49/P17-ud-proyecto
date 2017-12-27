@@ -8,6 +8,7 @@ public class Usuario {
 	private Liga liga;
 	private long dinero;
 	private int puntos;
+	private int puntosJornada;
 
 	public Usuario() {
 
@@ -20,7 +21,12 @@ public class Usuario {
 		this.setMiEquipo(null);
 		this.setLiga(null);
 	}
-
+	
+	public Usuario(String nombre, int puntos, int puntosJornada) {
+		this.nombre=nombre;
+		this.puntos=puntos;
+		this.puntosJornada=puntosJornada;
+	}
 	public String getNombre() {
 		return nombre;
 	}

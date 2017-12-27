@@ -4,10 +4,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import datos.BD;
 import datos.Liga;
 import datos.Usuario;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -19,6 +23,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 public class VentanaCrearLiga extends JFrame {
 
@@ -31,12 +37,14 @@ public class VentanaCrearLiga extends JFrame {
 	private JTextField textField_nombre;
 	private String nLiga = "";
 	double clave;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField textField_nombre2;
+	private JTextField textField_Password;
 	private JLabel lblNombre;
 	private JLabel lblClave;
 	private JLabel lblCrearLiga;
 	private Usuario user;
+	private JSeparator separator;
+	private JButton btnAceptar1;
 
 	/**
 	 * Launch the application.
@@ -57,73 +65,85 @@ public class VentanaCrearLiga extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaCrearLiga(VentanaPrincipal ventanaanterior, Usuario user1) {	//Cuando se crea una liga se inicia la base de datos.
-		user=user1;
+	public VentanaCrearLiga(VentanaPrincipal ventanaanterior, Usuario user1) { // Cuando se crea una liga se inicia la
+																				// base de datos.
+		user = new Usuario("prueba1", "af", "aew");
 		setFont(new Font("Monospaced", Font.PLAIN, 16));
 		setType(Type.UTILITY);
 		setTitle("Crear Liga");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 477, 442);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("", "[100px][grow][]", "[][][][][][][][]"));
+		contentPane.setLayout(new MigLayout("", "[100px][300px][]", "[30px][15px][20px][15px][30px][10px][15px][30px][15px][20px][15px][20px][15px][30px][30px]"));
 
-		lblCrearLiga = new JLabel("CREAR LIGA:");
+		lblCrearLiga = new JLabel("CREAR UNA  LIGA:");
 		lblCrearLiga.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		contentPane.add(lblCrearLiga, "cell 1 0");
 
-		JLabel lblNombreDeLa = new JLabel("Nombre de la comunidad:");
+		JLabel lblNombreDeLa = new JLabel("Nombre:");
+		lblNombreDeLa.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblNombreDeLa.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		contentPane.add(lblNombreDeLa, "cell 1 1 2 1");
+		contentPane.add(lblNombreDeLa, "cell 0 2,alignx right");
 
-		JButton btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBackground(Color.BLUE);
-		btnAceptar.addActionListener(new ActionListener() {
+		textField_nombre = new JTextField();
+		contentPane.add(textField_nombre, "cell 1 2,growx");
+		textField_nombre.setColumns(10);
+
+		btnAceptar1 = new JButton("Aceptar");
+		btnAceptar1.setForeground(Color.WHITE);
+		btnAceptar1.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		btnAceptar1.setBackground(new Color(0, 102, 204));
+		contentPane.add(btnAceptar1, "cell 1 4");
+
+		separator = new JSeparator();
+		contentPane.add(separator, "cell 1 5");
+
+		JButton btnAceptar2 = new JButton("Aceptar");
+		btnAceptar2.setForeground(Color.WHITE);
+		btnAceptar2.setBackground(new Color(0, 102, 204));
+		contentPane.add(btnAceptar2, "flowx,cell 1 13");
+		btnAceptar2.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				nLiga = textField_nombre.getText();
-				clave = Math.random() * 999999 + 1;
-				Liga liga = new Liga(nLiga, clave);
-				user1.setLiga(liga);
-				VentanaPrincipal vP=new VentanaPrincipal(user, null);
+				String nombre=textField_nombre2.getText();
+				String clave=textField_Password.getText();
+				BD.unirseaLiga(user1, nombre, clave);
+				VentanaPrincipal vP = new VentanaPrincipal(user, null);
 				vP.setVisible(true);
 				VentanaCrearLiga.this.setVisible(false);
 
 			}
 		});
 
-		textField_nombre = new JTextField();
-		contentPane.add(textField_nombre, "cell 1 2,growx");
-		textField_nombre.setColumns(10);
-
-		JLabel lblAadirLiga = new JLabel("A\u00F1adir liga:");
+		JLabel lblAadirLiga = new JLabel("UNIRSE A UNA LIGA:");
 		lblAadirLiga.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		contentPane.add(lblAadirLiga, "cell 1 3");
+		contentPane.add(lblAadirLiga, "cell 1 7");
 
 		lblNombre = new JLabel("Nombre:");
 		lblNombre.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		contentPane.add(lblNombre, "cell 0 4,alignx trailing");
+		contentPane.add(lblNombre, "cell 0 9,alignx trailing");
 
-		textField_1 = new JTextField();
-		contentPane.add(textField_1, "cell 1 4,growx");
-		textField_1.setColumns(10);
+		textField_nombre2 = new JTextField();
+		contentPane.add(textField_nombre2, "cell 1 9,growx");
+		textField_nombre2.setColumns(10);
 
 		lblClave = new JLabel("Clave:");
 		lblClave.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		contentPane.add(lblClave, "cell 0 5,alignx trailing");
+		contentPane.add(lblClave, "cell 0 11,alignx trailing");
 
-		textField_2 = new JTextField();
-		contentPane.add(textField_2, "cell 1 5,growx");
-		textField_2.setColumns(10);
-		btnAceptar.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		contentPane.add(btnAceptar, "flowx,cell 1 7");
-
+		textField_Password = new JTextField();
+		contentPane.add(textField_Password, "cell 1 11,growx");
+		textField_Password.setColumns(10);
+		btnAceptar2.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		
 		JButton btnNewButton = new JButton("Volver");
-		btnNewButton.setBackground(Color.BLUE);
+		btnNewButton.setForeground(Color.WHITE);
+		btnNewButton.setBackground(new Color(0, 102, 204));
 		btnNewButton.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -131,7 +151,7 @@ public class VentanaCrearLiga extends JFrame {
 				VentanaCrearLiga.this.setVisible(false);
 			}
 		});
-		contentPane.add(btnNewButton, "cell 1 7");
+		contentPane.add(btnNewButton, "cell 1 13");
 	}
 
-	}
+}

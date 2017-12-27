@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import datos.BD;
+import datos.Liga;
 import datos.ListaJugadores;
 import datos.Usuario;
 import javax.swing.JLabel;
@@ -32,7 +35,7 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel panel_Top;
 	private JLabel lblNombreUsuario;
 	private JPanel panel_User;
-	private JTextPane txtpnBienvenidos;
+
 	private JLabel lblLigaFantasyFlex;
 	private static final String[] menus = { "Mi Liga", "Mi Equipo", "Mercado" };
 	private PanelLigas panelLigas;
@@ -41,11 +44,13 @@ public class VentanaPrincipal extends JFrame {
 	private ArrayList<JPanel> listapaneles;
 	@SuppressWarnings("unused")
 	private ListaJugadores listajugadores;
+
 	private JPanel panel_1;
 	private JPanel panel_Jugador1;
 	private JLabel lblNombreUsuario1;
 	private JPanel panel_Pos1;
-	private JLabel lblPos1;
+
+	private JLabel lblNomUsuario;
 
 	/**
 	 * Launch the application.
@@ -79,7 +84,7 @@ public class VentanaPrincipal extends JFrame {
 		user = user1;
 		menuselected = menus[0];
 		listaMenu = new ArrayList<JButton>();
-		listajugadores = listaJugadores;
+		// listajugadores = listaJugadores;
 
 		/*
 		 * Creates Frame
@@ -170,10 +175,14 @@ public class VentanaPrincipal extends JFrame {
 		panel_Top.add(panel_User, "cell 0 0,grow");
 		panel_User.setLayout(new MigLayout("", "[90px][]", "[22px][][]"));
 
+		lblNomUsuario = new JLabel("Nombre:");
+		lblNomUsuario.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		panel_User.add(lblNomUsuario, "cell 0 1");
+
 		lblNombreUsuario = new JLabel("New label");
 		lblNombreUsuario.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		lblNombreUsuario.setText(user.getNombre());
-		panel_User.add(lblNombreUsuario, "cell 1 2,alignx left,aligny top");
+		panel_User.add(lblNombreUsuario, "cell 1 1,alignx left,aligny top");
 
 		panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
@@ -236,6 +245,9 @@ public class VentanaPrincipal extends JFrame {
 		 * 
 		 */
 		private static final long serialVersionUID = 5817000428864655052L;
+		private ArrayList<JLabel> lblPos;
+		private ArrayList<Usuario> listaUsuarios;
+		private JTextPane txtpnBienvenidos;
 
 		public PanelLigas() {
 
@@ -270,15 +282,16 @@ public class VentanaPrincipal extends JFrame {
 
 				btnMiEquipo.setEnabled(false);
 
-			} else { 		//FALTA
-
+			} else { // FALTA
+				listaUsuarios = BD.sacarUsuariosLiga(user);
+				lblPos = new ArrayList<>();
 				JPanel panel = new JPanel();
 				PanelLigas.this.add(panel, "cell 1 1, grow");
 				panel.setLayout(new MigLayout("", "[100px][200px,grow]", "[][][60px]"));
 				panel_Pos1 = new JPanel();
 				panel.add(panel_Pos1, "cell 0 2,alignx center,aligny center");
-				lblPos1 = new JLabel("1");
-				lblPos1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				JLabel lblPos1 = new JLabel("1");
+				lblPos1.setFont(new Font("Monospaced", Font.PLAIN, 22));
 				lblPos1.setHorizontalAlignment(SwingConstants.RIGHT);
 				panel_Pos1.add(lblPos1);
 
@@ -287,6 +300,7 @@ public class VentanaPrincipal extends JFrame {
 				panel_Jugador1.setLayout(new MigLayout("", "[56px][56px][56px][][][][][][][]", "[16px][]"));
 
 				lblNombreUsuario1 = new JLabel(user.getNombre());
+				lblNombreUsuario1.setFont(new Font("Monospaced", Font.PLAIN, 18));
 				panel_Jugador1.add(lblNombreUsuario1, "cell 0 0,alignx left,aligny top");
 
 				// lblValorUsuario1 = new JLabel(" Valor:"+user.getMiEquipo().getValorEquipo());
@@ -302,7 +316,7 @@ public class VentanaPrincipal extends JFrame {
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1605981510261014903L;				//FALTA
+		private static final long serialVersionUID = 1605981510261014903L; // FALTA
 		private JPanel panel_Portero;
 		private JPanel panel_Defensa;
 		private JPanel panel_Centro;
@@ -318,7 +332,6 @@ public class VentanaPrincipal extends JFrame {
 		private JButton btnDel2;
 		private JButton btnDel3;
 		private JButton btnDel1;
-
 
 		public PanelMiEquipo() {
 			PanelMiEquipo.this.setBackground(new Color(255, 255, 255));
@@ -387,5 +400,4 @@ public class VentanaPrincipal extends JFrame {
 		}
 	}
 
-	
 }

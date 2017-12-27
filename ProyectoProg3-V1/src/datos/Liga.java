@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class Liga {
 	
 	private String nombre;
-	private double clave;
+	private String clave;
 	private ArrayList<Usuario> listausuarios;
 
 	
 	
-	public Liga(String nombre, double clave) {
+	public Liga(String nombre, String clave) {
 		super();
 		this.nombre = nombre;
 		this.clave = clave;
@@ -25,11 +25,11 @@ public class Liga {
 		this.nombre = nombre;
 	}
 
-	public double getClave() {
+	public String getClave() {
 		return clave;
 	}
 
-	public void setClave(double clave) {
+	public void setClave(String clave) {
 		this.clave = clave;
 	}
 

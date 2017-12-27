@@ -25,11 +25,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 import java.awt.event.ActionEvent;
@@ -164,7 +159,7 @@ public class ventanaRegistro extends JFrame {
 					vP.setVisible(true);
 					ventanaRegistro.this.setVisible(false);
 				} else {
-					JOptionPane.showInternalMessageDialog(ventanaRegistro.this,
+					JOptionPane.showMessageDialog(ventanaRegistro.this,
 							"Usuario o Contraseña incorrecto. Intentelo de nuevo");
 				}
 

@@ -1,5 +1,6 @@
 package datos;
 
+import java.lang.Thread.State;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -109,30 +110,26 @@ public class BD {
 	 */
 
 	public static Usuario buscarUsuario(Usuario u) {
-		Usuario user = new Usuario();
+		Usuario user = null;
+		String nomliga = null;
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM usuarios");
-
 			while (rs.next()) {
-				if (rs.getString(1).equals(u.getNombre())) {
-					user.setNombre(rs.getString(1));
-					System.out.println(user.getNombre());
+				if (rs.getString(1).equals(u.getNombre()) && rs.getString(2).equals(u.getContraseña())) {
 
+					user = new Usuario();
+					user.setNombre(rs.getString(1));
+					user.setContraseña(rs.getString(2)); 
+					user.setEmail(rs.getString(3));
+					nomliga = rs.getString(4);
 				}
 			}
-
-			while (rs.next()) {
-				if (rs.getString(1).equals(u.getNombre())) {
-					user.setNombre(rs.getString(1));
-					System.out.println(user.getNombre());
-					if (rs.getString(2).equals(u.getContraseña())) {
-						user.setContraseña(u.getContraseña());
-						user.setEmail(u.getContraseña());
-					}
-				}
+			ResultSet rs2 = stmt.executeQuery("SELECT * FROM LIGAS WHERE nomliga='" + nomliga + "'");
+			while (rs2.next()) {
+				Liga liga = new Liga(rs2.getString(1), rs2.getString(2));
+				user.setLiga(liga);
 			}
-
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -151,26 +148,75 @@ public class BD {
 		return cal;
 	}
 
-	public static void nuevaLiga(Usuario u, String nombre, String clave) {
+	private static boolean buscarLiga(Liga liga) {
 		boolean encontrado = false;
 		try {
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM usuarios");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM ligas");
 			while (rs.next()) {
-				if (rs.getString(1).equals(u.getNombre())) {
-					if (rs.getString(2).equals(u.getContraseña())) {
+				if (rs.getString(1).equals(liga.getNombre())) {
+					if (rs.getString(2).equals(liga.getClave())) {
 						encontrado = true;
 					}
-				} else {
-
 				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		return encontrado;
 	}
 
+	public static void crearliga(Usuario u, String nombre) {
+		Liga liga1 = new Liga(nombre, null);
+		try {
+			Statement stmt = conn.createStatement();
+			if (!buscarLiga(liga1)) {
+				liga1.setClave(contrasenyaAleatoria());
+				stmt.executeUpdate("INSERT INTO LIGAS VALUES('" + liga1.getNombre() + "','" + liga1.getClave() + "')");
+				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre() + "' WHERE nombre ='"
+						+ u.getNombre() + "'");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void unirseaLiga(Usuario u, String nombre, String clave) {
+		Liga liga1 = new Liga(nombre, clave);
+		try {
+			Statement stmt = conn.createStatement();
+			if (buscarLiga(liga1)) {
+				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre() + "' WHERE nombre ='"
+						+ u.getNombre() + "'");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static ArrayList<Usuario> sacarUsuariosLiga(Usuario u) {
+		ArrayList<Usuario> lista = new ArrayList<>();
+		try {
+			Statement stmt=conn.createStatement();
+			ResultSet rs=stmt.executeQuery("SELECT * FROM USUARIOS WHERE NOMLIGA IN (SELECT NOMLIGA FROM USUARIOS WHERE NOMBRE='"+u.getNombre()+"')");
+			while(rs.next()) {
+				String nombre=rs.getString(1);
+				int puntos=rs.getInt(5);
+				int puntosJornada=rs.getInt(6);
+				lista.add(new Usuario(nombre,puntos,puntosJornada));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+		
+	}
 	public static void main(String[] args) {
 
 		try {
