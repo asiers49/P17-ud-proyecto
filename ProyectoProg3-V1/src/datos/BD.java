@@ -123,6 +123,7 @@ public class BD {
 					user.setContraseña(rs.getString(2)); 
 					user.setEmail(rs.getString(3));
 					nomliga = rs.getString(4);
+					user.setDinero(rs.getLong(7));
 				}
 			}
 			ResultSet rs2 = stmt.executeQuery("SELECT * FROM LIGAS WHERE nomliga='" + nomliga + "'");

@@ -37,7 +37,7 @@ public class VentanaPrincipal extends JFrame {
 	private JButton btnLiga;
 	private JButton btnMiEquipo;
 	private JPanel panel_Top;
-	private JLabel lblNombreUsuario;
+	private JLabel lblNomUsuario2;
 	private JPanel panel_User;
 
 	private JLabel lblLigaFantasyFlex;
@@ -55,6 +55,10 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel panel_Pos1;
 
 	private JLabel lblNomUsuario;
+	private JLabel lblNomLiga;
+	private JLabel lblDinero;
+	private JLabel lblNomLiga2;
+	private JLabel lblDinero2;
 
 	/**
 	 * Launch the application.
@@ -85,9 +89,9 @@ public class VentanaPrincipal extends JFrame {
 		 * Actualizamos/Inicializamos variables
 		 */
 
-		// user = user1;
-		user = new Usuario("prueba", "asdf", "fgg");
-		user.setLiga(new Liga("candy", "flex"));
+		user = user1;
+		// user = new Usuario("prueba", "asdf", "fgg");
+		// user.setLiga(new Liga("candy", "flex"));
 		menuselected = menus[0];
 		listaMenu = new ArrayList<JButton>();
 		// listajugadores = listaJugadores;
@@ -182,13 +186,29 @@ public class VentanaPrincipal extends JFrame {
 		panel_User.setLayout(new MigLayout("", "[90px][]", "[22px][][]"));
 
 		lblNomUsuario = new JLabel("Nombre:");
-		lblNomUsuario.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		panel_User.add(lblNomUsuario, "cell 0 1");
+		lblNomUsuario.setFont(new Font("Monospaced", Font.BOLD, 16));
+		panel_User.add(lblNomUsuario, "cell 0 0");
 
-		lblNombreUsuario = new JLabel("New label");
-		lblNombreUsuario.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		lblNombreUsuario.setText(user.getNombre());
-		panel_User.add(lblNombreUsuario, "cell 1 1,alignx left,aligny top");
+		lblNomUsuario2 = new JLabel("New label");
+		lblNomUsuario2.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		lblNomUsuario2.setText(user.getNombre());
+		panel_User.add(lblNomUsuario2, "cell 1 0,alignx left,aligny top");
+
+		lblNomLiga = new JLabel("Liga:");
+		lblNomLiga.setFont(new Font("Monospaced", Font.BOLD, 16));
+		panel_User.add(lblNomLiga, "cell 0 1");
+
+		lblNomLiga2 = new JLabel("" + user.getLiga().getNombre());
+		lblNomLiga2.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		panel_User.add(lblNomLiga2, "cell 1 1");
+
+		lblDinero = new JLabel("Dinero:");
+		lblDinero.setFont(new Font("Monospaced", Font.BOLD, 16));
+		panel_User.add(lblDinero, "cell 0 2");
+
+		lblDinero2 = new JLabel("" + user.getDinero());
+		lblDinero2.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		panel_User.add(lblDinero2, "cell 1 2");
 
 		panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
@@ -290,62 +310,49 @@ public class VentanaPrincipal extends JFrame {
 				btnMiEquipo.setEnabled(false);
 
 			} else { // FALTA
-				// listaUsuarios = BD.sacarUsuariosLiga(user);
-				listaUsuarios = new ArrayList<>();
-				user.setPuntos(51);
-				listaUsuarios.add(user);
-				listaUsuarios.add(new Usuario("ahfhla", 45, 21));
-				listaUsuarios.add(new Usuario("dgagag", 34, 23));
-				lblPos = new ArrayList<>();
-				panel_jugador = new ArrayList<>();
-				PanelLigas.this.setLayout(new MigLayout("", "[50px][550px][grow]", "[][][][][]"));
-				// PanelLigas.this.add(panel, "cell 1 1, grow");
-
-				// panel.add(panel_Pos1, "cell 0 2,alignx center,aligny center");
-				// JLabel lblPos1 = new JLabel("1");
-				// lblPos1.setFont(new Font("Monospaced", Font.PLAIN, 22));
-				// lblPos1.setHorizontalAlignment(SwingConstants.RIGHT);
-
-				//
-				// panel_Jugador1 = new JPanel();
-				// panel.add(panel_Jugador1, "cell 1 2,grow");
-				// panel_Jugador1.setLayout(new MigLayout("",
-				// "[56px][56px][56px][][][][][][][]", "[16px][]"));
-				//
-				// lblNombreUsuario1 = new JLabel(user.getNombre());
-				// lblNombreUsuario1.setFont(new Font("Monospaced", Font.PLAIN, 18));
-				// panel_Jugador1.add(lblNombreUsuario1, "cell 0 0,alignx left,aligny top");
-
-				Collections.sort(listaUsuarios, new Comparator<Usuario>(){
-					    public int compare(Usuario u1, Usuario u2) {
-					    	Integer i1=new Integer(u1.getPuntos());
-					    	Integer i2=new Integer(u2.getPuntos());
-					        return i2.compareTo(i1);
-					    }
-					});
-					for (int i = 0; i < listaUsuarios.size(); i++) {
+				listaUsuarios = BD.sacarUsuariosLiga(user);
+				// listaUsuarios = new ArrayList<>();
+				// user.setPuntos(51);
+				// listaUsuarios.add(user);
+				// listaUsuarios.add(new Usuario("ahfhla", 45, 21));
+				// listaUsuarios.add(new Usuario("dgagag", 34, 23));
+		
+				PanelLigas.this.setLayout(new MigLayout("", "[50px][550px][grow]", "[65px][][][][]"));
+				JPanel paneltitulo=new JPanel();
+				paneltitulo.setLayout(new MigLayout());
+				PanelLigas.this.add(paneltitulo, "cell 1 1");
+				JLabel lbltitulo=new JLabel("LIGA "+user.getLiga().getNombre());
+				lbltitulo.setFont(new Font("Monospaced", Font.BOLD, 24));
+				paneltitulo.add(lbltitulo);
+				Collections.sort(listaUsuarios, new Comparator<Usuario>() {
+					public int compare(Usuario u1, Usuario u2) {
+						Integer i1 = new Integer(u1.getPuntos());
+						Integer i2 = new Integer(u2.getPuntos());
+						return i2.compareTo(i1);
+					}
+				});
+				for (int i = 0; i < listaUsuarios.size(); i++) {
 					JPanel panel1 = new JPanel();
 					panel1.setLayout(new MigLayout("", "[100px][400px]", "[70px]"));
-					PanelLigas.this.add(panel1, "cell  1 " + (i + 1) + " ");
+					PanelLigas.this.add(panel1, "cell  1 " + (i + 2) + " ");
 					JPanel panel_Jugador = new JPanel();
-					panel1.add(panel_Jugador, "cell 1 0");
+					panel1.add(panel_Jugador, "cell 1 0, alignx center, aligny center");
 					panel_Jugador.setLayout(new MigLayout("", "[50px][250px][50px][100px]", "[70px]"));
 					JLabel labelnom = new JLabel(listaUsuarios.get(i).getNombre());
 					labelnom.setFont(new Font("Monospaced", Font.PLAIN, 18));
 					panel_Jugador.add(labelnom, "cell 1 0,alignx left, aligny center");
-					JLabel labelpuntos=new JLabel("Puntos Totales: "+listaUsuarios.get(i).getPuntos());
+					JLabel labelpuntos = new JLabel("Puntos Totales: " + listaUsuarios.get(i).getPuntos());
 					labelpuntos.setFont(new Font("Monospaced", Font.PLAIN, 18));
-					panel_Jugador.add(labelpuntos,"cell 3 0, grow");
+					panel_Jugador.add(labelpuntos, "cell 3 0, grow");
 					JPanel panelpos = new JPanel();
-					panelpos.setLayout(new MigLayout("","[50px]","[70px]"));
-					JLabel lblPos1 = new JLabel("" + (i + 1)+")");
+					panelpos.setLayout(new MigLayout("", "[50px]", "[70px]"));
+					JLabel lblPos1 = new JLabel("" + (i + 1) + ")");
 					lblPos1.setFont(new Font("Monospaced", Font.PLAIN, 22));
 					lblPos1.setHorizontalAlignment(SwingConstants.RIGHT);
 					panelpos.add(lblPos1, "cell 0 0,alignx left, aligny center");
 					panel1.add(panelpos, "cell 0 0,alignx left,aligny center");
 				}
 
-				
 			}
 
 			contentPane.add(PanelLigas.this, BorderLayout.CENTER);
