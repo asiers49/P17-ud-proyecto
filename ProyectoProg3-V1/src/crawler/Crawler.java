@@ -5,9 +5,16 @@ import java.awt.Color;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.swing.JOptionPane;
 
 //Imports de librería externa  -  https://sourceforge.net/projects/htmlparser/
 import org.htmlparser.Node;
@@ -27,6 +34,7 @@ public class Crawler {
 	private static int n;
 	private static boolean actualizar;
 	private static LinkedList<Tag> pilaTags;
+	public static Crawler c;
 
 	public static boolean isActualizar() {
 		return actualizar;
@@ -38,6 +46,8 @@ public class Crawler {
 
 	public static void main(String[] args) {
 
+		Timer timer = new Timer();
+		timer.schedule(timerTask, 0, 1000*86400000); // timer se ejecuta cada dia
 		// Analisis de la web de comuniazo. Poner aquí la URL con la que trabajar:
 
 		// String urlAAnalizar2 = "http://www.comuniazo.com/comunio/jugadores";
@@ -57,6 +67,7 @@ public class Crawler {
 
 	public Crawler() {
 		p = new ProcesadoLaLiga();
+		
 	}
 
 	// procesado de comuniazo
@@ -252,6 +263,9 @@ public class Crawler {
 			e.printStackTrace();
 		}
 		pilaTags.clear();
+		//actualizacion terminada
+        JOptionPane.showMessageDialog(null, "Actualización terminada");
+
 	}
 
 	private static String quitaCR(String s) {
@@ -435,4 +449,17 @@ public class Crawler {
 	public void setEquipos(ArrayList<String> equipos) {
 		Equipos = equipos;
 	}
+	
+	 static TimerTask timerTask = new TimerTask() 
+     { 
+     public void run(){ 
+    	 JOptionPane.showMessageDialog(null, "Actualizando BD...");
+        	 c = new Crawler();
+        	
+
+         } 
+     }; 
+      
+
+
 }
