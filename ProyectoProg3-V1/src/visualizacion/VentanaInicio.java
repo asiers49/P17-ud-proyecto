@@ -54,6 +54,8 @@ public class VentanaInicio extends JFrame {
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} finally {
+			BD.closeConnection();
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 457, 229);

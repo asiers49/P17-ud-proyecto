@@ -19,8 +19,9 @@ public class Jugador {
 		this.equipo = equipo;
 	}
 
-	public Jugador() {
-
+	public Jugador(int cod_jugador, int valor) {
+		this.cod_jugador=cod_jugador;
+		this.valor=valor;
 	}
 
 	public String getNombre() {

@@ -103,7 +103,11 @@ public class VentanaCrearLiga extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				String nombre=textField_nombre.getText();
+				JOptionPane.showMessageDialog(VentanaCrearLiga.this, "La liga se esta creando");
 				BD.crearliga(user1, nombre);
+				VentanaPrincipal vP = new VentanaPrincipal(user, null);
+				vP.setVisible(true);
+				VentanaCrearLiga.this.setVisible(false);
 			}
 		});
 

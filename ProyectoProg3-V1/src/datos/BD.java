@@ -28,7 +28,8 @@ public class BD {
 
 	/**
 	 * 
-	 * @param j
+	 * @param Jugador
+	 *            j
 	 */
 
 	public static void insertJugador(Jugador j) {
@@ -55,7 +56,7 @@ public class BD {
 	 * @param j
 	 */
 
-	public static void actualizarJugador(Jugador j) {
+	public static void actualizarJugador(Jugador j) { // FALTA
 		int cod = j.getCod_jugador();
 		String nombre = j.getNombre();
 		String equipo = j.getEquipo();
@@ -81,20 +82,22 @@ public class BD {
 	/*
 	 * 
 	 */
+
 	public static void nuevaLiga(Liga l) {
 		ArrayList<Integer> codigos = new ArrayList<>();
-		int i=0;
+		int i = 0;
 		try {
-			Statement stmt=conn.createStatement();
-			ResultSet rs=stmt.executeQuery("SELECT cod_jugador FROM JUGADOR");
-			while(rs.next()) {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT cod_jugador FROM JUGADOR");
+			while (rs.next()) {
 				codigos.add(rs.getInt(1));
-				System.out.println("jugador sacado "+(i+1));
+				System.out.println("jugador sacado " + (i + 1));
 				i++;
 			}
-			for (int h=0;h<codigos.size();h++) {
-				stmt.executeUpdate("INSERT INTO RELACION (codjugador, nomliga) VALUES ("+codigos.get(h)+", '"+l.getNombre()+"')");
-				System.out.println("Jugador insertado "+h);
+			for (int h = 0; h < codigos.size(); h++) {
+				stmt.executeUpdate("INSERT INTO RELACION (codjugador, nomliga) VALUES (" + codigos.get(h) + ", '"
+						+ l.getNombre() + "')");
+				System.out.println("Jugador insertado " + h);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -136,7 +139,7 @@ public class BD {
 
 					user = new Usuario();
 					user.setNombre(rs.getString(1));
-					user.setContraseña(rs.getString(2)); 
+					user.setContraseña(rs.getString(2));
 					user.setEmail(rs.getString(3));
 					nomliga = rs.getString(4);
 					user.setDinero(rs.getLong(7));
@@ -199,7 +202,8 @@ public class BD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	nuevaLiga(liga1);
+		nuevaLiga(liga1);
+		crearEquipo(u, liga1);
 	}
 
 	public static void unirseaLiga(Usuario u, String nombre, String clave) {
@@ -215,24 +219,132 @@ public class BD {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static ArrayList<Usuario> sacarUsuariosLiga(Usuario u) {
 		ArrayList<Usuario> lista = new ArrayList<>();
 		try {
-			Statement stmt=conn.createStatement();
-			ResultSet rs=stmt.executeQuery("SELECT * FROM USUARIOS WHERE NOMLIGA IN (SELECT NOMLIGA FROM USUARIOS WHERE NOMBRE='"+u.getNombre()+"')");
-			while(rs.next()) {
-				String nombre=rs.getString(1);
-				int puntos=rs.getInt(5);
-				int puntosJornada=rs.getInt(6);
-				lista.add(new Usuario(nombre,puntos,puntosJornada));
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt
+					.executeQuery("SELECT * FROM USUARIOS WHERE NOMLIGA IN (SELECT NOMLIGA FROM USUARIOS WHERE NOMBRE='"
+							+ u.getNombre() + "')");
+			while (rs.next()) {
+				String nombre = rs.getString(1);
+				int puntos = rs.getInt(5);
+				int puntosJornada = rs.getInt(6);
+				lista.add(new Usuario(nombre, puntos, puntosJornada));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return lista;
+
+	}
+
+	private static void crearEquipo(Usuario u, Liga l) {
+		int valorequipoTotal = 0;
+		int valorequipo = 0;
+		boolean seguir = true;
+		ArrayList<Jugador> equipo = new ArrayList<>();
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			while (seguir) {
+
+				ResultSet rs = stmt.executeQuery("SELECT * FROM PORTEROS ORDER BY RANDOM() LIMIT 2");
+				while (rs.next()) {
+					equipo.add(new Jugador(rs.getInt(1), rs.getInt(7)));
+					valorequipo = valorequipo + rs.getInt(7);
+				}
+				if (valorequipo > 550000 && valorequipo < 2500000) {
+					seguir = false;
+				} else {
+					equipo.removeAll(equipo);
+					valorequipo = 0;
+				}
+
+			}
+			valorequipoTotal = valorequipo;
+			seguir = true;
+			while (seguir) {
+
+				ResultSet rs = stmt.executeQuery("SELECT * FROM DEFENSAS ORDER BY RANDOM() LIMIT 7");
+				while (rs.next()) {
+					equipo.add(new Jugador(rs.getInt(1), rs.getInt(7)));
+					valorequipo = valorequipo + rs.getInt(7);
+				}
+				if (valorequipo > 3150000 && valorequipo < 12000000) {
+					seguir = false;
+				} else {
+					for (int k = equipo.size() - 1; k > 1; k--) {
+						equipo.remove(equipo.get(k));
+					}
+					valorequipo = valorequipoTotal;
+				}
+
+			}
+			valorequipoTotal = valorequipo;
+			seguir = true;
+			while (seguir) {
+
+				ResultSet rs = stmt.executeQuery("SELECT * FROM MEDIOS ORDER BY RANDOM() LIMIT 6");
+				while (rs.next()) {
+					equipo.add(new Jugador(rs.getInt(1), rs.getInt(7)));
+					valorequipo = valorequipo + rs.getInt(7);
+				}
+				if (valorequipo > 11150000 && valorequipo < 21000000) {
+					seguir = false;
+				} else {
+					for (int k = equipo.size() - 1; k > 8; k--) {
+						equipo.remove(equipo.get(k));
+					}
+					valorequipo = valorequipoTotal;
+
+				}
+
+			}
+			valorequipoTotal = valorequipo;
+			seguir = true;
+			while (seguir) {
+
+				ResultSet rs = stmt.executeQuery("SELECT * FROM DELANTEROS ORDER BY RANDOM() LIMIT 4");
+				while (rs.next()) {
+					equipo.add(new Jugador(rs.getInt(1), rs.getInt(7)));
+					valorequipo = valorequipo + rs.getInt(7);
+				}
+
+				if (valorequipo > 25150000 && valorequipo < 30000000) {
+					seguir = false;
+				} else {
+					for (int k = equipo.size() - 1; k > 14; k--) {
+						equipo.remove(equipo.get(k));
+					}
+
+					valorequipo = valorequipoTotal;
+				}
+			}
+			for (int i=0; i<equipo.size();i++) {
+			stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO='"+u.getNombre()+"' WHERE NOMLIGA='"+l.getNombre()+"' AND COD_JUGADOR ="+equipo.get(i).getCod_jugador());
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		valorequipoTotal = valorequipo;
+		System.out.println(equipo.size() + " " + valorequipoTotal);
 		
+		
+	
+
+	}
+	public static void closeConnection() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public static void main(String[] args) {
 
@@ -242,6 +354,6 @@ public class BD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		buscarUsuario(new Usuario("garrix", " pass", ""));
+
 	}
 }
