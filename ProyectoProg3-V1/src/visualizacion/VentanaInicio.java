@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import datos.BD;
-import datos.ListaJugadores;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -25,7 +24,6 @@ public class VentanaInicio extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private ListaJugadores listaJugadores;
 	
 
 	/**
@@ -48,15 +46,13 @@ public class VentanaInicio extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaInicio() {				//Al iniciar se actualiza la base de datos
-		listaJugadores=new ListaJugadores();
 		try {
 			BD.getConnection();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} finally {
-			BD.closeConnection();
 		}
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 457, 229);
 		contentPane = new JPanel();
@@ -92,7 +88,7 @@ public class VentanaInicio extends JFrame {
 		btnIniSesison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				VentanaInicio.this.setVisible(false);
-				ventanaRegistro vR=new ventanaRegistro(VentanaInicio.this, listaJugadores);
+				ventanaRegistro vR=new ventanaRegistro(VentanaInicio.this);
 				vR.setVisible(true);
 			}
 		});
@@ -107,7 +103,7 @@ public class VentanaInicio extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				VentanaInicio.this.setVisible(false);
-				VentanaCrearUsuario vCr=new VentanaCrearUsuario(VentanaInicio.this, listaJugadores);
+				VentanaCrearUsuario vCr=new VentanaCrearUsuario(VentanaInicio.this);
 				vCr.setVisible(true);
 				
 			}

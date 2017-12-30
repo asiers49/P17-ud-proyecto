@@ -4,14 +4,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import datos.BD;
 import datos.Liga;
 import datos.Usuario;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -66,8 +64,7 @@ public class VentanaCrearLiga extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaCrearLiga(VentanaPrincipal ventanaanterior, Usuario user1) { // Cuando se crea una liga se inicia la
-																				// base de datos.
-		user = new Usuario("prueba1", "af", "aew");
+		user=user1;																		// base de datos.
 		setFont(new Font("Monospaced", Font.PLAIN, 16));
 		setType(Type.UTILITY);
 		setTitle("Crear Liga");
@@ -105,7 +102,7 @@ public class VentanaCrearLiga extends JFrame {
 				String nombre=textField_nombre.getText();
 				JOptionPane.showMessageDialog(VentanaCrearLiga.this, "La liga se esta creando");
 				BD.crearliga(user1, nombre);
-				VentanaPrincipal vP = new VentanaPrincipal(user, null);
+				VentanaPrincipal vP = new VentanaPrincipal(user);
 				vP.setVisible(true);
 				VentanaCrearLiga.this.setVisible(false);
 			}
@@ -126,7 +123,7 @@ public class VentanaCrearLiga extends JFrame {
 				String nombre=textField_nombre2.getText();
 				String clave=textField_Password.getText();
 				BD.unirseaLiga(user1, nombre, clave);
-				VentanaPrincipal vP = new VentanaPrincipal(user, null);
+				VentanaPrincipal vP = new VentanaPrincipal(user);
 				vP.setVisible(true);
 				VentanaCrearLiga.this.setVisible(false);
 

@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import datos.BD;
-import datos.ListaJugadores;
 import datos.Usuario;
 import javax.swing.JLabel;
 import java.awt.Color;
@@ -41,8 +40,6 @@ public class VentanaPrincipal extends JFrame {
 	private PanelMiEquipo panelEquipo;
 	private JLabel lblEsteEsTu;
 	private ArrayList<JPanel> listapaneles;
-	@SuppressWarnings("unused")
-	private ListaJugadores listajugadores;
 	private JPanel panel_1;
 	private JLabel lblNomUsuario;
 	private JLabel lblNomLiga;
@@ -57,7 +54,7 @@ public class VentanaPrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaPrincipal frame = new VentanaPrincipal(null, null);
+					VentanaPrincipal frame = new VentanaPrincipal(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -73,7 +70,7 @@ public class VentanaPrincipal extends JFrame {
 	 *            The user that has logged in
 	 * @param listaJugadores
 	 */
-	public VentanaPrincipal(Usuario user1, ListaJugadores listaJugadores) {
+	public VentanaPrincipal(Usuario user1) {
 
 		/*
 		 * Actualizamos/Inicializamos variables

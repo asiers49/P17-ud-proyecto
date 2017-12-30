@@ -6,9 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import datos.BD;
-import datos.ListaJugadores;
 import datos.Usuario;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
@@ -44,7 +42,7 @@ public class VentanaCrearUsuario extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaCrearUsuario frame = new VentanaCrearUsuario(null, null);
+					VentanaCrearUsuario frame = new VentanaCrearUsuario(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,7 +55,7 @@ public class VentanaCrearUsuario extends JFrame {
 	 * Create the frame.
 	 * @param listaJugadores 
 	 */
-	public VentanaCrearUsuario(VentanaInicio ventanaanterior, ListaJugadores listaJugadores) {
+	public VentanaCrearUsuario(VentanaInicio ventanaanterior) {
 		
 		vI = ventanaanterior;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -138,7 +136,7 @@ public class VentanaCrearUsuario extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				VentanaPrincipal vP =new VentanaPrincipal(user, listaJugadores);
+				VentanaPrincipal vP =new VentanaPrincipal(user);
 				vP.setVisible(true);
 				VentanaCrearUsuario.this.setVisible(false);
 				}

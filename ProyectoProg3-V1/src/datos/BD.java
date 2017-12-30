@@ -324,7 +324,7 @@ public class BD {
 				}
 			}
 			for (int i=0; i<equipo.size();i++) {
-			stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO='"+u.getNombre()+"' WHERE NOMLIGA='"+l.getNombre()+"' AND COD_JUGADOR ="+equipo.get(i).getCod_jugador());
+			stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO='"+u.getNombre()+"' WHERE NOMLIGA='"+l.getNombre()+"' AND CODJUGADOR ="+equipo.get(i).getCod_jugador());
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

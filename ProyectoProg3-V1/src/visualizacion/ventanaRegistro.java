@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import datos.BD;
-import datos.ListaJugadores;
 import datos.Usuario;
 
 import javax.swing.JTextField;
@@ -46,7 +45,7 @@ public class ventanaRegistro extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ventanaRegistro frame = new ventanaRegistro(null, null);
+					ventanaRegistro frame = new ventanaRegistro(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +57,7 @@ public class ventanaRegistro extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ventanaRegistro(VentanaInicio ventanaanterior, ListaJugadores listaJugadores) {
+	public ventanaRegistro(VentanaInicio ventanaanterior) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 524, 303);
 		contentPane = new JPanel();
@@ -155,7 +154,7 @@ public class ventanaRegistro extends JFrame {
 				Usuario user = new Usuario(usuario, contraseña, "");
 				Usuario u = BD.buscarUsuario(user);
 				if (u != null) {
-					VentanaPrincipal vP = new VentanaPrincipal(u, listaJugadores);
+					VentanaPrincipal vP = new VentanaPrincipal(u);
 					vP.setVisible(true);
 					ventanaRegistro.this.setVisible(false);
 				} else {
