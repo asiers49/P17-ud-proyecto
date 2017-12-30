@@ -5,16 +5,12 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import datos.BD;
-import datos.Liga;
 import datos.ListaJugadores;
 import datos.Usuario;
 import javax.swing.JLabel;
@@ -39,7 +35,6 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel panel_Top;
 	private JLabel lblNomUsuario2;
 	private JPanel panel_User;
-
 	private JLabel lblLigaFantasyFlex;
 	private static final String[] menus = { "Mi Liga", "Mi Equipo", "Mercado" };
 	private PanelLigas panelLigas;
@@ -48,12 +43,7 @@ public class VentanaPrincipal extends JFrame {
 	private ArrayList<JPanel> listapaneles;
 	@SuppressWarnings("unused")
 	private ListaJugadores listajugadores;
-
 	private JPanel panel_1;
-	private JPanel panel_Jugador1;
-	private JLabel lblNombreUsuario1;
-	private JPanel panel_Pos1;
-
 	private JLabel lblNomUsuario;
 	private JLabel lblNomLiga;
 	private JLabel lblDinero;
