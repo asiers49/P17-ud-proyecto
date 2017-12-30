@@ -188,9 +188,8 @@ public class VentanaPrincipal extends JFrame {
 		lblNomLiga.setFont(new Font("Monospaced", Font.BOLD, 16));
 		panel_User.add(lblNomLiga, "cell 0 1");
 
-		lblNomLiga2 = new JLabel("" + user.getLiga().getNombre());
-		lblNomLiga2.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		panel_User.add(lblNomLiga2, "cell 1 1");
+		
+		
 
 		lblDinero = new JLabel("Dinero:");
 		lblDinero.setFont(new Font("Monospaced", Font.BOLD, 16));
@@ -342,9 +341,11 @@ public class VentanaPrincipal extends JFrame {
 					panelpos.add(lblPos1, "cell 0 0,alignx left, aligny center");
 					panel1.add(panelpos, "cell 0 0,alignx left,aligny center");
 				}
-
+				lblNomLiga2 = new JLabel("" + user.getLiga().getNombre());
+				lblNomLiga2.setFont(new Font("Monospaced", Font.PLAIN, 16));
+				panel_User.add(lblNomLiga2, "cell 1 1");
 			}
-
+			
 			contentPane.add(PanelLigas.this, BorderLayout.CENTER);
 		}
 	}

@@ -81,9 +81,25 @@ public class BD {
 	/*
 	 * 
 	 */
-	public static ArrayList<Jugador> obtenerJugadores() {
-
-		return null;
+	public static void nuevaLiga(Liga l) {
+		ArrayList<Integer> codigos = new ArrayList<>();
+		int i=0;
+		try {
+			Statement stmt=conn.createStatement();
+			ResultSet rs=stmt.executeQuery("SELECT cod_jugador FROM JUGADOR");
+			while(rs.next()) {
+				codigos.add(rs.getInt(1));
+				System.out.println("jugador sacado "+(i+1));
+				i++;
+			}
+			for (int h=0;h<codigos.size();h++) {
+				stmt.executeUpdate("INSERT INTO RELACION (codjugador, nomliga) VALUES ("+codigos.get(h)+", '"+l.getNombre()+"')");
+				System.out.println("Jugador insertado "+h);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -183,7 +199,7 @@ public class BD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	nuevaLiga(liga1);
 	}
 
 	public static void unirseaLiga(Usuario u, String nombre, String clave) {

@@ -97,6 +97,15 @@ public class VentanaCrearLiga extends JFrame {
 		btnAceptar1.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		btnAceptar1.setBackground(new Color(0, 102, 204));
 		contentPane.add(btnAceptar1, "cell 1 4");
+		btnAceptar1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String nombre=textField_nombre.getText();
+				BD.crearliga(user1, nombre);
+			}
+		});
 
 		separator = new JSeparator();
 		contentPane.add(separator, "cell 1 5");
