@@ -33,7 +33,6 @@ public class VentanaCrearLiga extends JFrame {
 	private VentanaPrincipal VP;
 	private JPanel contentPane;
 	private JTextField textField_nombre;
-	private String nLiga = "";
 	double clave;
 	private JTextField textField_nombre2;
 	private JTextField textField_Password;

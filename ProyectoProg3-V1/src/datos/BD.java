@@ -5,6 +5,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.swing.JOptionPane;
+
 public class BD {
 	private static final String URL = "ec2-184-73-206-155.compute-1.amazonaws.com:5432/dacbprtaga7o1f";
 	private static final String USERNAME = "nhbcdfgbdulfyd";
@@ -195,7 +197,7 @@ public class BD {
 			if (!buscarLiga(liga1)) {
 				liga1.setClave(contrasenyaAleatoria());
 				stmt.executeUpdate("INSERT INTO LIGAS VALUES('" + liga1.getNombre() + "','" + liga1.getClave() + "')");
-				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre() + "' WHERE nombre ='"
+				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre() + "' , dinero=15000000  WHERE nombre ='"
 						+ u.getNombre() + "'");
 			}
 		} catch (SQLException e) {
@@ -211,13 +213,16 @@ public class BD {
 		try {
 			Statement stmt = conn.createStatement();
 			if (buscarLiga(liga1)) {
-				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre() + "' WHERE nombre ='"
+				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre() + "', dinero=15000000 WHERE nombre ='"
 						+ u.getNombre() + "'");
+			}else {
+				JOptionPane.showMessageDialog(null, "La liga no es correcta");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		crearEquipo(u, liga1);
 	}
 
 	public static ArrayList<Usuario> sacarUsuariosLiga(Usuario u) {
@@ -337,6 +342,28 @@ public class BD {
 		
 	
 
+	}
+	
+	public static ArrayList<Jugador> sacarEquipo(Usuario u){
+		ArrayList<Jugador> equipo=new ArrayList<>();
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM JUGADOR WHERE COD_JUGADOR IN (SELECT CODJUGADOR FROM RELACION WHERE NOMUSUARIO='"+ u.getNombre() + "')");
+			while(rs.next()) {
+				equipo.add(new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7)));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return equipo;
+		
+	}
+	public static void hacerTitular(Usuario u, int Cod_Jugador) {
+		
 	}
 	public static void closeConnection() {
 		try {

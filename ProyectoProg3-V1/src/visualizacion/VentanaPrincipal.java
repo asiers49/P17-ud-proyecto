@@ -10,42 +10,51 @@ import java.util.Comparator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.TabbedPaneUI;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
+
 import datos.BD;
+import datos.Jugador;
 import datos.Usuario;
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import net.miginfocom.swing.MigLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Rectangle;
+
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.JTextPane;
 import java.awt.FlowLayout;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JTabbedPane;
 
 public class VentanaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 4429640112774618601L;
 	private JPanel contentPane;
 	private Usuario user;
-	private static String menuselected;
-	private ArrayList<JButton> listaMenu;
-	private JButton btnLiga;
-	private JButton btnMiEquipo;
 	private JPanel panel_Top;
 	private JLabel lblNomUsuario2;
 	private JPanel panel_User;
 	private JLabel lblLigaFantasyFlex;
-	private static final String[] menus = { "Mi Liga", "Mi Equipo", "Mercado" };
-	private PanelLigas panelLigas;
-	private PanelMiEquipo panelEquipo;
 	private JLabel lblEsteEsTu;
-	private ArrayList<JPanel> listapaneles;
+	private ArrayList<Jugador> equipo;
 	private JPanel panel_1;
 	private JLabel lblNomUsuario;
 	private JLabel lblNomLiga;
 	private JLabel lblDinero;
 	private JLabel lblNomLiga2;
 	private JLabel lblDinero2;
+	private JTabbedPane tabbedPane;
+	private JPanel panel;
 
 	/**
 	 * Launch the application.
@@ -72,16 +81,11 @@ public class VentanaPrincipal extends JFrame {
 	 */
 	public VentanaPrincipal(Usuario user1) {
 
-		/*
+		/**
 		 * Actualizamos/Inicializamos variables
 		 */
 
 		user = user1;
-		// user = new Usuario("prueba", "asdf", "fgg");
-		// user.setLiga(new Liga("candy", "flex"));
-		menuselected = menus[0];
-		listaMenu = new ArrayList<JButton>();
-		// listajugadores = listaJugadores;
 
 		/*
 		 * Creates Frame
@@ -96,62 +100,9 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		/*
-		 * Panel_Menu que contiene los botones del Menu
-		 */
-
-		JPanel panel_Menu = new JPanel();
-		contentPane.add(panel_Menu, BorderLayout.WEST);
-		panel_Menu.setBorder(new EmptyBorder(0, 0, 0, 0));
-		panel_Menu.setBackground(new Color(0, 102, 204));
-		panel_Menu.setLayout(new MigLayout("", "[20px][160px]", "[70px][][][][][][][][]"));
-
-		/*
-		 * Boton Liga
-		 */
-
-		btnLiga = new JButton("Mi Liga");
-		btnLiga.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel_Menu.add(btnLiga, "cell 1 1");
-		btnLiga.setContentAreaFilled(false);
-		btnLiga.setBorder(BorderFactory.createEmptyBorder());
-		btnLiga.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				menuselected = menus[0];
-				refresh();
-
-			}
-		});
-
-		listaMenu.add(btnLiga);
-
-		/*
-		 * Boton Mi Equipo
-		 */
-
-		btnMiEquipo = new JButton("Mi Equipo");
-		btnMiEquipo.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel_Menu.add(btnMiEquipo, "cell 1 3");
-		btnMiEquipo.setContentAreaFilled(false);
-		btnMiEquipo.setBorder(BorderFactory.createEmptyBorder());
-		btnMiEquipo.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				menuselected = menus[1];
-				refresh();
-
-			}
-		});
-		listaMenu.add(btnMiEquipo);
-
-		/*
-		 * Panel Top incluye el titulo y la info del Usuario
-		 */
-
+		panel = new JPanel();
+		panel.setBackground(new Color(0, 102, 204));
+		contentPane.add(panel, BorderLayout.CENTER);
 		panel_Top = new JPanel();
 		panel_Top.setBorder(null);
 		panel_Top.setBackground(Color.LIGHT_GRAY);
@@ -185,9 +136,6 @@ public class VentanaPrincipal extends JFrame {
 		lblNomLiga.setFont(new Font("Monospaced", Font.BOLD, 16));
 		panel_User.add(lblNomLiga, "cell 0 1");
 
-		
-		
-
 		lblDinero = new JLabel("Dinero:");
 		lblDinero.setFont(new Font("Monospaced", Font.BOLD, 16));
 		panel_User.add(lblDinero, "cell 0 2");
@@ -195,60 +143,35 @@ public class VentanaPrincipal extends JFrame {
 		lblDinero2 = new JLabel("" + user.getDinero());
 		lblDinero2.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		panel_User.add(lblDinero2, "cell 1 2");
+		lblNomLiga2 = new JLabel();
+		lblNomLiga2.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		panel.setLayout(new BorderLayout(0, 0));
 
-		panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.CENTER);
+		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		panel.add(tabbedPane);
+		tabbedPane.setForeground(Color.WHITE);
+		tabbedPane.setBackground(new Color(0, 102, 204));
+		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		tabbedPane.setFont(new Font("Monospaced", Font.BOLD, 16));
+		tabbedPane.add("Mi Liga", new PanelLigas());
+		tabbedPane.add("Mi Equipo", new PanelMiEquipo());
+		tabbedPane.add("Mercado", new JPanel());
+		JLabel lab = new JLabel("Mi Liga");
+		lab.setPreferredSize(new Dimension(160, 40));
+		lab.setFont(new Font("Monospaced", Font.BOLD, 16));
+		lab.setForeground(new Color(255, 255, 255));
+		JLabel lab2 = new JLabel("Mi Equipo");
+		lab2.setPreferredSize(new Dimension(160, 40));
+		lab2.setFont(new Font("Monospaced", Font.BOLD, 16));
+		lab2.setForeground(new Color(255, 255, 255));
+		JLabel lab3 = new JLabel("Mercado");
+		lab3.setPreferredSize(new Dimension(160, 40));
+		lab3.setFont(new Font("Monospaced", Font.BOLD, 16));
+		lab3.setForeground(new Color(255, 255, 255));
+		tabbedPane.setTabComponentAt(0, lab);
+		tabbedPane.setTabComponentAt(1, lab2);
+		tabbedPane.setTabComponentAt(2, lab3);
 
-		/*
-		 * Panel Liga
-		 */
-
-		listapaneles = new ArrayList<>();
-		panelLigas = new PanelLigas();
-		listapaneles.add(panelLigas);
-		panelEquipo = new PanelMiEquipo();
-		listapaneles.add(panelEquipo);
-		refresh();
-
-	}
-
-	/**
-	 * Metodo que actualiza la pagina
-	 */
-
-	public void refresh() {
-		ArrayList<JButton> lista = new ArrayList<>();
-		lista = listaMenu;
-		mostrarPanel();
-		for (int i = 0; i < lista.size(); i++) {
-			JButton b = listaMenu.get(i);
-			if (menuselected.equals(b.getText())) {
-				b.setFont(new Font("Monospaced", Font.PLAIN, 22));
-				b.setForeground(new Color(255, 255, 255));
-			} else {
-				b.setFont(new Font("Monospaced", Font.PLAIN, 22));
-				b.setForeground(new Color(0, 0, 0));
-
-			}
-
-		}
-
-		listaMenu = lista;
-
-	}
-
-	public void mostrarPanel() {
-		for (int i = 0; i < listapaneles.size(); i++) {
-			listapaneles.get(i).setVisible(false);
-		}
-		if (menuselected.equals(menus[0])) {
-			panelLigas.setVisible(true);
-		} else if (menuselected.equals(menus[1])) {
-
-			panelEquipo.setVisible(true);
-		} else if (menuselected.equals(menus[2])) {
-
-		}
 	}
 
 	private class PanelLigas extends JPanel {
@@ -257,10 +180,8 @@ public class VentanaPrincipal extends JFrame {
 		 * 
 		 */
 		private static final long serialVersionUID = 5817000428864655052L;
-		private ArrayList<JLabel> lblPos;
 		private ArrayList<Usuario> listaUsuarios;
 		private JTextPane txtpnBienvenidos;
-		private ArrayList<JPanel> panel_jugador;
 
 		public PanelLigas() {
 
@@ -293,21 +214,13 @@ public class VentanaPrincipal extends JFrame {
 				});
 				PanelLigas.this.add(anadirLiga1, "cell 1 2,alignx center,aligny top");
 
-				btnMiEquipo.setEnabled(false);
-
 			} else { // FALTA
 				listaUsuarios = BD.sacarUsuariosLiga(user);
-				// listaUsuarios = new ArrayList<>();
-				// user.setPuntos(51);
-				// listaUsuarios.add(user);
-				// listaUsuarios.add(new Usuario("ahfhla", 45, 21));
-				// listaUsuarios.add(new Usuario("dgagag", 34, 23));
-		
 				PanelLigas.this.setLayout(new MigLayout("", "[50px][550px][grow]", "[65px][][][][]"));
-				JPanel paneltitulo=new JPanel();
+				JPanel paneltitulo = new JPanel();
 				paneltitulo.setLayout(new MigLayout());
 				PanelLigas.this.add(paneltitulo, "cell 1 1");
-				JLabel lbltitulo=new JLabel("LIGA "+user.getLiga().getNombre());
+				JLabel lbltitulo = new JLabel("LIGA " + user.getLiga().getNombre());
 				lbltitulo.setFont(new Font("Monospaced", Font.BOLD, 24));
 				paneltitulo.add(lbltitulo);
 				Collections.sort(listaUsuarios, new Comparator<Usuario>() {
@@ -338,12 +251,10 @@ public class VentanaPrincipal extends JFrame {
 					panelpos.add(lblPos1, "cell 0 0,alignx left, aligny center");
 					panel1.add(panelpos, "cell 0 0,alignx left,aligny center");
 				}
-				lblNomLiga2 = new JLabel("" + user.getLiga().getNombre());
-				lblNomLiga2.setFont(new Font("Monospaced", Font.PLAIN, 16));
+				lblNomLiga2.setText(user.getLiga().getNombre());
 				panel_User.add(lblNomLiga2, "cell 1 1");
 			}
-			
-			contentPane.add(PanelLigas.this, BorderLayout.CENTER);
+
 		}
 	}
 
@@ -373,66 +284,78 @@ public class VentanaPrincipal extends JFrame {
 			PanelMiEquipo.this.setBackground(new Color(255, 255, 255));
 			PanelMiEquipo.this
 					.setLayout(new MigLayout("", "[grow]", "[50px][100px][100px,grow][100px,grow][100px,grow]"));
-
+			equipo = BD.sacarEquipo(user);
 			lblEsteEsTu = new JLabel("Este es tu Equipo");
+			lblEsteEsTu.setFont(new Font("Monospaced", Font.PLAIN, 28));
 			PanelMiEquipo.this.add(lblEsteEsTu, "cell 0 0");
 
 			panel_Portero = new JPanel();
 			PanelMiEquipo.this.add(panel_Portero, "cell 0 1,alignx center,aligny center");
 			panel_Portero.setLayout(new BorderLayout(0, 0));
+			panel_Portero.setBackground(Color.WHITE);
 
 			btnPortero = new JButton("Portero");
 			btnPortero.setBackground(Color.WHITE);
 			panel_Portero.add(btnPortero, BorderLayout.CENTER);
+			btnPortero.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 
 			panel_Defensa = new JPanel();
 			PanelMiEquipo.this.add(panel_Defensa, "cell 0 2,alignx center,aligny center");
 			panel_Defensa.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			panel_Defensa.setBackground(Color.WHITE);
 
-			btnDef1 = new JButton("New button");
+			btnDef1 = new JButton("Def1");
 			btnDef1.setBackground(Color.WHITE);
 			panel_Defensa.add(btnDef1);
 
-			btnDef2 = new JButton("New button");
+			btnDef2 = new JButton("Def2");
 			btnDef2.setBackground(Color.WHITE);
 			panel_Defensa.add(btnDef2);
 
-			btnDef3 = new JButton("New button");
+			btnDef3 = new JButton("Def3");
 			btnDef3.setBackground(Color.WHITE);
 			panel_Defensa.add(btnDef3);
 
-			btnDef4 = new JButton("New button");
+			btnDef4 = new JButton("Def4");
 			btnDef4.setBackground(Color.WHITE);
 			panel_Defensa.add(btnDef4);
 
 			panel_Centro = new JPanel();
 			PanelMiEquipo.this.add(panel_Centro, "cell 0 3,growx,aligny center");
-
-			btnMed1 = new JButton("New button");
+			panel_Centro.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			panel_Centro.setBackground(Color.WHITE);
+			btnMed1 = new JButton("Med1");
 			btnMed1.setBackground(Color.WHITE);
 			panel_Centro.add(btnMed1);
 
-			btnMed2 = new JButton("New button");
+			btnMed2 = new JButton("Med2");
 			btnMed2.setBackground(Color.WHITE);
 			panel_Centro.add(btnMed2);
 
-			btnMed3 = new JButton("New button");
+			btnMed3 = new JButton("Med3");
 			btnMed3.setBackground(Color.WHITE);
 			panel_Centro.add(btnMed3);
 
 			panel_Delanteros = new JPanel();
 			PanelMiEquipo.this.add(panel_Delanteros, "cell 0 4,growx,aligny center");
-
-			btnDel1 = new JButton("New button");
+			panel_Delanteros.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			panel_Delanteros.setBackground(Color.WHITE);
+			btnDel1 = new JButton("Del1");
 			panel_Delanteros.add(btnDel1);
 
-			btnDel2 = new JButton("New button");
+			btnDel2 = new JButton("Del2");
 			panel_Delanteros.add(btnDel2);
 
-			btnDel3 = new JButton("New button");
+			btnDel3 = new JButton("Del3");
 			panel_Delanteros.add(btnDel3);
 
-			// contentPane.add(PanelMiEquipo.this, BorderLayout.CENTER);
 		}
 	}
 
