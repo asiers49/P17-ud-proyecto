@@ -437,7 +437,7 @@ public class Crawler {
 
 	public static void actualizarJugador(int k, String nombre1, String equipo1, String posicion1, int puntos1, int puntosJ,
 			int valor1) throws SQLException {
-		Jugador j = new Jugador(n, nombre1, equipo1, posicion1, puntos1, puntosJ, valor1);
+		Jugador j = new Jugador(n, nombre1, equipo1, posicion1, puntos1, puntosJ, valor1, false);
 		BD.actualizarJugador(j);
 		n++;
 	}

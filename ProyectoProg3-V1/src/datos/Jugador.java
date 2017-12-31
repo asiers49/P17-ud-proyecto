@@ -8,8 +8,9 @@ public class Jugador {
 	private int valor;
 	private String posicion;
 	private String equipo;
+	private boolean titular;
 
-	public Jugador(int n, String nombre, String equipo, String posicion, int puntos, int puntosJ, int valor) {
+	public Jugador(int n, String nombre, String equipo, String posicion, int puntos, int puntosJ, int valor, boolean titular) {
 		this.setCod_jugador(n);
 		this.nombre = nombre;
 		this.puntos = puntos;
@@ -78,6 +79,14 @@ public class Jugador {
 
 	public void setCod_jugador(int cod_jugador) {
 		this.cod_jugador = cod_jugador;
+	}
+
+	public boolean isTitular() {
+		return titular;
+	}
+
+	public void setTitular(boolean titular) {
+		this.titular = titular;
 	}
 
 }

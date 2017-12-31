@@ -197,8 +197,8 @@ public class BD {
 			if (!buscarLiga(liga1)) {
 				liga1.setClave(contrasenyaAleatoria());
 				stmt.executeUpdate("INSERT INTO LIGAS VALUES('" + liga1.getNombre() + "','" + liga1.getClave() + "')");
-				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre() + "' , dinero=15000000  WHERE nombre ='"
-						+ u.getNombre() + "'");
+				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre()
+						+ "' , dinero=15000000  WHERE nombre ='" + u.getNombre() + "'");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -213,9 +213,9 @@ public class BD {
 		try {
 			Statement stmt = conn.createStatement();
 			if (buscarLiga(liga1)) {
-				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre() + "', dinero=15000000 WHERE nombre ='"
-						+ u.getNombre() + "'");
-			}else {
+				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre()
+						+ "', dinero=15000000 WHERE nombre ='" + u.getNombre() + "'");
+			} else {
 				JOptionPane.showMessageDialog(null, "La liga no es correcta");
 			}
 		} catch (SQLException e) {
@@ -328,8 +328,9 @@ public class BD {
 					valorequipo = valorequipoTotal;
 				}
 			}
-			for (int i=0; i<equipo.size();i++) {
-			stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO='"+u.getNombre()+"' WHERE NOMLIGA='"+l.getNombre()+"' AND CODJUGADOR ="+equipo.get(i).getCod_jugador());
+			for (int i = 0; i < equipo.size(); i++) {
+				stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO='" + u.getNombre() + "' WHERE NOMLIGA='"
+						+ l.getNombre() + "' AND CODJUGADOR =" + equipo.get(i).getCod_jugador());
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -338,19 +339,16 @@ public class BD {
 
 		valorequipoTotal = valorequipo;
 		System.out.println(equipo.size() + " " + valorequipoTotal);
-		
-		
-	
 
 	}
-	
+
 	public static ArrayList<Jugador> sacarEquipo(Usuario u){
 		ArrayList<Jugador> equipo=new ArrayList<>();
 		try {
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM JUGADOR WHERE COD_JUGADOR IN (SELECT CODJUGADOR FROM RELACION WHERE NOMUSUARIO='"+ u.getNombre() + "')");
+			ResultSet rs = stmt.executeQuery("SELECT  public.jugador.cod_jugador, public.jugador.nomjugador, public.jugador.equipo, public.jugador.posicion, public.jugador.puntos, public.jugador.puntosjornada, public.jugador.valor, public.relacion.titular FROM public.jugador INNER JOIN public.relacion ON (public.jugador.cod_jugador = public.relacion.codjugador)	WHERE public.relacion.nomusuario = '"+u.getNombre()+"'");
 			while(rs.next()) {
-				equipo.add(new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7)));
+				equipo.add(new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getBoolean(8)));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -362,9 +360,11 @@ public class BD {
 		return equipo;
 		
 	}
+
 	public static void hacerTitular(Usuario u, int Cod_Jugador) {
-		
+
 	}
+
 	public static void closeConnection() {
 		try {
 			conn.close();
@@ -373,6 +373,7 @@ public class BD {
 			e.printStackTrace();
 		}
 	}
+
 	public static void main(String[] args) {
 
 		try {

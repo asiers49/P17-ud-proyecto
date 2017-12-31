@@ -302,7 +302,9 @@ public class VentanaPrincipal extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					
+					ventanaSeleccionarJugadores vSJ=new ventanaSeleccionarJugadores(equipo, "Portero");
+					System.out.println(equipo.get(5).isTitular());
+					vSJ.setVisible(true);
 				}
 			});
 
