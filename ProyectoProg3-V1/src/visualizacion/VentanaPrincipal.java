@@ -278,6 +278,7 @@ public class VentanaPrincipal extends JFrame {
 					panel_Portero.add(btn);
 				} else if (i < 5) {
 					btn.setText("Defensa " + (i));
+					
 					panel_Defensa.add(btn);
 				} else if (i < 8) {
 					btn.setText("Medio " + (i - 4));
@@ -295,7 +296,7 @@ public class VentanaPrincipal extends JFrame {
 							text = "Portero";
 						} else if (btn.getText().contains("Defensa")) {
 							text = "Defensa";
-						} else if (btn.getText().contains("Medio")) {
+						} else if (btn.getText().contains("Mediocentro")) {
 							text = "Medio";
 						} else if (btn.getText().contains("Delantero")) {
 							text = "Delantero";
