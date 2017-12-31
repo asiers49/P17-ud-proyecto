@@ -268,17 +268,18 @@ public class VentanaPrincipal extends JFrame {
 		private JPanel panel_Defensa;
 		private JPanel panel_Centro;
 		private JPanel panel_Delanteros;
+		private ArrayList<JButton> listaBotones;
 		private JButton btnPortero;
-		private JButton btnDef1;
-		private JButton btnDef4;
-		private JButton btnDef3;
-		private JButton btnDef2;
-		private JButton btnMed3;
-		private JButton btnMed2;
-		private JButton btnMed1;
-		private JButton btnDel2;
-		private JButton btnDel3;
-		private JButton btnDel1;
+//		private JButton btnDef1;
+//		private JButton btnDef4;
+//		private JButton btnDef3;
+//		private JButton btnDef2;
+//		private JButton btnMed3;
+//		private JButton btnMed2;
+//		private JButton btnMed1;
+//		private JButton btnDel2;
+//		private JButton btnDel3;
+//		private JButton btnDel1;
 
 		public PanelMiEquipo() {
 			PanelMiEquipo.this.setBackground(new Color(255, 255, 255));
@@ -294,69 +295,96 @@ public class VentanaPrincipal extends JFrame {
 			panel_Portero.setLayout(new BorderLayout(0, 0));
 			panel_Portero.setBackground(Color.WHITE);
 
-			btnPortero = new JButton("Portero");
-			btnPortero.setBackground(Color.WHITE);
-			panel_Portero.add(btnPortero, BorderLayout.CENTER);
-			btnPortero.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					ventanaSeleccionarJugadores vSJ=new ventanaSeleccionarJugadores(equipo, "Portero");
-					System.out.println(equipo.get(5).isTitular());
-					vSJ.setVisible(true);
-				}
-			});
+		
+//			btnPortero.addActionListener(new ActionListener() {
+//				
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//			});
 
 			panel_Defensa = new JPanel();
 			PanelMiEquipo.this.add(panel_Defensa, "cell 0 2,alignx center,aligny center");
 			panel_Defensa.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			panel_Defensa.setBackground(Color.WHITE);
-
-			btnDef1 = new JButton("Def1");
-			btnDef1.setBackground(Color.WHITE);
-			panel_Defensa.add(btnDef1);
-
-			btnDef2 = new JButton("Def2");
-			btnDef2.setBackground(Color.WHITE);
-			panel_Defensa.add(btnDef2);
-
-			btnDef3 = new JButton("Def3");
-			btnDef3.setBackground(Color.WHITE);
-			panel_Defensa.add(btnDef3);
-
-			btnDef4 = new JButton("Def4");
-			btnDef4.setBackground(Color.WHITE);
-			panel_Defensa.add(btnDef4);
-
 			panel_Centro = new JPanel();
 			PanelMiEquipo.this.add(panel_Centro, "cell 0 3,growx,aligny center");
 			panel_Centro.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			panel_Centro.setBackground(Color.WHITE);
-			btnMed1 = new JButton("Med1");
-			btnMed1.setBackground(Color.WHITE);
-			panel_Centro.add(btnMed1);
-
-			btnMed2 = new JButton("Med2");
-			btnMed2.setBackground(Color.WHITE);
-			panel_Centro.add(btnMed2);
-
-			btnMed3 = new JButton("Med3");
-			btnMed3.setBackground(Color.WHITE);
-			panel_Centro.add(btnMed3);
-
 			panel_Delanteros = new JPanel();
 			PanelMiEquipo.this.add(panel_Delanteros, "cell 0 4,growx,aligny center");
 			panel_Delanteros.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			panel_Delanteros.setBackground(Color.WHITE);
-			btnDel1 = new JButton("Del1");
-			panel_Delanteros.add(btnDel1);
+			
+			for (int i=0; i<11; i++) {
+				JButton btn = new JButton("");
+				String text = "";
+				btn.setBackground(Color.WHITE);
+				if (i==0) {
+					text="Portero";
+					panel_Portero.add(btn);
+				}else if(i<5) {
+					text="Defensa "+(i);
+					panel_Defensa.add(btn);
+				}else if (i<8) {
+					text="Medio "+(i-4);
+					panel_Centro.add(btn);
+				}else if (i<11) {
+					text="Delantero "+(i-7);
+					panel_Delanteros.add(btn);
+				}
+				
+				btn.setText(text);
+				btn.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						ventanaSeleccionarJugadores vSJ=new ventanaSeleccionarJugadores(equipo, btn.getText(), user);
+						System.out.println(equipo.get(5).isTitular());
+						vSJ.setVisible(true);
+					}
+				});
+			
+			}
+			
 
-			btnDel2 = new JButton("Del2");
-			panel_Delanteros.add(btnDel2);
+//			btnDef2 = new JButton("Def2");
+//			btnDef2.setBackground(Color.WHITE);
+//			
+//
+//			btnDef3 = new JButton("Def3");
+//			btnDef3.setBackground(Color.WHITE);
+//			panel_Defensa.add(btnDef3);
+//
+//			btnDef4 = new JButton("Def4");
+//			btnDef4.setBackground(Color.WHITE);
+//			panel_Defensa.add(btnDef4);
 
-			btnDel3 = new JButton("Del3");
-			panel_Delanteros.add(btnDel3);
+			
+//			btnMed1 = new JButton("Med1");
+//			btnMed1.setBackground(Color.WHITE);
+//			panel_Centro.add(btnMed1);
+//
+//			btnMed2 = new JButton("Med2");
+//			btnMed2.setBackground(Color.WHITE);
+//			panel_Centro.add(btnMed2);
+//
+//			btnMed3 = new JButton("Med3");
+//			btnMed3.setBackground(Color.WHITE);
+//			panel_Centro.add(btnMed3);
+//
+//			
+//			btnDel1 = new JButton("Del1");
+//			panel_Delanteros.add(btnDel1);
+//
+//			btnDel2 = new JButton("Del2");
+//			panel_Delanteros.add(btnDel2);
+//
+//			btnDel3 = new JButton("Del3");
+//			panel_Delanteros.add(btnDel3);
 
 		}
 	}

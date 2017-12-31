@@ -362,7 +362,14 @@ public class BD {
 	}
 
 	public static void hacerTitular(Usuario u, int Cod_Jugador) {
-
+		try {
+			Statement stmt=conn.createStatement();
+			stmt.executeUpdate("UPDATE RELACION SET TITULAR=true WHERE NOMUSUARIO='"+u.getNombre()+"' AND CODJUGADOR="+Cod_Jugador);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static void closeConnection() {
