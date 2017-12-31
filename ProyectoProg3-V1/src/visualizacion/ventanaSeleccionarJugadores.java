@@ -37,7 +37,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	static ArrayList<Jugador> equipo;
+	ArrayList<Jugador> equipo=new ArrayList<>();
 	static String posicion;
 	static JPanel suplentes;
 	static JPanel titular;
@@ -51,7 +51,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ventanaSeleccionarJugadores frame = new ventanaSeleccionarJugadores(null, null, null);
+					ventanaSeleccionarJugadores frame = new ventanaSeleccionarJugadores(null, null, null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -63,7 +63,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ventanaSeleccionarJugadores(ArrayList<Jugador> listaequipo, String Posicion, Usuario user) {
+	public ventanaSeleccionarJugadores(ArrayList<Jugador> listaequipo, String Posicion, Usuario user, VentanaPrincipal vp) {
 		u=user;
 		equipo = listaequipo;
 		posicion = Posicion;
@@ -92,7 +92,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel.add(scrollPane, BorderLayout.CENTER);
 		titular = new JPanel();
-		titular.setLayout(new MigLayout("", "[150px][200px][90px,grow]", "[60px][]"));
+		titular.setLayout(new MigLayout("", "[200px][200px][90px,grow]", "[60px][]"));
 		panel.add(titular, BorderLayout.NORTH);
 		JButton btnVolver = new JButton("Volver");
 		contentPane.add(btnVolver, BorderLayout.SOUTH);
@@ -102,6 +102,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ventanaSeleccionarJugadores.this.dispose();
+				
 			}
 		});
 		refresh();
@@ -113,23 +114,33 @@ public class ventanaSeleccionarJugadores extends JFrame {
 		for (int i = 0; i < equipo.size(); i++) {
 			JLabel nombre = new JLabel();
 			nombre.setFont(new Font("Monospaced", Font.PLAIN, 18));
-			JButton cambiar = new JButton("Cambiar");
+			JButton cambiar = new JButton("Seleccionar");
+			cambiar.setBackground(Color.WHITE);
 			JLabel valor = new JLabel();
-			if (equipo.get(i).getPosicion().equals(posicion)) {
-				Jugador j = equipo.get(i);
+			JLabel puntos=new JLabel();
+			JLabel puntosJornada=new JLabel();
+			Jugador j = equipo.get(i);
+			System.out.println(posicion);
+			if (j.getPosicion().equals(posicion)) {
 				System.out.println(j.getNombre()+" "+j.isTitular());
 				nombre.setText(j.getNombre());
 				valor.setText("Valor: "+j.getValor());
+				puntos.setText("Puntos Totales: "+j.getPuntos());
+				puntosJornada.setText("Puntos Jornada: "+j.getPuntosJornada());
 				if (j.isTitular()) {
 					titular.add(nombre, "cell 0 0");
 					titular.add(valor, " cell 0 1");
+					titular.add(puntos, "cell 1 0");
+					titular.add(puntosJornada, "cell 1 1");
 					codigotitular=j.getCod_jugador();
 				} else {
 					JPanel panel1 = new JPanel();
-					panel1.setLayout(new MigLayout("", "[150px][200px][90px,grow]", "[60px][]"));
+					panel1.setLayout(new MigLayout("", "[200px][200px][90px]", "[60px][]"));
 					panel1.add(nombre, "cell 0 0");
 					panel1.add(cambiar, " cell 2 1");
 					panel1.add(valor, "cell 0 1");
+					panel1.add(puntos, "cell 1 0");
+					panel1.add(puntosJornada, "cell 1 1");
 					suplentes.add(panel1, "cell 1 " + i);
 					cambiar.addActionListener(new ActionListener() {
 
@@ -143,6 +154,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 									equipo.get(k).setTitular(true);
 								}else if (codigotitular==equipo.get(k).getCod_jugador()){
 									equipo.get(k).setTitular(false);
+									BD.hacerSuplente(u, equipo.get(k).getCod_jugador());
 									System.out.println(equipo.get(k).getNombre() + " suplente");
 								}
 								

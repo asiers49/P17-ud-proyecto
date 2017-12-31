@@ -18,6 +18,7 @@ public class Jugador {
 		this.valor = valor;
 		this.posicion = posicion;
 		this.equipo = equipo;
+		this.titular=titular;
 	}
 
 	public Jugador(int cod_jugador, int valor) {

@@ -348,7 +348,8 @@ public class BD {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT  public.jugador.cod_jugador, public.jugador.nomjugador, public.jugador.equipo, public.jugador.posicion, public.jugador.puntos, public.jugador.puntosjornada, public.jugador.valor, public.relacion.titular FROM public.jugador INNER JOIN public.relacion ON (public.jugador.cod_jugador = public.relacion.codjugador)	WHERE public.relacion.nomusuario = '"+u.getNombre()+"'");
 			while(rs.next()) {
-				equipo.add(new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getBoolean(8)));
+				Jugador j=new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getBoolean(8));
+				equipo.add(j);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -371,7 +372,16 @@ public class BD {
 		}
 		
 	}
-
+	public static void hacerSuplente(Usuario u, int Cod_Jugador) {
+		try {
+			Statement stmt=conn.createStatement();
+			stmt.executeUpdate("UPDATE RELACION SET TITULAR=false WHERE NOMUSUARIO='"+u.getNombre()+"' AND CODJUGADOR="+Cod_Jugador);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	public static void closeConnection() {
 		try {
 			conn.close();

@@ -10,30 +10,20 @@ import java.util.Comparator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.TabbedPaneUI;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
-
 import datos.BD;
 import datos.Jugador;
 import datos.Usuario;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Dimension;
-
 import net.miginfocom.swing.MigLayout;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Rectangle;
 
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.JTextPane;
 import java.awt.FlowLayout;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 
 public class VentanaPrincipal extends JFrame {
@@ -47,7 +37,6 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel lblLigaFantasyFlex;
 	private JLabel lblEsteEsTu;
 	private ArrayList<Jugador> equipo;
-	private JPanel panel_1;
 	private JLabel lblNomUsuario;
 	private JLabel lblNomLiga;
 	private JLabel lblDinero;
@@ -55,22 +44,6 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel lblDinero2;
 	private JTabbedPane tabbedPane;
 	private JPanel panel;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaPrincipal frame = new VentanaPrincipal(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -84,7 +57,7 @@ public class VentanaPrincipal extends JFrame {
 		/**
 		 * Actualizamos/Inicializamos variables
 		 */
-
+		equipo = new ArrayList<>();
 		user = user1;
 
 		/*
@@ -268,18 +241,7 @@ public class VentanaPrincipal extends JFrame {
 		private JPanel panel_Defensa;
 		private JPanel panel_Centro;
 		private JPanel panel_Delanteros;
-		private ArrayList<JButton> listaBotones;
-		private JButton btnPortero;
-//		private JButton btnDef1;
-//		private JButton btnDef4;
-//		private JButton btnDef3;
-//		private JButton btnDef2;
-//		private JButton btnMed3;
-//		private JButton btnMed2;
-//		private JButton btnMed1;
-//		private JButton btnDel2;
-//		private JButton btnDel3;
-//		private JButton btnDel1;
+		String text;
 
 		public PanelMiEquipo() {
 			PanelMiEquipo.this.setBackground(new Color(255, 255, 255));
@@ -294,17 +256,6 @@ public class VentanaPrincipal extends JFrame {
 			PanelMiEquipo.this.add(panel_Portero, "cell 0 1,alignx center,aligny center");
 			panel_Portero.setLayout(new BorderLayout(0, 0));
 			panel_Portero.setBackground(Color.WHITE);
-
-		
-//			btnPortero.addActionListener(new ActionListener() {
-//				
-//				@Override
-//				public void actionPerformed(ActionEvent e) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//			});
-
 			panel_Defensa = new JPanel();
 			PanelMiEquipo.this.add(panel_Defensa, "cell 0 2,alignx center,aligny center");
 			panel_Defensa.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -317,74 +268,46 @@ public class VentanaPrincipal extends JFrame {
 			PanelMiEquipo.this.add(panel_Delanteros, "cell 0 4,growx,aligny center");
 			panel_Delanteros.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			panel_Delanteros.setBackground(Color.WHITE);
-			
-			for (int i=0; i<11; i++) {
+
+			for (int i = 0; i < 11; i++) {
 				JButton btn = new JButton("");
-				String text = "";
+				text = "";
 				btn.setBackground(Color.WHITE);
-				if (i==0) {
-					text="Portero";
+				if (i == 0) {
+					btn.setText("Portero");
 					panel_Portero.add(btn);
-				}else if(i<5) {
-					text="Defensa "+(i);
+				} else if (i < 5) {
+					btn.setText("Defensa " + (i));
 					panel_Defensa.add(btn);
-				}else if (i<8) {
-					text="Medio "+(i-4);
+				} else if (i < 8) {
+					btn.setText("Medio " + (i - 4));
 					panel_Centro.add(btn);
-				}else if (i<11) {
-					text="Delantero "+(i-7);
+				} else if (i < 11) {
+					btn.setText("Delantero " + (i - 7));
 					panel_Delanteros.add(btn);
 				}
-				
-				btn.setText(text);
 				btn.addActionListener(new ActionListener() {
-					
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						ventanaSeleccionarJugadores vSJ=new ventanaSeleccionarJugadores(equipo, btn.getText(), user);
-						System.out.println(equipo.get(5).isTitular());
+						if (btn.getText().contains("Portero")) {
+							text = "Portero";
+						} else if (btn.getText().contains("Defensa")) {
+							text = "Defensa";
+						} else if (btn.getText().contains("Medio")) {
+							text = "Medio";
+						} else if (btn.getText().contains("Delantero")) {
+							text = "Delantero";
+						}
+						ventanaSeleccionarJugadores vSJ = new ventanaSeleccionarJugadores(equipo, text, user,
+								VentanaPrincipal.this);
 						vSJ.setVisible(true);
+
 					}
 				});
-			
+
 			}
-			
-
-//			btnDef2 = new JButton("Def2");
-//			btnDef2.setBackground(Color.WHITE);
-//			
-//
-//			btnDef3 = new JButton("Def3");
-//			btnDef3.setBackground(Color.WHITE);
-//			panel_Defensa.add(btnDef3);
-//
-//			btnDef4 = new JButton("Def4");
-//			btnDef4.setBackground(Color.WHITE);
-//			panel_Defensa.add(btnDef4);
-
-			
-//			btnMed1 = new JButton("Med1");
-//			btnMed1.setBackground(Color.WHITE);
-//			panel_Centro.add(btnMed1);
-//
-//			btnMed2 = new JButton("Med2");
-//			btnMed2.setBackground(Color.WHITE);
-//			panel_Centro.add(btnMed2);
-//
-//			btnMed3 = new JButton("Med3");
-//			btnMed3.setBackground(Color.WHITE);
-//			panel_Centro.add(btnMed3);
-//
-//			
-//			btnDel1 = new JButton("Del1");
-//			panel_Delanteros.add(btnDel1);
-//
-//			btnDel2 = new JButton("Del2");
-//			panel_Delanteros.add(btnDel2);
-//
-//			btnDel3 = new JButton("Del3");
-//			panel_Delanteros.add(btnDel3);
 
 		}
 	}
