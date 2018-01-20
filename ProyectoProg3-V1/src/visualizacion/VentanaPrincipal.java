@@ -36,7 +36,7 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel lblNomUsuario2;
 	private JPanel panel_User;
 	private JLabel lblLigaFantasyFlex;
-	private JLabel lblEsteEsTu;
+	
 	private ArrayList<Jugador> equipo;
 	private JLabel lblNomUsuario;
 	private JLabel lblNomLiga;
@@ -130,7 +130,7 @@ public class VentanaPrincipal extends JFrame {
 		tabbedPane.setFont(new Font("Monospaced", Font.BOLD, 16));
 		tabbedPane.add("Mi Liga", new PanelLigas());
 		tabbedPane.add("Mi Equipo", new PanelMiEquipo());
-		tabbedPane.add("Mercado", new JPanel());
+		tabbedPane.add("Mercado", new PanelMercado());
 		JLabel lab = new JLabel("Mi Liga");
 		lab.setPreferredSize(new Dimension(160, 40));
 		lab.setFont(new Font("Monospaced", Font.BOLD, 16));
@@ -250,6 +250,7 @@ public class VentanaPrincipal extends JFrame {
 		private JPanel panel_Defensa;
 		private JPanel panel_Centro;
 		private JPanel panel_Delanteros;
+		private JLabel lblEsteEsTu;
 
 		public PanelMiEquipo() {
 			PanelMiEquipo.this.setBackground(new Color(255, 255, 255));
@@ -349,6 +350,15 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private class PanelMercado extends JPanel {
-
+		
+		private ArrayList<Jugador> jugadoresmercado;
+		
+		public PanelMercado() {
+			jugadoresmercado=BD.sacarJugadoresMercado(user.getLiga());
+			PanelMercado.this.setBackground(new Color(255, 255, 255));
+			PanelMercado.this
+					.setLayout(new MigLayout("", "[100px][400px][grow]", "[50px][100px]"));
+			
+		}
 	}
 }

@@ -388,6 +388,34 @@ public class BD {
 		}
 
 	}
+	
+	public static ArrayList<Jugador> sacarJugadoresMercado (Liga l) {
+		ArrayList<Jugador> listamercado=new ArrayList<>();
+		
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT * FROM public.jugador WHERE cod_jugador in (Select cod_jugador from relacion WHERE nomusuario IS NULL AND nomliga='"+l.getNombre()+"') ORDER BY RANDOM() LIMIT 10");
+			while (rs.next()) {
+				Jugador j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5),
+						rs.getInt(6), rs.getInt(7), false);
+				listamercado.add(j);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return listamercado;
+	}
+	
+	public static void comprarJugador(Usuario u, Jugador j) {
+		
+	}
+	
+	public static void venderJugador(Usuario u, Jugador j) {
+		
+	}
 
 	public static void cerrarConnection() {
 		if (conn != null) {

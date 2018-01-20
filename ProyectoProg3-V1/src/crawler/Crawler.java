@@ -23,7 +23,7 @@ import org.htmlparser.lexer.Lexer;
 import org.htmlparser.lexer.Page;
 import org.htmlparser.nodes.TextNode;
 
-import crawler.VentanaColorConsola;
+
 import datos.Jugador;
 import datos.BD;
 
@@ -194,83 +194,6 @@ public class Crawler {
 		}
 	}
 
-	
-
-	/**
-	 * Procesa una web y muestra en una ventana de consola coloreada sus contenidos
-	 * etiquetados
-	 * 
-	 * @param dirWeb
-	 */
-	public static void revisaWeb(String dirWeb) {
-		URL url;
-		pilaTags = new LinkedList<>();
-		try {
-			url = new URL(dirWeb);
-			URLConnection connection = url.openConnection();
-			connection.addRequestProperty("User-Agent", "Mozilla/4.0"); // Hace pensar a la web que somos un navegador
-			Lexer mLexer = new Lexer(new Page(connection));
-			Node n = mLexer.nextNode();
-			while (n != null) {
-				if (n instanceof Tag) {
-					Tag t = (Tag) n;
-					if (t.isEndTag()) {
-						if (pilaTags.get(0).getTagName().equals(t.getTagName())) { // Tag de cierre
-							pilaTags.pop();
-							if (MOSTRAR_TODOS_LOS_TAGS) {
-								VentanaColorConsola.println(String.format("%" + (pilaTags.size() * 2 + 1) + "s", "")
-										+ "</" + t.getTagName() + "> -> " + quitaCR(t.getText()), Color.ORANGE);
-							}
-						} else { // El tag que se cierra no es el último que se abrió: error html pero se procesa
-							boolean estaEnPila = false;
-							for (Tag tag : pilaTags)
-								if (tag.getTagName().equals(t.getTagName()))
-									estaEnPila = true;
-							if (estaEnPila) { // Ese tag está en la pila: quitar todos los niveles hasta él
-								while (!pilaTags.get(0).getTagName().equals(t.getTagName()))
-									pilaTags.pop();
-								pilaTags.pop();
-								if (MOSTRAR_TODOS_LOS_TAGS) {
-									VentanaColorConsola.println(String.format("%" + (pilaTags.size() * 2 + 1) + "s", "")
-											+ "**PÉRDIDA DE TAGS ANIDADOS", Color.RED);
-									VentanaColorConsola.println(String.format("%" + (pilaTags.size() * 2 + 1) + "s", "")
-											+ "</" + t.getTagName() + "> -> " + quitaCR(t.getText()), Color.ORANGE);
-								}
-							} else { // El tag que se cierra no está en la pila
-								VentanaColorConsola.println("**ERROR EN CIERRE DE TAG", Color.RED);
-								VentanaColorConsola.println(String.format("%" + (pilaTags.size() * 2 + 1) + "s", "")
-										+ "</" + t.getTagName() + "> -> " + quitaCR(t.getText()), Color.ORANGE);
-							}
-						}
-					} else if (t.getText().endsWith("/")) { // Tag de cierre y apertura
-						VentanaColorConsola.println(String.format("%" + (pilaTags.size() * 2 + 1) + "s", "") + "<"
-								+ t.getTagName() + "/> -> " + quitaCR(t.getText()), Color.GREEN);
-					} else {
-						VentanaColorConsola.println(String.format("%" + (pilaTags.size() * 2 + 1) + "s", "") + "<"
-								+ t.getTagName() + "> -> " + quitaCR(t.getText()), Color.BLUE);
-						pilaTags.push(t);
-					}
-				} else {
-					if (!quitaCR(n.getText()).trim().isEmpty()) {
-						VentanaColorConsola.println(
-								String.format("%" + (pilaTags.size() * 2 + 1) + "s", "") + quitaCR(n.getText()),
-								Color.BLACK);
-					}
-				}
-				n = mLexer.nextNode();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		pilaTags.clear();
-		//actualizacion terminada
-        JOptionPane.showMessageDialog(null, "Actualización terminada");
-
-	}
-
-	private static String quitaCR(String s) {
-		return s.replaceAll("\n", " ");
-	}
 
 	/**
 	 * Procesa una web y lanza el método observador con cada uno de sus elementos
