@@ -37,36 +37,27 @@ public class ventanaSeleccionarJugadores extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	ArrayList<Jugador> equipo=new ArrayList<>();
+	ArrayList<Jugador> equipo = new ArrayList<>();
 	static String posicion;
 	static JPanel suplentes;
 	static JPanel titular;
 	static int codigotitular;
 	Usuario u;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ventanaSeleccionarJugadores frame = new ventanaSeleccionarJugadores(null, null, null, null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	BotonJugador botonseleccionado;
+	VentanaPrincipal ventana;
+	Jugador jtitular;
+	ArrayList<Jugador> jSuplentes = new ArrayList<>();
 
 	/**
 	 * Create the frame.
 	 */
-	public ventanaSeleccionarJugadores(ArrayList<Jugador> listaequipo, String Posicion, Usuario user, VentanaPrincipal vp) {
-		u=user;
+	public ventanaSeleccionarJugadores(ArrayList<Jugador> listaequipo, String Posicion, Usuario user,
+			VentanaPrincipal vp, BotonJugador btn) {
+		u = user;
 		equipo = listaequipo;
 		posicion = Posicion;
+		ventana = vp;
+		botonseleccionado = btn;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 603, 430);
 		contentPane = new JPanel();
@@ -97,12 +88,12 @@ public class ventanaSeleccionarJugadores extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		contentPane.add(btnVolver, BorderLayout.SOUTH);
 		btnVolver.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ventanaSeleccionarJugadores.this.dispose();
-				
+
 			}
 		});
 		refresh();
@@ -111,62 +102,98 @@ public class ventanaSeleccionarJugadores extends JFrame {
 	private void refresh() {
 		suplentes.removeAll();
 		titular.removeAll();
-		for (int i = 0; i < equipo.size(); i++) {
-			JLabel nombre = new JLabel();
-			nombre.setFont(new Font("Monospaced", Font.PLAIN, 18));
-			JButton cambiar = new JButton("Seleccionar");
-			cambiar.setBackground(Color.WHITE);
-			JLabel valor = new JLabel();
-			JLabel puntos=new JLabel();
-			JLabel puntosJornada=new JLabel();
-			Jugador j = equipo.get(i);
-			System.out.println(posicion);
-			if (j.getPosicion().equals(posicion)) {
-				System.out.println(j.getNombre()+" "+j.isTitular());
-				nombre.setText(j.getNombre());
-				valor.setText("Valor: "+j.getValor());
-				puntos.setText("Puntos Totales: "+j.getPuntos());
-				puntosJornada.setText("Puntos Jornada: "+j.getPuntosJornada());
-				if (j.isTitular()) {
-					titular.add(nombre, "cell 0 0");
-					titular.add(valor, " cell 0 1");
-					titular.add(puntos, "cell 1 0");
-					titular.add(puntosJornada, "cell 1 1");
-					codigotitular=j.getCod_jugador();
-				} else {
-					JPanel panel1 = new JPanel();
-					panel1.setLayout(new MigLayout("", "[200px][200px][90px]", "[60px][]"));
-					panel1.add(nombre, "cell 0 0");
-					panel1.add(cambiar, " cell 2 1");
-					panel1.add(valor, "cell 0 1");
-					panel1.add(puntos, "cell 1 0");
-					panel1.add(puntosJornada, "cell 1 1");
-					suplentes.add(panel1, "cell 1 " + i);
-					cambiar.addActionListener(new ActionListener() {
+		JLabel nombre;
+		JLabel valor;
+		JLabel puntos;
+		JLabel puntosJornada;
 
-						@Override
-						public void actionPerformed(ActionEvent arg0) {
-							// TODO Auto-generated method stub
-							for (int k = 0; k < equipo.size(); k++) {
-								if (equipo.get(k) == j) {
-									System.out.println(equipo.get(k).getNombre() + " titular");
-									BD.hacerTitular(u, equipo.get(k).getCod_jugador());
-									equipo.get(k).setTitular(true);
-								}else if (codigotitular==equipo.get(k).getCod_jugador()){
-									equipo.get(k).setTitular(false);
-									BD.hacerSuplente(u, equipo.get(k).getCod_jugador());
-									System.out.println(equipo.get(k).getNombre() + " suplente");
-								}
-								
-									refresh();
-									ventanaSeleccionarJugadores.this.repaint();
-								}
-						}
-					});
+		if (botonseleccionado.getJugador() != null) {
+			nombre = new JLabel();
+			nombre.setFont(new Font("Monospaced", Font.PLAIN, 18));
+			valor = new JLabel();
+			puntos = new JLabel();
+			puntosJornada = new JLabel();
+			jtitular = botonseleccionado.getJugador();
+			System.out.println(jtitular.getNombre());
+			nombre.setText(jtitular.getNombre());
+			valor.setText("Valor: " + jtitular.getValor());
+			puntos.setText("Puntos Totales: " + jtitular.getPuntos());
+			puntosJornada.setText("Puntos Jornada: " + jtitular.getPuntosJornada());
+			titular.add(nombre, "cell 0 0");
+			titular.add(valor, " cell 0 1");
+			titular.add(puntos, "cell 1 0");
+			titular.add(puntosJornada, "cell 1 1");
+			for (Jugador j : equipo) {
+				if (j != jtitular && !estaseleccionado(j) && j.getPosicion().equals(posicion)) {
+					jSuplentes.add(j);
 				}
 			}
-
+		} else {
+			for (Jugador j : equipo) {
+				if (!estaseleccionado(j) && j.getPosicion().equals(posicion)) {
+					jSuplentes.add(j);
+				}
+			}
 		}
-	
+		for (int i = 0; i < jSuplentes.size(); i++) {
+			Jugador j = jSuplentes.get(i);
+			nombre = new JLabel();
+			nombre.setFont(new Font("Monospaced", Font.PLAIN, 18));
+			valor = new JLabel();
+			puntos = new JLabel();
+			puntosJornada = new JLabel();
+			JButton cambiar = new JButton("Seleccionar");
+			cambiar.setBackground(Color.WHITE);
+			nombre.setText(j.getNombre());
+			valor.setText("Valor: " + j.getValor());
+			puntos.setText("Puntos Totales: " + j.getPuntos());
+			puntosJornada.setText("Puntos Jornada: " + j.getPuntosJornada());
+			JPanel panel1 = new JPanel();
+			panel1.setLayout(new MigLayout("", "[200px][200px][90px]", "[60px][]"));
+			panel1.add(nombre, "cell 0 0");
+			panel1.add(cambiar, " cell 2 1");
+			panel1.add(valor, "cell 0 1");
+			panel1.add(puntos, "cell 1 0");
+			panel1.add(puntosJornada, "cell 1 1");
+			suplentes.add(panel1, "cell 1 " + i);
+			cambiar.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					// TODO Auto-generated method stub
+					hacerTitular(j);
+					refresh();
+
+				}
+
+			});
+		}
+	}
+
+	private boolean estaseleccionado(Jugador j) {
+		boolean seleccionado = false;
+		for (BotonJugador btn : ventana.botones) {
+			if (btn.getJugador() == j) {
+				seleccionado = true;
+			}
+		}
+
+		return seleccionado;
+
+	}
+
+	private void hacerTitular(Jugador j) {
+		BD.hacerTitular(u, j.getCod_jugador());
+		if (jtitular != null) {
+			BD.hacerSuplente(u, jtitular.getCod_jugador());
+		}
+		jtitular = j;
+		for (BotonJugador btn : ventana.botones) {
+			if (btn.getPosicion() == botonseleccionado.getPosicion()
+					&& btn.getNumero() == botonseleccionado.getNumero()) {
+				btn.setJugador(j);
+				botonseleccionado.setJugador(j);
+			}
+		}
 	}
 }

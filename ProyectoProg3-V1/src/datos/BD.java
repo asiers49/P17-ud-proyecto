@@ -1,6 +1,5 @@
 package datos;
 
-import java.lang.Thread.State;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -59,7 +58,6 @@ public class BD {
 	 */
 
 	public static void actualizarJugador(Jugador j) { // FALTA
-		int cod = j.getCod_jugador();
 		String nombre = j.getNombre();
 		String equipo = j.getEquipo();
 		String posicion = j.getPosicion();
@@ -68,10 +66,16 @@ public class BD {
 		int puntosjornada = j.getPuntosJornada();
 		try {
 			Statement stm = conn.createStatement();
-
-			stm.executeUpdate("UPDATE JUGADOR SET nomjugador = '" + nombre + "', equipo = '" + equipo + "', posicion= '"
-					+ posicion + "', puntos=" + puntos + ", puntosjornada=" + puntosjornada + ", valor = " + valor
-					+ " WHERE cod_jugador=" + cod);
+			ResultSet rs=stm.executeQuery("SELECT cod_jugador from JUGADOR WHERE nomjugador='"+j.getNombre()+"'");
+			Statement stm2 = conn.createStatement();
+			while(rs.next()) {
+				stm2.executeUpdate("UPDATE JUGADOR SET nomjugador = '" + nombre + "', equipo = '" + equipo + "', posicion= '"
+						+ posicion + "', puntos=" + puntos + ", puntosjornada=" + puntosjornada + ", valor = " + valor
+						+ " WHERE cod_jugador=" + rs.getInt(1));
+			}
+			rs.close();
+			stm2.close();
+			
 
 			System.out.println("Record is updated to  table!");
 		} catch (SQLException e) {
@@ -338,57 +342,63 @@ public class BD {
 		}
 
 		valorequipoTotal = valorequipo;
-		System.out.println(equipo.size() + " " + valorequipoTotal);
 
 	}
 
-	public static ArrayList<Jugador> sacarEquipo(Usuario u){
-		ArrayList<Jugador> equipo=new ArrayList<>();
+	public static ArrayList<Jugador> sacarEquipo(Usuario u) {
+		ArrayList<Jugador> equipo = new ArrayList<>();
 		try {
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT  public.jugador.cod_jugador, public.jugador.nomjugador, public.jugador.equipo, public.jugador.posicion, public.jugador.puntos, public.jugador.puntosjornada, public.jugador.valor, public.relacion.titular FROM public.jugador INNER JOIN public.relacion ON (public.jugador.cod_jugador = public.relacion.codjugador)	WHERE public.relacion.nomusuario = '"+u.getNombre()+"'");
-			while(rs.next()) {
-				Jugador j=new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getBoolean(8));
+			ResultSet rs = stmt.executeQuery(
+					"SELECT  public.jugador.cod_jugador, public.jugador.nomjugador, public.jugador.equipo, public.jugador.posicion, public.jugador.puntos, public.jugador.puntosjornada, public.jugador.valor, public.relacion.titular FROM public.jugador INNER JOIN public.relacion ON (public.jugador.cod_jugador = public.relacion.codjugador)	WHERE public.relacion.nomusuario = '"
+							+ u.getNombre() + "'");
+			while (rs.next()) {
+				Jugador j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5),
+						rs.getInt(6), rs.getInt(7), rs.getBoolean(8));
+				System.out.println(j.getNombre()+" "+j.getPosicion()+" "+j.getCod_jugador());
 				equipo.add(j);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
 		return equipo;
-		
 	}
 
 	public static void hacerTitular(Usuario u, int Cod_Jugador) {
 		try {
-			Statement stmt=conn.createStatement();
-			stmt.executeUpdate("UPDATE RELACION SET TITULAR=true WHERE NOMUSUARIO='"+u.getNombre()+"' AND CODJUGADOR="+Cod_Jugador);
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE RELACION SET TITULAR=true WHERE NOMUSUARIO='" + u.getNombre()
+					+ "' AND CODJUGADOR=" + Cod_Jugador);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
+
 	public static void hacerSuplente(Usuario u, int Cod_Jugador) {
 		try {
-			Statement stmt=conn.createStatement();
-			stmt.executeUpdate("UPDATE RELACION SET TITULAR=false WHERE NOMUSUARIO='"+u.getNombre()+"' AND CODJUGADOR="+Cod_Jugador);
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE RELACION SET TITULAR=false WHERE NOMUSUARIO='" + u.getNombre()
+					+ "' AND CODJUGADOR=" + Cod_Jugador);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	public static void closeConnection() {
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+	public static void cerrarConnection() {
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+
 	}
 
 	public static void main(String[] args) {

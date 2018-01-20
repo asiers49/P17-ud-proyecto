@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,7 +21,6 @@ import java.awt.Dimension;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
 import java.awt.Font;
-import java.awt.Graphics;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
@@ -44,6 +45,7 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel lblDinero2;
 	private JTabbedPane tabbedPane;
 	private JPanel panel;
+	ArrayList<BotonJugador> botones;
 
 	/**
 	 * Create the frame.
@@ -145,6 +147,13 @@ public class VentanaPrincipal extends JFrame {
 		tabbedPane.setTabComponentAt(1, lab2);
 		tabbedPane.setTabComponentAt(2, lab3);
 
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				BD.cerrarConnection();
+			}
+
+		});
+
 	}
 
 	private class PanelLigas extends JPanel {
@@ -241,17 +250,16 @@ public class VentanaPrincipal extends JFrame {
 		private JPanel panel_Defensa;
 		private JPanel panel_Centro;
 		private JPanel panel_Delanteros;
-		String text;
 
 		public PanelMiEquipo() {
 			PanelMiEquipo.this.setBackground(new Color(255, 255, 255));
 			PanelMiEquipo.this
 					.setLayout(new MigLayout("", "[grow]", "[50px][100px][100px,grow][100px,grow][100px,grow]"));
 			equipo = BD.sacarEquipo(user);
+			botones = new ArrayList<>();
 			lblEsteEsTu = new JLabel("Este es tu Equipo");
 			lblEsteEsTu.setFont(new Font("Monospaced", Font.PLAIN, 28));
 			PanelMiEquipo.this.add(lblEsteEsTu, "cell 0 0");
-
 			panel_Portero = new JPanel();
 			PanelMiEquipo.this.add(panel_Portero, "cell 0 1,alignx center,aligny center");
 			panel_Portero.setLayout(new BorderLayout(0, 0));
@@ -270,21 +278,56 @@ public class VentanaPrincipal extends JFrame {
 			panel_Delanteros.setBackground(Color.WHITE);
 
 			for (int i = 0; i < 11; i++) {
-				JButton btn = new JButton("");
-				text = "";
+				BotonJugador btn = new BotonJugador(null, "");
 				btn.setBackground(Color.WHITE);
+				boolean seleccionado = false;
 				if (i == 0) {
-					btn.setText("Portero");
+					btn.setPosicionNumero("Portero", 1);
 					panel_Portero.add(btn);
 				} else if (i < 5) {
-					btn.setText("Defensa " + (i));
-					
+					btn.setPosicionNumero("Defensa", i);
+					for (Jugador j : equipo) {
+						if (j.getPosicion().equals("Defensa") && j.isTitular()) {
+							for (BotonJugador boton : botones) {
+								if (boton.getJugador() == j) {
+									seleccionado = true;
+								}
+							}
+							if (!seleccionado) {
+								btn.setJugador(j);
+							}
+						}
+					}
 					panel_Defensa.add(btn);
 				} else if (i < 8) {
-					btn.setText("Medio " + (i - 4));
+					btn.setPosicionNumero("Mediocentro", (i - 4));
+					for (Jugador j : equipo) {
+						if (j.getPosicion().equals("Mediocentro") && j.isTitular()) {
+							for (BotonJugador boton : botones) {
+								if (boton.getJugador() == j) {
+									seleccionado = true;
+								}
+							}
+							if (!seleccionado) {
+								btn.setJugador(j);
+							}
+						}
+					}
 					panel_Centro.add(btn);
 				} else if (i < 11) {
-					btn.setText("Delantero " + (i - 7));
+					btn.setPosicionNumero("Delantero", (i - 7));
+					for (Jugador j : equipo) {
+						if (j.getPosicion().equals("Delantero") && j.isTitular()) {
+							for (BotonJugador boton : botones) {
+								if (boton.getJugador() == j) {
+									seleccionado = true;
+								}
+							}
+							if (!seleccionado) {
+								btn.setJugador(j);
+							}
+						}
+					}
 					panel_Delanteros.add(btn);
 				}
 				btn.addActionListener(new ActionListener() {
@@ -292,25 +335,20 @@ public class VentanaPrincipal extends JFrame {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						if (btn.getText().contains("Portero")) {
-							text = "Portero";
-						} else if (btn.getText().contains("Defensa")) {
-							text = "Defensa";
-						} else if (btn.getText().contains("Mediocentro")) {
-							text = "Medio";
-						} else if (btn.getText().contains("Delantero")) {
-							text = "Delantero";
-						}
-						ventanaSeleccionarJugadores vSJ = new ventanaSeleccionarJugadores(equipo, text, user,
-								VentanaPrincipal.this);
+
+						ventanaSeleccionarJugadores vSJ = new ventanaSeleccionarJugadores(equipo, btn.getPosicion(),
+								user, VentanaPrincipal.this, btn);
 						vSJ.setVisible(true);
 
 					}
 				});
-
+				botones.add(btn);
 			}
 
 		}
 	}
 
+	private class PanelMercado extends JPanel {
+
+	}
 }

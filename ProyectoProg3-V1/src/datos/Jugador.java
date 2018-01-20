@@ -9,6 +9,7 @@ public class Jugador {
 	private String posicion;
 	private String equipo;
 	private boolean titular;
+	private boolean seleccionado;
 
 	public Jugador(int n, String nombre, String equipo, String posicion, int puntos, int puntosJ, int valor, boolean titular) {
 		this.setCod_jugador(n);
@@ -19,6 +20,7 @@ public class Jugador {
 		this.posicion = posicion;
 		this.equipo = equipo;
 		this.titular=titular;
+		this.setSeleccionado(false);
 	}
 
 	public Jugador(int cod_jugador, int valor) {
@@ -88,6 +90,14 @@ public class Jugador {
 
 	public void setTitular(boolean titular) {
 		this.titular = titular;
+	}
+
+	public boolean isSeleccionado() {
+		return seleccionado;
+	}
+
+	public void setSeleccionado(boolean seleccionado) {
+		this.seleccionado = seleccionado;
 	}
 
 }
