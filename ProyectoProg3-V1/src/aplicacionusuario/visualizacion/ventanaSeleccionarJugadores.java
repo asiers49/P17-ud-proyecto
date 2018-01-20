@@ -19,10 +19,14 @@ import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
@@ -93,10 +97,17 @@ public class ventanaSeleccionarJugadores extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ventanaSeleccionarJugadores.this.dispose();
+				ventana.repaint();
 
 			}
 		});
 		refresh();
+		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				ventana.repaint();
+			}
+		});
 	}
 
 	private void refresh() {
@@ -143,6 +154,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 			puntos = new JLabel();
 			puntosJornada = new JLabel();
 			JButton cambiar = new JButton("Seleccionar");
+			JButton vender = new JButton("Vender");
 			cambiar.setBackground(Color.WHITE);
 			nombre.setText(j.getNombre());
 			valor.setText("Valor: " + j.getValor());
@@ -152,6 +164,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 			panel1.setLayout(new MigLayout("", "[200px][200px][90px]", "[60px][]"));
 			panel1.add(nombre, "cell 0 0");
 			panel1.add(cambiar, " cell 2 1");
+			panel1.add(vender, " cell 2 0");
 			panel1.add(valor, "cell 0 1");
 			panel1.add(puntos, "cell 1 0");
 			panel1.add(puntosJornada, "cell 1 1");
@@ -166,6 +179,20 @@ public class ventanaSeleccionarJugadores extends JFrame {
 
 				}
 
+			});
+			vender.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					int precio=j.getValor();
+					int opcion=JOptionPane.showConfirmDialog(ventanaSeleccionarJugadores.this, "¿Quieres vender a este jugador por "+precio+"?");
+						if (opcion==0) {
+							BD.venderJugador(u, j, precio);
+							equipo.remove(j);
+							ventana.user.setDinero(u.getDinero()+precio);
+					};
+				}
 			});
 		}
 	}

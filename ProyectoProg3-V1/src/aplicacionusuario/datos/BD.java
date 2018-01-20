@@ -33,8 +33,7 @@ public class BD {
 
 	/**
 	 * 
-	 * @param Jugador
-	 *            j
+	 * @param Jugador j
 	 */
 
 	public static void insertJugador(Jugador j) {
@@ -88,8 +87,9 @@ public class BD {
 
 	}
 
-	/*
+	/**
 	 * 
+	 * @param l
 	 */
 
 	public static void nuevaLiga(Liga l) {
@@ -133,8 +133,10 @@ public class BD {
 		}
 	}
 
-	/*
+	/**
 	 * 
+	 * @param u
+	 * @return
 	 */
 
 	public static Usuario buscarUsuario(Usuario u) {
@@ -168,6 +170,26 @@ public class BD {
 
 	}
 
+	/**
+	 * 	
+	 * @param usuario
+	 * @param mail
+	 * @return
+	 */
+	
+	public static String olvidarContra(String usuario, String mail) {
+		String pass = "";
+		
+		
+		
+		return pass;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	
 	public static String contrasenyaAleatoria() {
 		String cal = UUID.randomUUID().toString().substring(28); // String
 																	// aleatoria
@@ -177,6 +199,12 @@ public class BD {
 		return cal;
 	}
 
+	/**
+	 * 
+	 * @param liga
+	 * @return
+	 */
+	
 	private static boolean buscarLiga(Liga liga) {
 		boolean encontrado = false;
 		try {
@@ -196,7 +224,13 @@ public class BD {
 
 		return encontrado;
 	}
-
+	
+	/**
+	 * 
+	 * @param u
+	 * @param nombre
+	 */
+	
 	public static void crearliga(Usuario u, String nombre) {
 		Liga liga1 = new Liga(nombre, null);
 		try {
@@ -214,7 +248,14 @@ public class BD {
 		nuevaLiga(liga1);
 		crearEquipo(u, liga1);
 	}
-
+	
+	/**
+	 * 
+	 * @param u
+	 * @param nombre
+	 * @param clave
+	 */
+	
 	public static void unirseaLiga(Usuario u, String nombre, String clave) {
 		Liga liga1 = new Liga(nombre, clave);
 		try {
@@ -231,7 +272,13 @@ public class BD {
 		}
 		crearEquipo(u, liga1);
 	}
-
+	
+	/**
+	 * 
+	 * @param u
+	 * @return
+	 */
+	
 	public static ArrayList<Usuario> sacarUsuariosLiga(Usuario u) {
 		ArrayList<Usuario> lista = new ArrayList<>();
 		try {
@@ -252,7 +299,13 @@ public class BD {
 		return lista;
 
 	}
-
+	
+	/**
+	 * 
+	 * @param u
+	 * @param l
+	 */
+	
 	private static void crearEquipo(Usuario u, Liga l) {
 		int valorequipoTotal = 0;
 		int valorequipo = 0;
@@ -347,7 +400,13 @@ public class BD {
 		valorequipoTotal = valorequipo;
 
 	}
-
+	
+	/**
+	 * 
+	 * @param u
+	 * @return
+	 */
+	
 	public static ArrayList<Jugador> sacarEquipo(Usuario u) {
 		ArrayList<Jugador> equipo = new ArrayList<>();
 		try {
@@ -368,6 +427,12 @@ public class BD {
 		return equipo;
 	}
 
+	/**
+	 * 
+	 * @param u
+	 * @param Cod_Jugador
+	 */
+	
 	public static void hacerTitular(Usuario u, int Cod_Jugador) {
 		try {
 			Statement stmt = conn.createStatement();
@@ -380,6 +445,12 @@ public class BD {
 
 	}
 
+	/**
+	 * 
+	 * @param u
+	 * @param Cod_Jugador
+	 */
+	
 	public static void hacerSuplente(Usuario u, int Cod_Jugador) {
 		try {
 			Statement stmt = conn.createStatement();
@@ -392,6 +463,12 @@ public class BD {
 
 	}
 
+	/**
+	 * 
+	 * @param l
+	 * @return
+	 */
+	
 	public static ArrayList<Jugador> sacarJugadoresMercado(Liga l) {
 		ArrayList<Jugador> listamercado = new ArrayList<>();
 
@@ -413,9 +490,31 @@ public class BD {
 		return listamercado;
 	}
 	
+	/**
+	 * 
+	 * @param u
+	 * @param j
+	 * @param valor
+	 */
+	
+	public static void hacerPuja(Usuario u, Jugador j, int valor) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO OFERTAS VALUES('" + u.getNombre() + "'," + j.getCod_jugador() + ", "+valor+")");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @param u
+	 * @param j
+	 */
+	
 	public static void comprarJugador(Usuario u, Jugador j) {
-		System.out.println("comprar jugadores");
-
 		try {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO='" + u.getNombre() + "' WHERE nomliga='"
@@ -427,10 +526,30 @@ public class BD {
 		}
 	}
 
-	public static void venderJugador(Usuario u, Jugador j) {
+	/**
+	 * 
+	 * @param u
+	 * @param j
+	 */
+	
+	public static void venderJugador(Usuario u, Jugador j, int precio) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO=NULL WHERE nomliga='"
+					+ u.getLiga().getNombre() + "' AND CODJUGADOR=" + j.getCod_jugador() + "");
+			
+			stmt.executeUpdate("UPDATE USUARIOS SET dinero=dinero +"+precio+" WHERE nombre ='" + u.getNombre() + "'");
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
+	
+	/**
+	 * 
+	 */
+	
 	public static void cerrarConnection() {
 		if (conn != null) {
 			try {
@@ -443,14 +562,5 @@ public class BD {
 
 	}
 
-	public static void main(String[] args) {
-
-		try {
-			getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+	
 }

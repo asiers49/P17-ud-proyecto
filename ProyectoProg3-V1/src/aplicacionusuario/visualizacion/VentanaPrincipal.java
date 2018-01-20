@@ -1,7 +1,10 @@
 package aplicacionusuario.visualizacion;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -9,41 +12,32 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
 import aplicacionusuario.datos.BD;
 import aplicacionusuario.datos.Jugador;
 import aplicacionusuario.datos.Usuario;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Color;
-import java.awt.Dimension;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JButton;
-import java.awt.Font;
-
-import javax.swing.SwingConstants;
-import javax.swing.JTextPane;
-import javax.swing.ScrollPaneConstants;
-
-import java.awt.FlowLayout;
-import javax.swing.JTabbedPane;
 
 public class VentanaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 4429640112774618601L;
 	private JPanel contentPane;
-	private Usuario user;
+	Usuario user;
 	private JPanel panel_Top;
 	private JLabel lblNomUsuario2;
 	private JPanel panel_User;
 	private JLabel lblLigaFantasyFlex;
-	
+
 	private ArrayList<Jugador> equipo;
 	private JLabel lblNomUsuario;
 	private JLabel lblNomLiga;
@@ -63,9 +57,10 @@ public class VentanaPrincipal extends JFrame {
 	 */
 	public VentanaPrincipal(Usuario user1) {
 
-		/**
+		/*
 		 * Actualizamos/Inicializamos variables
 		 */
+
 		equipo = new ArrayList<>();
 		user = user1;
 
@@ -357,29 +352,31 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private class PanelMercado extends JPanel {
-		
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private ArrayList<Jugador> jugadoresmercado;
-		
-		
+
 		public PanelMercado() {
-			jugadoresmercado=BD.sacarJugadoresMercado(user.getLiga());
+			jugadoresmercado = BD.sacarJugadoresMercado(user.getLiga());
 			PanelMercado.this.setBackground(new Color(255, 255, 255));
-			PanelMercado.this
-					.setLayout(new BorderLayout(35,20));
+			PanelMercado.this.setLayout(new BorderLayout(35, 20));
 			JLabel nombre;
 			JLabel valor;
 			JLabel puntos;
 			JLabel puntosJornada;
-			JPanel listajugadores=new JPanel();
+			JPanel listajugadores = new JPanel();
 			listajugadores.setLayout(new MigLayout("", "[75px][grow]", "[][][][][][][]"));
 			JScrollPane scrollPane = new JScrollPane(listajugadores);
 			scrollPane.setViewportBorder(null);
 			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			PanelMercado.this.add(scrollPane, BorderLayout.CENTER);
 			for (int i = 0; i < jugadoresmercado.size(); i++) {
-				Jugador j=jugadoresmercado.get(i);
+				Jugador j = jugadoresmercado.get(i);
 				nombre = new JLabel();
-				nombre.setFont(new Font("Monospaced", Font.PLAIN, 18));
+				nombre.setFont(new Font("Monospaced", Font.PLAIN, 20));
 				valor = new JLabel();
 				puntos = new JLabel();
 				puntosJornada = new JLabel();
@@ -389,7 +386,7 @@ public class VentanaPrincipal extends JFrame {
 				valor.setText("Valor: " + j.getValor());
 				puntos.setText("Puntos Totales: " + j.getPuntos());
 				puntosJornada.setText("Puntos Jornada: " + j.getPuntosJornada());
-				JPanel PanelJugador=new JPanel();
+				JPanel PanelJugador = new JPanel();
 				PanelJugador.setLayout(new MigLayout("", "[200px][200px][90px]", "[60px][]"));
 				PanelJugador.add(nombre, "cell 0 0");
 				PanelJugador.add(fichar, " cell 2 1");
@@ -398,20 +395,28 @@ public class VentanaPrincipal extends JFrame {
 				PanelJugador.add(puntosJornada, "cell 1 1");
 				listajugadores.add(PanelJugador, "cell 1 " + i);
 				fichar.addActionListener(new ActionListener() {
-					
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						String s=JOptionPane.showInputDialog("Escriba su Puja");
-						int precio=Integer.parseInt(s);
-						
-						BD.comprarJugador(user, j);
-						listajugadores.remove(PanelJugador);
+						String s = JOptionPane.showInputDialog("Escriba su Puja");
+						int precio = Integer.parseInt(s);
+						if (user.getDinero() < precio) {
+							JOptionPane.showMessageDialog(VentanaPrincipal.this,
+									"No tienes suficiente dinero para hacer esta puja");
+						} else if (precio >= j.getValor()) {
+							BD.hacerPuja(user, j, precio);
+							JLabel confirmacion = new JLabel(" Puja hecha: " + precio);
+							confirmacion.setFont(new Font("Monospaced", Font.ITALIC, 17));
+							PanelJugador.add(confirmacion, "cell 2 0");
+						} else {
+							JOptionPane.showInternalMessageDialog(VentanaPrincipal.this,
+									"La puja tiene que ser como minimo igual al valor del jugador");
+						}
 					}
 				});
 			}
-			
-		
+
 		}
 	}
 }
