@@ -1,4 +1,4 @@
-package crawler;
+package utiles;
 
 import java.awt.Color;
 //Imports relacionados con el proceso
@@ -23,9 +23,8 @@ import org.htmlparser.lexer.Lexer;
 import org.htmlparser.lexer.Page;
 import org.htmlparser.nodes.TextNode;
 
-
-import datos.Jugador;
-import datos.BD;
+import aplicacionusuario.datos.BD;
+import aplicacionusuario.datos.Jugador;
 
 public class Crawler {
 	private static boolean MOSTRAR_TODOS_LOS_TAGS = false;

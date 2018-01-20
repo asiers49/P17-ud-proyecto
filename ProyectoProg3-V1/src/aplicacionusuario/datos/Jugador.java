@@ -1,4 +1,4 @@
-package datos;
+package aplicacionusuario.datos;
 
 public class Jugador {
 	private int cod_jugador;

@@ -1,6 +1,10 @@
-package datos;
+package aplicacionusuario.datos;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -66,16 +70,15 @@ public class BD {
 		int puntosjornada = j.getPuntosJornada();
 		try {
 			Statement stm = conn.createStatement();
-			ResultSet rs=stm.executeQuery("SELECT cod_jugador from JUGADOR WHERE nomjugador='"+j.getNombre()+"'");
+			ResultSet rs = stm.executeQuery("SELECT cod_jugador from JUGADOR WHERE nomjugador='" + j.getNombre() + "'");
 			Statement stm2 = conn.createStatement();
-			while(rs.next()) {
-				stm2.executeUpdate("UPDATE JUGADOR SET nomjugador = '" + nombre + "', equipo = '" + equipo + "', posicion= '"
-						+ posicion + "', puntos=" + puntos + ", puntosjornada=" + puntosjornada + ", valor = " + valor
-						+ " WHERE cod_jugador=" + rs.getInt(1));
+			while (rs.next()) {
+				stm2.executeUpdate("UPDATE JUGADOR SET nomjugador = '" + nombre + "', equipo = '" + equipo
+						+ "', posicion= '" + posicion + "', puntos=" + puntos + ", puntosjornada=" + puntosjornada
+						+ ", valor = " + valor + " WHERE cod_jugador=" + rs.getInt(1));
 			}
 			rs.close();
 			stm2.close();
-			
 
 			System.out.println("Record is updated to  table!");
 		} catch (SQLException e) {
@@ -355,7 +358,7 @@ public class BD {
 			while (rs.next()) {
 				Jugador j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5),
 						rs.getInt(6), rs.getInt(7), rs.getBoolean(8));
-				System.out.println(j.getNombre()+" "+j.getPosicion()+" "+j.getCod_jugador());
+				System.out.println(j.getNombre() + " " + j.getPosicion() + " " + j.getCod_jugador());
 				equipo.add(j);
 			}
 		} catch (SQLException e) {
@@ -388,14 +391,15 @@ public class BD {
 		}
 
 	}
-	
-	public static ArrayList<Jugador> sacarJugadoresMercado (Liga l) {
-		ArrayList<Jugador> listamercado=new ArrayList<>();
-		
+
+	public static ArrayList<Jugador> sacarJugadoresMercado(Liga l) {
+		ArrayList<Jugador> listamercado = new ArrayList<>();
+
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT * FROM public.jugador WHERE cod_jugador in (Select cod_jugador from relacion WHERE nomusuario IS NULL AND nomliga='"+l.getNombre()+"') ORDER BY RANDOM() LIMIT 10");
+					"SELECT * FROM public.jugador WHERE cod_jugador in (Select cod_jugador from relacion WHERE nomusuario IS NULL AND nomliga='"
+							+ l.getNombre() + "') ORDER BY RANDOM() LIMIT 10");
 			while (rs.next()) {
 				Jugador j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5),
 						rs.getInt(6), rs.getInt(7), false);
@@ -405,16 +409,26 @@ public class BD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 		return listamercado;
 	}
 	
 	public static void comprarJugador(Usuario u, Jugador j) {
-		
+		System.out.println("comprar jugadores");
+
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO='" + u.getNombre() + "' WHERE nomliga='"
+					+ u.getLiga().getNombre() + "' AND CODJUGADOR=" + j.getCod_jugador() + "");
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	
+
 	public static void venderJugador(Usuario u, Jugador j) {
-		
+
 	}
 
 	public static void cerrarConnection() {

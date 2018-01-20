@@ -1,4 +1,4 @@
-package visualizacion;
+package aplicacionusuario.visualizacion;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -11,11 +11,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import datos.BD;
-import datos.Jugador;
-import datos.Usuario;
+
+import aplicacionusuario.datos.BD;
+import aplicacionusuario.datos.Jugador;
+import aplicacionusuario.datos.Usuario;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import net.miginfocom.swing.MigLayout;
@@ -24,6 +29,8 @@ import java.awt.Font;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
+
 import java.awt.FlowLayout;
 import javax.swing.JTabbedPane;
 
@@ -353,12 +360,58 @@ public class VentanaPrincipal extends JFrame {
 		
 		private ArrayList<Jugador> jugadoresmercado;
 		
+		
 		public PanelMercado() {
 			jugadoresmercado=BD.sacarJugadoresMercado(user.getLiga());
 			PanelMercado.this.setBackground(new Color(255, 255, 255));
 			PanelMercado.this
-					.setLayout(new MigLayout("", "[100px][400px][grow]", "[50px][100px]"));
+					.setLayout(new BorderLayout(35,20));
+			JLabel nombre;
+			JLabel valor;
+			JLabel puntos;
+			JLabel puntosJornada;
+			JPanel listajugadores=new JPanel();
+			listajugadores.setLayout(new MigLayout("", "[75px][grow]", "[][][][][][][]"));
+			JScrollPane scrollPane = new JScrollPane(listajugadores);
+			scrollPane.setViewportBorder(null);
+			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			PanelMercado.this.add(scrollPane, BorderLayout.CENTER);
+			for (int i = 0; i < jugadoresmercado.size(); i++) {
+				Jugador j=jugadoresmercado.get(i);
+				nombre = new JLabel();
+				nombre.setFont(new Font("Monospaced", Font.PLAIN, 18));
+				valor = new JLabel();
+				puntos = new JLabel();
+				puntosJornada = new JLabel();
+				JButton fichar = new JButton("Comprar");
+				fichar.setBackground(Color.WHITE);
+				nombre.setText(j.getNombre());
+				valor.setText("Valor: " + j.getValor());
+				puntos.setText("Puntos Totales: " + j.getPuntos());
+				puntosJornada.setText("Puntos Jornada: " + j.getPuntosJornada());
+				JPanel PanelJugador=new JPanel();
+				PanelJugador.setLayout(new MigLayout("", "[200px][200px][90px]", "[60px][]"));
+				PanelJugador.add(nombre, "cell 0 0");
+				PanelJugador.add(fichar, " cell 2 1");
+				PanelJugador.add(valor, "cell 0 1");
+				PanelJugador.add(puntos, "cell 1 0");
+				PanelJugador.add(puntosJornada, "cell 1 1");
+				listajugadores.add(PanelJugador, "cell 1 " + i);
+				fichar.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						String s=JOptionPane.showInputDialog("Escriba su Puja");
+						int precio=Integer.parseInt(s);
+						
+						BD.comprarJugador(user, j);
+						listajugadores.remove(PanelJugador);
+					}
+				});
+			}
 			
+		
 		}
 	}
 }

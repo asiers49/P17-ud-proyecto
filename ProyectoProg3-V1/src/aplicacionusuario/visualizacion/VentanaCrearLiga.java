@@ -1,12 +1,13 @@
-package visualizacion;
+package aplicacionusuario.visualizacion;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import datos.BD;
-import datos.Liga;
-import datos.Usuario;
+
+import aplicacionusuario.datos.BD;
+import aplicacionusuario.datos.Liga;
+import aplicacionusuario.datos.Usuario;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;

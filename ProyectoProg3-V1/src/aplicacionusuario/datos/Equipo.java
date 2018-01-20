@@ -1,4 +1,4 @@
-package datos;
+package aplicacionusuario.datos;
 
 import java.util.ArrayList;
 

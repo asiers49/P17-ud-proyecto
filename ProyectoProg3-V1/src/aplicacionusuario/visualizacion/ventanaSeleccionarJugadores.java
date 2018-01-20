@@ -1,4 +1,4 @@
-package visualizacion;
+package aplicacionusuario.visualizacion;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -9,9 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import datos.BD;
-import datos.Jugador;
-import datos.Usuario;
+import aplicacionusuario.datos.BD;
+import aplicacionusuario.datos.Jugador;
+import aplicacionusuario.datos.Usuario;
 
 import java.awt.Color;
 import java.awt.Component;

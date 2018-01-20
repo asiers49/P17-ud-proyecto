@@ -1,8 +1,8 @@
-package visualizacion;
+package aplicacionusuario.visualizacion;
 
 import javax.swing.JButton;
 
-import datos.Jugador;
+import aplicacionusuario.datos.Jugador;
 
 public class BotonJugador extends JButton {
 
