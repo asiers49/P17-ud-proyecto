@@ -7,6 +7,13 @@
 	<classpathentry kind="lib" path="resources/javax.mail.jar"/>
 	<classpathentry kind="lib" path="resources/htmlparser.jar"/>
 	<classpathentry kind="lib" path="resources/quartz-2.2.3.jar"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+=======
+	<classpathentry kind="lib" path="resources/slf4j-log4j12-1.7.7.jar"/>
+	<classpathentry kind="lib" path="resources/c3p0-0.9.1.1.jar"/>
+	<classpathentry kind="lib" path="resources/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="resources/slf4j-api-1.7.7.jar"/>
+>>>>>>> branch 'master' of https://github.com/asiers49/P17-ud-proyecto.git
 	<classpathentry kind="output" path="bin"/>
 </classpath>

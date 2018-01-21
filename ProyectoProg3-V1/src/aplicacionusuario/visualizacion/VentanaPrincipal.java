@@ -373,7 +373,7 @@ public class VentanaPrincipal extends JFrame {
 		private ArrayList<Jugador> jugadoresmercado;
 
 		public PanelMercado() {
-			jugadoresmercado = BD.sacarJugadoresMercado(user.getLiga());
+			jugadoresmercado = BD.actualizarMercado(user.getLiga());
 			PanelMercado.this.setBackground(new Color(255, 255, 255));
 			PanelMercado.this.setLayout(new BorderLayout(35, 20));
 			JLabel nombre;
