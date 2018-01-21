@@ -88,7 +88,7 @@ public class VentanaPrincipal extends JFrame {
 		panel_Top.setBackground(new Color(29, 101, 171));
 		contentPane.add(panel_Top, BorderLayout.NORTH);
 		panel_Top.setLayout(new MigLayout("", "[200][grow][]", "[100px,grow]"));
-
+		cerrarsesion=new JButton("Cerrar Sesion");
 		lblLigaFantasyFlex = new JLabel("LIGA FANTASY FLEX");
 		lblLigaFantasyFlex.setFont(new Font("Monospaced", Font.BOLD, 38 ));
 		panel_Top.add(lblLigaFantasyFlex, "cell 1 0,alignx center,aligny center");
