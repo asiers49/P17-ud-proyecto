@@ -100,9 +100,10 @@ public class ventanaRegistro extends JFrame {
 			 */
 
 			public void actionPerformed(ActionEvent arg0) {	// Falta
-
-			
-
+				String mail = JOptionPane.showInputDialog("Escribe tu mail");
+				String pass = BD.olvidarContra(mail);
+				
+				enviarCorreo(pass, mail);
 			}
 		});
 		panel_Mid.add(btnHasOlvidadoLa, "cell 1 3,alignx center,aligny center");
@@ -171,13 +172,13 @@ public class ventanaRegistro extends JFrame {
 	 * 
 	 */
 
-	public static void enviarCorreo(String pass, ventanaRegistro vR) {
+	private void enviarCorreo(String pass, String mail) {
 
 		try {
 			String host = "smtp.gmail.com";
 			String user = "ligafantasyflex@gmail.com";
 			String contrasenya1 = "candyflex";
-			String para = "anderjarauta@gmail.com";
+			String para = mail;
 			String from = user;
 			String subject = "Recuperacion de contraseña";
 			String messageText = "Su contraseña es: " + "\n" + "	" + pass + "\n" + "\n" + "\n"
@@ -206,8 +207,9 @@ public class ventanaRegistro extends JFrame {
 			transport.close();
 
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(vR, "Error");
+			JOptionPane.showMessageDialog(ventanaRegistro.this, "Error");
 		}
 
 	}
+	
 }
