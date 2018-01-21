@@ -52,11 +52,11 @@ public class Main {
 	private void cargaProperties() throws InvalidPropertiesFormatException, FileNotFoundException, IOException {
 		properties = new Properties();
 		String usuario= " ";
-		String contraseña="";
+		String contrasenya="";
 		
 		properties.load(new FileInputStream("usuarios.ini"));
 		usuario = properties.getProperty(usuario);
-		contraseña=properties.getProperty(contraseña);
+		contrasenya=properties.getProperty(contrasenya);
 		
 		
 		}
@@ -68,13 +68,13 @@ public class Main {
 	public static void guardaProperties(Usuario u) {
 		properties = new Properties();
 		String usuario= u.getNombre();
-		String contraseña=u.getContrase;
+		String contrasenya=u.getContrase�a();
 		
 		
 
 		try {
 			properties.store(new FileOutputStream("usuarios.ini"), "");
-			properties.setProperty(usuario, contraseña);
+			properties.setProperty(usuario, contrasenya);
 			
 			
 			} catch (Exception e) {

@@ -178,31 +178,22 @@ public class BD {
 	 * @param mail
 	 * @return
 	 */
-<<<<<<< HEAD
-	
-	public static String olvidarContra(String mail) {
-=======
 
-	public static String olvidarContra(String usuario, String mail) {
->>>>>>> branch 'master' of https://github.com/asiers49/P17-ud-proyecto.git
+	public static String olvidarContra(String mail) {
+
 		String pass = "";
-<<<<<<< HEAD
-		
+
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT contrasenya FROM usuarios WHERE mail ='" + mail + "'");
-			while (rs.next()){
+			while (rs.next()) {
 				pass = rs.getString(1);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-=======
 
->>>>>>> branch 'master' of https://github.com/asiers49/P17-ud-proyecto.git
 		return pass;
 	}
 
@@ -511,29 +502,28 @@ public class BD {
 	}
 
 	public static void sacarJugadoresMercado() {
-		ArrayList<String> nomligas=new ArrayList<>();
-		
+		ArrayList<String> nomligas = new ArrayList<>();
+
 		try {
 			Statement stmt = conn.createStatement();
-			ResultSet rs=stmt.executeQuery("SELECT nomliga from ligas");
+			ResultSet rs = stmt.executeQuery("SELECT nomliga from ligas");
 			while (rs.next()) {
 				nomligas.add(rs.getString(1));
 			}
-			for(String l : nomligas) {
+			for (String l : nomligas) {
 				ResultSet rs2 = stmt.executeQuery(
 						"SELECT cod_jugador FROM public.jugador WHERE cod_jugador in (Select cod_jugador from relacion WHERE nomusuario IS NULL AND nomliga='"
 								+ l + "') ORDER BY RANDOM() LIMIT 10");
 				while (rs2.next()) {
-					stmt.executeUpdate("INSERT INTO MERCADO VALUES("+rs.getInt(1)+", '"+l+"'");
-				
+					stmt.executeUpdate("INSERT INTO MERCADO VALUES(" + rs.getInt(1) + ", '" + l + "'");
+
 				}
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 
 	}
 
