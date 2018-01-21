@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -23,15 +22,15 @@ import org.quartz.impl.StdSchedulerFactory;
 public class Main {
 
 	public static void main(String[] args) throws SchedulerException, InterruptedException {
-
+		org.apache.log4j.BasicConfigurator.configure();
 		VentanaUtiles ventana = new VentanaUtiles();
 		ventana.setVisible(true);
-		try {
-			getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			getConnection();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		JobKey tarea1key = new JobKey("Tarea1");
 		JobDetail tarea1 = JobBuilder.newJob(Tarea1.class).withIdentity(tarea1key).build();
 		SchedulerFactory sf = new StdSchedulerFactory();
@@ -39,7 +38,7 @@ public class Main {
 
 		
 		Trigger trigger1 = TriggerBuilder.newTrigger().withIdentity("trigger1")
-				.withSchedule(CronScheduleBuilder.cronSchedule("31 16 * *  MON-SUN *")).build();
+				.withSchedule(CronScheduleBuilder.cronSchedule("0 46 17 * * ?")).build();
 		scheduler.start();
 		scheduler.scheduleJob(tarea1, trigger1);
 		Thread.sleep(300L * 1000L);
@@ -63,28 +62,6 @@ public class Main {
 			System.out.println("Where is your PostgreSQL JDBC Driver? " + "Include in your library path!");
 		}
 		conn = DriverManager.getConnection("jdbc:postgresql://" + URL + "?sslmode=require", USERNAME, PASSWORD);
-
-	}
-
-	public class Tarea1 implements Job {
-
-		@Override
-		public void execute(JobExecutionContext arg0) throws JobExecutionException {
-
-			Ofertas();
-
-		}
-
-		public void Ofertas() {
-
-			try {
-				System.out.println("Resolviendo las Ofertas");
-				Statement stm = conn.createStatement();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 
 	}
 
