@@ -30,11 +30,11 @@ public class ventanaRegistroTest {
 		Usuario u2 = BD.buscarUsuario(user2);
 
 		
-		assertEquals("Usuario esta en BD", usuario1, u1.getNombre());
-		assertEquals("Contraeña esta en BD", contrasenya1, u1.getContraseña());
+		assertEquals("Usuario esta en la BD", usuario1, u1.getNombre());
+		assertEquals("Contraeña esta en la BD", contrasenya1, u1.getContraseña());
 
-		assertEquals("Usuario esta en BD", usuario2, u2.getNombre());
-		assertEquals("Contraeña esta en BD", contrasenya2, u2.getContraseña());
+		assertEquals("Usuario esta en la BD", usuario2, u2.getNombre());
+		assertEquals("Contraeña esta en la BD", contrasenya2, u2.getContraseña());
 
 	}
 	
@@ -58,8 +58,8 @@ public class ventanaRegistroTest {
 		
 		
 		
-		assertTrue("Usuario no esta en BD", u1==null);
-		assertTrue("Usuario no esta en BD", u2==null);
+		assertTrue("Usuario no esta en la BD", u1==null);
+		assertTrue("Usuario no esta en la BD", u2==null);
 
 	
 
