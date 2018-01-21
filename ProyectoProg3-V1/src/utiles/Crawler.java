@@ -43,8 +43,9 @@ public class Crawler {
 		Crawler.actualizar = actualizar;
 	}
 
-	public static void main(String[] args) {
-
+	public Crawler() {
+		p = new ProcesadoLaLiga();
+		
 		Timer timer = new Timer();
 		timer.schedule(timerTask, 0, 1000*86400000); // timer se ejecuta cada dia
 		// Analisis de la web de comuniazo. Poner aquí la URL con la que trabajar:
@@ -64,10 +65,8 @@ public class Crawler {
 
 	}
 
-	public Crawler() {
-		p = new ProcesadoLaLiga();
-		
-	}
+	
+	
 
 	// procesado de comuniazo
 	public static class ProcesadoLaLiga implements ProcesadoWeb {

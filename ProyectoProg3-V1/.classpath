@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="resources/miglayout-3.5.5.jar"/>
 	<classpathentry kind="lib" path="resources/javax.mail.jar"/>
 	<classpathentry kind="lib" path="resources/htmlparser.jar"/>
+	<classpathentry kind="lib" path="resources/quartz-2.2.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
