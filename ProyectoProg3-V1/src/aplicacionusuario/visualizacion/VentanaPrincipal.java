@@ -106,6 +106,7 @@ public class VentanaPrincipal extends JFrame {
 				Usuario u = new Usuario();
 				 u  = null;
 				 a.setVisible(true);
+				 VentanaPrincipal.this.dispose();
 			}
 		});
 
