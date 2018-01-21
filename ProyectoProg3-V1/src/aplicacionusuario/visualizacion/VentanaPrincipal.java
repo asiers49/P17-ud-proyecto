@@ -78,16 +78,16 @@ public class VentanaPrincipal extends JFrame {
 		setContentPane(contentPane);
 
 		panel = new JPanel();
-		panel.setBackground(new Color(0, 102, 204));
+		panel.setBackground(new Color(29, 101, 171));
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel_Top = new JPanel();
 		panel_Top.setBorder(null);
-		panel_Top.setBackground(Color.LIGHT_GRAY);
+		panel_Top.setBackground(new Color(29, 101, 171));
 		contentPane.add(panel_Top, BorderLayout.NORTH);
 		panel_Top.setLayout(new MigLayout("", "[200][grow][]", "[100px,grow]"));
 
 		lblLigaFantasyFlex = new JLabel("LIGA FANTASY FLEX");
-		lblLigaFantasyFlex.setFont(new Font("Monospaced", Font.BOLD, 32));
+		lblLigaFantasyFlex.setFont(new Font("Monospaced", Font.BOLD, 38 ));
 		panel_Top.add(lblLigaFantasyFlex, "cell 1 0,alignx center,aligny center");
 
 		/*
@@ -96,7 +96,7 @@ public class VentanaPrincipal extends JFrame {
 
 		panel_User = new JPanel();
 		panel_User.setBorder(new EmptyBorder(0, 0, 0, 0));
-		panel_User.setBackground(Color.LIGHT_GRAY);
+		panel_User.setBackground(new Color(29, 101, 171));
 		panel_Top.add(panel_User, "cell 0 0,grow");
 		panel_User.setLayout(new MigLayout("", "[90px][]", "[22px][][]"));
 
@@ -127,9 +127,9 @@ public class VentanaPrincipal extends JFrame {
 		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 		panel.add(tabbedPane);
 		tabbedPane.setForeground(Color.WHITE);
-		tabbedPane.setBackground(new Color(0, 102, 204));
+		tabbedPane.setBackground(new Color(7, 46, 113));
 		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-		tabbedPane.setFont(new Font("Monospaced", Font.BOLD, 16));
+		tabbedPane.setFont(new Font("Monospaced", Font.BOLD, 17));
 		tabbedPane.add("Mi Liga", new PanelLigas());
 		tabbedPane.add("Mi Equipo", new PanelMiEquipo());
 		tabbedPane.add("Mercado", new PanelMercado());
@@ -198,13 +198,15 @@ public class VentanaPrincipal extends JFrame {
 				});
 				PanelLigas.this.add(anadirLiga1, "cell 1 2,alignx center,aligny top");
 
-			} else { // FALTA
+			} else { 
 				listaUsuarios = BD.sacarUsuariosLiga(user);
-				PanelLigas.this.setLayout(new MigLayout("", "[50px][550px][grow]", "[65px][][][][]"));
+				PanelLigas.this.setLayout(new MigLayout("", "[30px][650px][grow]", "[45px][][][][]"));
 				JPanel paneltitulo = new JPanel();
 				paneltitulo.setLayout(new MigLayout());
+				paneltitulo.setBackground(Color.white);
 				PanelLigas.this.add(paneltitulo, "cell 1 1");
 				JLabel lbltitulo = new JLabel("LIGA " + user.getLiga().getNombre());
+				lbltitulo.setForeground(new Color(229, 124, 8));
 				lbltitulo.setFont(new Font("Monospaced", Font.BOLD, 24));
 				paneltitulo.add(lbltitulo);
 				Collections.sort(listaUsuarios, new Comparator<Usuario>() {
@@ -217,8 +219,10 @@ public class VentanaPrincipal extends JFrame {
 				for (int i = 0; i < listaUsuarios.size(); i++) {
 					JPanel panel1 = new JPanel();
 					panel1.setLayout(new MigLayout("", "[100px][400px]", "[70px]"));
+					panel1.setBackground(new Color(13, 135, 188));
 					PanelLigas.this.add(panel1, "cell  1 " + (i + 2) + " ");
 					JPanel panel_Jugador = new JPanel();
+					panel_Jugador.setBackground(new Color(13, 135, 188));
 					panel1.add(panel_Jugador, "cell 1 0, alignx center, aligny center");
 					panel_Jugador.setLayout(new MigLayout("", "[50px][250px][50px][100px]", "[70px]"));
 					JLabel labelnom = new JLabel(listaUsuarios.get(i).getNombre());
@@ -229,6 +233,7 @@ public class VentanaPrincipal extends JFrame {
 					panel_Jugador.add(labelpuntos, "cell 3 0, grow");
 					JPanel panelpos = new JPanel();
 					panelpos.setLayout(new MigLayout("", "[50px]", "[70px]"));
+					panelpos.setBackground(new Color(229, 124, 80));
 					JLabel lblPos1 = new JLabel("" + (i + 1) + ")");
 					lblPos1.setFont(new Font("Monospaced", Font.PLAIN, 22));
 					lblPos1.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -242,11 +247,14 @@ public class VentanaPrincipal extends JFrame {
 		}
 	}
 
+	/**
+	 * 
+	 * @author Asier Salazar
+	 *
+	 */
+
 	private class PanelMiEquipo extends JPanel {
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1605981510261014903L; // FALTA
 		private JPanel panel_Portero;
 		private JPanel panel_Defensa;
@@ -282,7 +290,9 @@ public class VentanaPrincipal extends JFrame {
 
 			for (int i = 0; i < 11; i++) {
 				BotonJugador btn = new BotonJugador(null, "");
-				btn.setBackground(Color.WHITE);
+				btn.setBackground(new Color(13, 135, 188));
+				btn.setFont(new Font("Mponospaced", Font.PLAIN, 17));
+				btn.setForeground(Color.WHITE);
 				boolean seleccionado = false;
 				if (i == 0) {
 					btn.setPosicionNumero("Portero", 1);
@@ -351,11 +361,14 @@ public class VentanaPrincipal extends JFrame {
 		}
 	}
 
+	/**
+	 * 
+	 * @author Asier Salazar
+	 *
+	 */
+
 	private class PanelMercado extends JPanel {
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 		private ArrayList<Jugador> jugadoresmercado;
 
@@ -366,9 +379,10 @@ public class VentanaPrincipal extends JFrame {
 			JLabel nombre;
 			JLabel valor;
 			JLabel puntos;
-			JLabel puntosJornada;
+			JLabel posicion;
 			JPanel listajugadores = new JPanel();
 			listajugadores.setLayout(new MigLayout("", "[75px][grow]", "[][][][][][][]"));
+			listajugadores.setBackground(new Color(255, 255,255));
 			JScrollPane scrollPane = new JScrollPane(listajugadores);
 			scrollPane.setViewportBorder(null);
 			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -379,20 +393,21 @@ public class VentanaPrincipal extends JFrame {
 				nombre.setFont(new Font("Monospaced", Font.PLAIN, 20));
 				valor = new JLabel();
 				puntos = new JLabel();
-				puntosJornada = new JLabel();
+				posicion = new JLabel();
 				JButton fichar = new JButton("Comprar");
 				fichar.setBackground(Color.WHITE);
 				nombre.setText(j.getNombre());
 				valor.setText("Valor: " + j.getValor());
 				puntos.setText("Puntos Totales: " + j.getPuntos());
-				puntosJornada.setText("Puntos Jornada: " + j.getPuntosJornada());
+				posicion.setText("Posicion: " + j.getPosicion());
 				JPanel PanelJugador = new JPanel();
+				PanelJugador.setBackground(new Color(2, 121, 188));
 				PanelJugador.setLayout(new MigLayout("", "[200px][200px][90px]", "[60px][]"));
 				PanelJugador.add(nombre, "cell 0 0");
 				PanelJugador.add(fichar, " cell 2 1");
 				PanelJugador.add(valor, "cell 0 1");
 				PanelJugador.add(puntos, "cell 1 0");
-				PanelJugador.add(puntosJornada, "cell 1 1");
+				PanelJugador.add(posicion, "cell 1 1");
 				listajugadores.add(PanelJugador, "cell 1 " + i);
 				fichar.addActionListener(new ActionListener() {
 

@@ -55,7 +55,7 @@ public class VentanaInicio extends JFrame {
 		}
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 457, 229);
+		setBounds(150, 150, 457, 229);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -85,7 +85,7 @@ public class VentanaInicio extends JFrame {
 		
 		JButton btnIniSesison = new JButton("Iniciar Sesion");
 		btnIniSesison.setForeground(Color.WHITE);
-		btnIniSesison.setBackground(new Color(0, 102, 204));
+		btnIniSesison.setBackground(new Color(6, 50, 113));
 		btnIniSesison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				VentanaInicio.this.setVisible(false);
@@ -96,7 +96,7 @@ public class VentanaInicio extends JFrame {
 		panel_MID.add(btnIniSesison, "cell 1 1,grow");
 		JButton btnRegistrar = new JButton("Registrarse");
 		btnRegistrar.setForeground(Color.WHITE);
-		btnRegistrar.setBackground(new Color(0, 102, 204));
+		btnRegistrar.setBackground(new Color(6, 50, 113));
 		panel_MID.add(btnRegistrar, "cell 4 1,grow");
 		btnRegistrar.addActionListener(new ActionListener() {
 			

@@ -63,7 +63,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 		ventana = vp;
 		botonseleccionado = btn;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 603, 430);
+		setBounds(150, 150, 603, 430);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

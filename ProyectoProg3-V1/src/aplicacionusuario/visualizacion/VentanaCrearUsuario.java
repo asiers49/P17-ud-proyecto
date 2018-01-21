@@ -61,7 +61,7 @@ public class VentanaCrearUsuario extends JFrame {
 		
 		vI = ventanaanterior;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 464, 329);
+		setBounds(150, 150, 464, 329);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -107,7 +107,7 @@ public class VentanaCrearUsuario extends JFrame {
 		panel.setLayout(new MigLayout("", "[120px][][][][]", "[]"));
 
 		JButton btn_Volver = new JButton("Volver");
-		btn_Volver.setBackground(new Color(0, 102, 204));
+		btn_Volver.setBackground(new Color(7, 46, 113));
 		btn_Volver.setForeground(new Color(255, 255, 255));
 		btn_Volver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -119,7 +119,7 @@ public class VentanaCrearUsuario extends JFrame {
 		panel.add(btn_Volver, "cell 1 0");
 
 		JButton btn_Registrarse = new JButton("Registrarse");
-		btn_Registrarse.setBackground(new Color(0, 102, 204));
+		btn_Registrarse.setBackground(new Color(7, 46, 113));
 		btn_Registrarse.setForeground(new Color(255, 255, 255));
 		panel.add(btn_Registrarse, "cell 3 0");
 		btn_Registrarse.addActionListener(new ActionListener() {

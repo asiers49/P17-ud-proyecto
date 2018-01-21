@@ -59,7 +59,7 @@ public class ventanaRegistro extends JFrame {
 	 */
 	public ventanaRegistro(VentanaInicio ventanaanterior) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 524, 303);
+		setBounds(150, 150, 524, 303);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -88,7 +88,7 @@ public class ventanaRegistro extends JFrame {
 		panel_Mid.add(passwordField, "cell 1 1,growx,aligny center");
 
 		JButton btnHasOlvidadoLa = new JButton("\u00BFHas olviado la contrase\u00F1a?");
-		btnHasOlvidadoLa.setBackground(new Color(0, 102, 204));
+		btnHasOlvidadoLa.setBackground(new Color(6, 50, 113));
 		btnHasOlvidadoLa.setForeground(new Color(255, 255, 255));
 		btnHasOlvidadoLa.addActionListener(new ActionListener() {
 
@@ -121,7 +121,7 @@ public class ventanaRegistro extends JFrame {
 		panel_1.setLayout(new MigLayout("", "[180px][63px][95px][150]", "[23px]"));
 
 		JButton btnVolver = new JButton("Volver");
-		btnVolver.setBackground(new Color(0, 102, 204));
+		btnVolver.setBackground(new Color(6, 50,113));
 		btnVolver.setForeground(new Color(255, 255, 255));
 		panel_1.add(btnVolver, "cell 1 0,alignx left,aligny top");
 		btnVolver.addActionListener(new ActionListener() {
@@ -135,7 +135,7 @@ public class ventanaRegistro extends JFrame {
 		});
 
 		JButton btnIniciarSesion = new JButton("Iniciar Sesion");
-		btnIniciarSesion.setBackground(new Color(0, 102, 204));
+		btnIniciarSesion.setBackground(new Color(6, 50, 113));
 		btnIniciarSesion.setForeground(new Color(255, 255, 255));
 		panel_1.add(btnIniciarSesion, "cell 2 0,alignx left,aligny top");
 		btnIniciarSesion.addActionListener(new ActionListener() {

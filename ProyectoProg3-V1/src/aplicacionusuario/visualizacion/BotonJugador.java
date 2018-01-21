@@ -9,6 +9,7 @@ public class BotonJugador extends JButton {
 	private String posicion;
 	private Jugador jugador;
 	private int numero;
+	private int puntos;
 
 	public int getNumero() {
 		return numero;
@@ -34,7 +35,7 @@ public class BotonJugador extends JButton {
 
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
-		this.setText(jugador.getNombre());
+		this.setText(jugador.getNombre()+" "+jugador.getPuntosJornada());
 	}
 
 	public String getPosicion() {
@@ -47,6 +48,14 @@ public class BotonJugador extends JButton {
 		if (this.jugador == null) {
 			this.setText(posicion + " " + numero);
 		}
+	}
+
+	public int getPuntos() {
+		return puntos;
+	}
+
+	public void setPuntos(int puntos) {
+		this.puntos = puntos;
 	}
 }
 
