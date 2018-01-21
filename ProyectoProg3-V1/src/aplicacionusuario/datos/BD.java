@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import javax.swing.JOptionPane;
@@ -496,7 +497,22 @@ public class BD {
 	 * @param j
 	 * @param valor
 	 */
-	
+	public static TreeMap<ArrayList<Oferta>, Jugador> sacarOfertas(Liga l){
+		ArrayList<Jugador> jugadores=new ArrayList<>();
+		try {
+			Statement stmt=conn.createStatement();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		return null;
+		
+	}
+
 	public static void hacerPuja(Usuario u, Jugador j, int valor) {
 		try {
 			Statement stmt = conn.createStatement();

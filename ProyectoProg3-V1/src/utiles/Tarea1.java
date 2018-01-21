@@ -11,20 +11,14 @@ public class Tarea1 implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		System.out.println("Tarea 1");
-//		Ofertas();
-
+		System.out.println("Empieza Tarea 1");
+		Ofertas();
+		System.out.println("Tarea 1 acabo");
 	}
 
 	public void Ofertas() {
+		
 
-//		try {
-//			System.out.println("Resolviendo las Ofertas");
-//			Statement stm = conn.createStatement();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 }

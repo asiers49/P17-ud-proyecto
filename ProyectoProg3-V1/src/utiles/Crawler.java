@@ -1,39 +1,28 @@
 package utiles;
 
-import java.awt.Color;
-//Imports relacionados con el proceso
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.swing.JOptionPane;
-
-//Imports de librería externa  -  https://sourceforge.net/projects/htmlparser/
 import org.htmlparser.Node;
 import org.htmlparser.Tag;
 import org.htmlparser.lexer.Lexer;
 import org.htmlparser.lexer.Page;
 import org.htmlparser.nodes.TextNode;
-
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import aplicacionusuario.datos.BD;
 import aplicacionusuario.datos.Jugador;
 
-public class Crawler {
+public class Crawler implements Job {
 	private static boolean MOSTRAR_TODOS_LOS_TAGS = false;
-	public ProcesadoLaLiga p;
 	private static ArrayList<String> Equipos = new ArrayList<>();
 	private static int n;
 	private static boolean actualizar;
 	private static LinkedList<Tag> pilaTags;
-	public static Crawler c;
 
 	public static boolean isActualizar() {
 		return actualizar;
@@ -43,30 +32,15 @@ public class Crawler {
 		Crawler.actualizar = actualizar;
 	}
 
-	public Crawler() {
-		p = new ProcesadoLaLiga();
-		
-		Timer timer = new Timer();
-		timer.schedule(timerTask, 0, 1000*86400000); // timer se ejecuta cada dia
-		// Analisis de la web de comuniazo. Poner aquí la URL con la que trabajar:
+	@Override
+	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 
-		// String urlAAnalizar2 = "http://www.comuniazo.com/comunio/jugadores";
-		// revisaWeb( urlAAnalizar2 );
-		try {
-			BD.getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		n = 1;
 		ProcesadoLaLiga pLaLiga = new ProcesadoLaLiga();
 		String urlLaLiga = "http://www.comuniazo.com/comunio/jugadores";
 		procesaWeb(urlLaLiga, pLaLiga);
 
 	}
-
-	
-	
 
 	// procesado de comuniazo
 	public static class ProcesadoLaLiga implements ProcesadoWeb {
@@ -85,7 +59,7 @@ public class Crawler {
 		private int valor1;
 		private boolean listaequipos;
 		private int i;
-		
+
 		/**
 		 * 
 		 */
@@ -191,7 +165,6 @@ public class Crawler {
 		public void procesaTagCierre(Tag tag, LinkedList<Tag> pilaTags, boolean enHtml) {
 		}
 	}
-
 
 	/**
 	 * Procesa una web y lanza el método observador con cada uno de sus elementos
@@ -356,8 +329,8 @@ public class Crawler {
 		Equipos.add(string);
 	}
 
-	public static void actualizarJugador(int k, String nombre1, String equipo1, String posicion1, int puntos1, int puntosJ,
-			int valor1) throws SQLException {
+	public static void actualizarJugador(int k, String nombre1, String equipo1, String posicion1, int puntos1,
+			int puntosJ, int valor1) throws SQLException {
 		Jugador j = new Jugador(0, nombre1, equipo1, posicion1, puntos1, puntosJ, valor1, false);
 		BD.actualizarJugador(j);
 		n++;
@@ -370,17 +343,5 @@ public class Crawler {
 	public void setEquipos(ArrayList<String> equipos) {
 		Equipos = equipos;
 	}
-	
-	 static TimerTask timerTask = new TimerTask() 
-     { 
-     public void run(){ 
-    	 JOptionPane.showMessageDialog(null, "Actualizando BD...");
-        	 c = new Crawler();
-        	
-
-         } 
-     }; 
-      
-
 
 }
