@@ -47,6 +47,7 @@ public class VentanaPrincipal extends JFrame {
 	private JTabbedPane tabbedPane;
 	private JPanel panel;
 	ArrayList<BotonJugador> botones;
+	private JButton cerrarsesion;
 
 	/**
 	 * Create the frame.
@@ -89,6 +90,7 @@ public class VentanaPrincipal extends JFrame {
 		lblLigaFantasyFlex = new JLabel("LIGA FANTASY FLEX");
 		lblLigaFantasyFlex.setFont(new Font("Monospaced", Font.BOLD, 38 ));
 		panel_Top.add(lblLigaFantasyFlex, "cell 1 0,alignx center,aligny center");
+		panel_Top.add(cerrarsesion, "cell 2 0,alignx center,aligny center");
 
 		/*
 		 * Panel User
@@ -152,6 +154,7 @@ public class VentanaPrincipal extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				BD.cerrarConnection();
+				Main.GuardarProterties();
 			}
 
 		});
@@ -181,7 +184,7 @@ public class VentanaPrincipal extends JFrame {
 				txtpnBienvenidos.setText(
 						"Bienvenidos a la Liga Fantasy Flex. Para ingresar o crear una liga pulse el boton de abajo.\r\nUna vez que ya tenga una liga se le asignara un equipo con el que buscara ganar su Liga.\r\n\r\nDesde el equipo detras de esta Liga Fantasy esperemos que disfrute.\r\n\r\n\t\t\t\t\t\t\t\t\tMucha suerte!!!");
 				PanelLigas.this.add(txtpnBienvenidos, "cell 1 1,alignx center,grow");
-				JButton anadirLiga1 = new JButton("Añadir Ligas");
+				JButton anadirLiga1 = new JButton("Aï¿½adir Ligas");
 				anadirLiga1.setFont(new Font("Monospaced", Font.PLAIN, 22));
 				anadirLiga1.setBounds(0, 0, 300, 150);
 				anadirLiga1.setBackground(new Color(255, 255, 255));

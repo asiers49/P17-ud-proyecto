@@ -11,7 +11,7 @@ import aplicacionusuario.datos.Usuario;
 
 public class Main {
 	
-	private Usuario u;
+	static Usuario u;
 	
 	/**
 	 * Inicio de la aplicacion
@@ -22,18 +22,26 @@ public class Main {
 	public static void main(String[] args) {
 		// Properties
 		Main m = new Main();
+		
 		try {
+			
 			m.cargaProperties();
+			VentanaPrincipal vp=new VentanaPrincipal(u);
+			vp.setVisible(true);
 		} catch (IOException e) {
+			VentanaInicio vi=new VentanaInicio();
+			vi.setVisible(true);
+			
+		
 
 		}
 
 	}
 
-	private Properties properties;
+	private static Properties properties;
 
 	/**
-	 * Carga del fichero properties el usuario y contrase�a que estaban registrados
+	 * Carga del fichero properties el usuario y contrase�a que estaban registrados
 	 * cuando se cerro la aplicacion por ultima vez
 	 * 
 	 * @throws IOException
@@ -43,20 +51,35 @@ public class Main {
 	 */
 	private void cargaProperties() throws InvalidPropertiesFormatException, FileNotFoundException, IOException {
 		properties = new Properties();
-
-		properties.loadFromXML(new FileInputStream("usuarios.ini"));
-
-	}
+		String usuario= " ";
+		String contraseña="";
+		
+		properties.load(new FileInputStream("usuarios.ini"));
+		usuario = properties.getProperty(usuario);
+		contraseña=properties.getProperty(contraseña);
+		
+		
+		}
 
 	/**
-	 * Guarda en fichero el usuario y la contrase�a
+	 * Guarda en fichero el usuario y la contrase�a
 	 */
 
-	private void guardaProperties() {
+	public static void guardaProperties(Usuario u) {
+		properties = new Properties();
+		String usuario= u.getNombre();
+		String contraseña=u.getContrase;
+		
+		
 
 		try {
-			properties.storeToXML(new FileOutputStream("usuarios.ini"), "datos de RevisionZonasUTMGPS");
-		} catch (Exception e) {
+			properties.store(new FileOutputStream("usuarios.ini"), "");
+			properties.setProperty(usuario, contraseña);
+			
+			
+			} catch (Exception e) {
+			
+			
 		}
 	}
 }
