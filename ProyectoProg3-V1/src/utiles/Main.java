@@ -1,16 +1,10 @@
 package utiles;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 
+import java.sql.SQLException;
 import org.quartz.CronScheduleBuilder;
-import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -39,8 +33,6 @@ public class Main {
 		JobDetail tarea2 = JobBuilder.newJob(Crawler.class).withIdentity(tarea2key).build();
 		SchedulerFactory sf = new StdSchedulerFactory();
 		Scheduler scheduler = sf.getScheduler();
-
-		
 		Trigger trigger1 = TriggerBuilder.newTrigger().withIdentity("trigger1")
 				.withSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ?")).build();
 		Trigger trigger2 = TriggerBuilder.newTrigger().withIdentity("trigger2")
@@ -58,7 +50,5 @@ public class Main {
 
 	}
 
-	public static void crearMercado() {
 
-	}
 }

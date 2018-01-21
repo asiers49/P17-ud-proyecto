@@ -34,7 +34,8 @@ public class BD {
 
 	/**
 	 * 
-	 * @param Jugador j
+	 * @param Jugador
+	 *            j
 	 */
 
 	public static void insertJugador(Jugador j) {
@@ -172,25 +173,23 @@ public class BD {
 	}
 
 	/**
-	 * 	
+	 * 
 	 * @param usuario
 	 * @param mail
 	 * @return
 	 */
-	
+
 	public static String olvidarContra(String usuario, String mail) {
 		String pass = "";
-		
-		
-		
+
 		return pass;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	
+
 	public static String contrasenyaAleatoria() {
 		String cal = UUID.randomUUID().toString().substring(28); // String
 																	// aleatoria
@@ -205,7 +204,7 @@ public class BD {
 	 * @param liga
 	 * @return
 	 */
-	
+
 	private static boolean buscarLiga(Liga liga) {
 		boolean encontrado = false;
 		try {
@@ -225,13 +224,13 @@ public class BD {
 
 		return encontrado;
 	}
-	
+
 	/**
 	 * 
 	 * @param u
 	 * @param nombre
 	 */
-	
+
 	public static void crearliga(Usuario u, String nombre) {
 		Liga liga1 = new Liga(nombre, null);
 		try {
@@ -249,14 +248,14 @@ public class BD {
 		nuevaLiga(liga1);
 		crearEquipo(u, liga1);
 	}
-	
+
 	/**
 	 * 
 	 * @param u
 	 * @param nombre
 	 * @param clave
 	 */
-	
+
 	public static void unirseaLiga(Usuario u, String nombre, String clave) {
 		Liga liga1 = new Liga(nombre, clave);
 		try {
@@ -273,13 +272,13 @@ public class BD {
 		}
 		crearEquipo(u, liga1);
 	}
-	
+
 	/**
 	 * 
 	 * @param u
 	 * @return
 	 */
-	
+
 	public static ArrayList<Usuario> sacarUsuariosLiga(Usuario u) {
 		ArrayList<Usuario> lista = new ArrayList<>();
 		try {
@@ -300,13 +299,13 @@ public class BD {
 		return lista;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param u
 	 * @param l
 	 */
-	
+
 	private static void crearEquipo(Usuario u, Liga l) {
 		int valorequipoTotal = 0;
 		int valorequipo = 0;
@@ -401,13 +400,13 @@ public class BD {
 		valorequipoTotal = valorequipo;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param u
 	 * @return
 	 */
-	
+
 	public static ArrayList<Jugador> sacarEquipo(Usuario u) {
 		ArrayList<Jugador> equipo = new ArrayList<>();
 		try {
@@ -433,7 +432,7 @@ public class BD {
 	 * @param u
 	 * @param Cod_Jugador
 	 */
-	
+
 	public static void hacerTitular(Usuario u, int Cod_Jugador) {
 		try {
 			Statement stmt = conn.createStatement();
@@ -451,7 +450,7 @@ public class BD {
 	 * @param u
 	 * @param Cod_Jugador
 	 */
-	
+
 	public static void hacerSuplente(Usuario u, int Cod_Jugador) {
 		try {
 			Statement stmt = conn.createStatement();
@@ -469,15 +468,14 @@ public class BD {
 	 * @param l
 	 * @return
 	 */
-	
-	public static ArrayList<Jugador> sacarJugadoresMercado(Liga l) {
+	public static ArrayList<Jugador> actualizarMercado(Liga l) {
 		ArrayList<Jugador> listamercado = new ArrayList<>();
 
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT * FROM public.jugador WHERE cod_jugador in (Select cod_jugador from relacion WHERE nomusuario IS NULL AND nomliga='"
-							+ l.getNombre() + "') ORDER BY RANDOM() LIMIT 10");
+					"SELECT * FROM public.jugador WHERE cod_jugador in (Select cod_jugador from public.mercado WHERE nomliga='"
+							+ l.getNombre() + "')");
 			while (rs.next()) {
 				Jugador j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5),
 						rs.getInt(6), rs.getInt(7), false);
@@ -490,58 +488,90 @@ public class BD {
 
 		return listamercado;
 	}
-	
+
+	public static void sacarJugadoresMercado() {
+		ArrayList<String> nomligas=new ArrayList<>();
+		
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs=stmt.executeQuery("SELECT nomliga from ligas");
+			while (rs.next()) {
+				nomligas.add(rs.getString(1));
+			}
+			for(String l : nomligas) {
+				ResultSet rs2 = stmt.executeQuery(
+						"SELECT cod_jugador FROM public.jugador WHERE cod_jugador in (Select cod_jugador from relacion WHERE nomusuario IS NULL AND nomliga='"
+								+ l + "') ORDER BY RANDOM() LIMIT 10");
+				while (rs2.next()) {
+					stmt.executeUpdate("INSERT INTO MERCADO VALUES("+rs.getInt(1)+", '"+l+"'");
+				
+				}
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+
 	/**
 	 * 
 	 * @param u
 	 * @param j
 	 * @param valor
 	 */
-	public static void sacarOfertas(){
-		ArrayList<String> nomligas=new ArrayList<>();
+	public static void sacarOfertas() {
+		ArrayList<String> nomligas = new ArrayList<>();
 		try {
-			Statement stmt=conn.createStatement();
-			ResultSet rs=stmt.executeQuery("SELECT DISTINCT nomliga from Ofertas ");
-			while(rs.next()) {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT nomliga from Ofertas ");
+			while (rs.next()) {
 				nomligas.add(rs.getString(1));
 			}
-			for(String a:nomligas) {
-				ResultSet rs2=stmt.executeQuery("SELECT COD_JUGADOR, NOM_USUARIO, )
+			for (String a : nomligas) {
+				ResultSet rs2 = stmt.executeQuery("SELECT DISTINCT COD_JUGADOR FROM OFERTAS WHERE nomliga='" + a + "'");
+				while (rs2.next()) {
+					ResultSet rs3 = stmt.executeQuery(
+							"SELECT * FROM OFERTAS WHERE VALOR IN (SELECT MAX(VALOR) FROM OFERTAS WHERE nomliga='" + a
+									+ "' AND codjugador=" + rs.getInt(1) + ")");
+					while (rs3.next()) {
+						comprarJugador(rs.getString(1), rs.getInt(2), rs.getString(3));
+
+					}
+				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
+
 	}
 
 	public static void hacerPuja(Usuario u, Jugador j, int valor) {
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO OFERTAS VALUES('" + u.getNombre() + "'," + j.getCod_jugador() + ", "+valor+", "+u.getLiga().getNombre()+")");
+			stmt.executeUpdate("INSERT INTO OFERTAS VALUES('" + u.getNombre() + "'," + j.getCod_jugador() + ", " + valor
+					+ ", " + u.getLiga().getNombre() + ")");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param u
 	 * @param j
 	 */
-	
-	public static void comprarJugador(Usuario u, Jugador j) {
+
+	public static void comprarJugador(String u, int j, String l) {
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO='" + u.getNombre() + "' WHERE nomliga='"
-					+ u.getLiga().getNombre() + "' AND CODJUGADOR=" + j.getCod_jugador() + "");
+			stmt.executeUpdate(
+					"UPDATE RELACION SET NOMUSUARIO='" + u + "' WHERE nomliga='" + l + "' AND CODJUGADOR=" + j + "");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -554,25 +584,26 @@ public class BD {
 	 * @param u
 	 * @param j
 	 */
-	
+
 	public static void venderJugador(Usuario u, Jugador j, int precio) {
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO=NULL WHERE nomliga='"
-					+ u.getLiga().getNombre() + "' AND CODJUGADOR=" + j.getCod_jugador() + "");
-			
-			stmt.executeUpdate("UPDATE USUARIOS SET dinero=dinero +"+precio+" WHERE nombre ='" + u.getNombre() + "'");
+			stmt.executeUpdate("UPDATE RELACION SET NOMUSUARIO=NULL WHERE nomliga='" + u.getLiga().getNombre()
+					+ "' AND CODJUGADOR=" + j.getCod_jugador() + "");
+
+			stmt.executeUpdate(
+					"UPDATE USUARIOS SET dinero=dinero +" + precio + " WHERE nombre ='" + u.getNombre() + "'");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
-	
+
 	public static void cerrarConnection() {
 		if (conn != null) {
 			try {
@@ -585,5 +616,4 @@ public class BD {
 
 	}
 
-	
 }
