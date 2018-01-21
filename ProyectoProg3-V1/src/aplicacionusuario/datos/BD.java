@@ -177,9 +177,19 @@ public class BD {
 	 * @return
 	 */
 	
-	public static String olvidarContra(String usuario, String mail) {
+	public static String olvidarContra(String mail) {
 		String pass = "";
 		
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT contrasenya FROM usuarios WHERE mail ='" + mail + "'");
+			while (rs.next()){
+				pass = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		return pass;

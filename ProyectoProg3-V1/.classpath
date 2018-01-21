@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="resources/javax.mail.jar"/>
 	<classpathentry kind="lib" path="resources/htmlparser.jar"/>
 	<classpathentry kind="lib" path="resources/quartz-2.2.3.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
