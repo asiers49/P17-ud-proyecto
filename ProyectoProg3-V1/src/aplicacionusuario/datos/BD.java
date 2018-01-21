@@ -497,10 +497,17 @@ public class BD {
 	 * @param j
 	 * @param valor
 	 */
-	public static TreeMap<ArrayList<Oferta>, Jugador> sacarOfertas(Liga l){
-		ArrayList<Jugador> jugadores=new ArrayList<>();
+	public static void sacarOfertas(){
+		ArrayList<String> nomligas=new ArrayList<>();
 		try {
 			Statement stmt=conn.createStatement();
+			ResultSet rs=stmt.executeQuery("SELECT DISTINCT nomliga from Ofertas ");
+			while(rs.next()) {
+				nomligas.add(rs.getString(1));
+			}
+			for(String a:nomligas) {
+				ResultSet rs2=stmt.executeQuery("SELECT COD_JUGADOR, NOM_USUARIO, )
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -509,14 +516,14 @@ public class BD {
 		
 		
 		
-		return null;
+		
 		
 	}
 
 	public static void hacerPuja(Usuario u, Jugador j, int valor) {
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO OFERTAS VALUES('" + u.getNombre() + "'," + j.getCod_jugador() + ", "+valor+")");
+			stmt.executeUpdate("INSERT INTO OFERTAS VALUES('" + u.getNombre() + "'," + j.getCod_jugador() + ", "+valor+", "+u.getLiga().getNombre()+")");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
