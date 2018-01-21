@@ -37,7 +37,7 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel lblNomUsuario2;
 	private JPanel panel_User;
 	private JLabel lblLigaFantasyFlex;
-
+	
 	private ArrayList<Jugador> equipo;
 	private JLabel lblNomUsuario;
 	private JLabel lblNomLiga;
@@ -57,6 +57,8 @@ public class VentanaPrincipal extends JFrame {
 	 * @param listaJugadores
 	 */
 	public VentanaPrincipal(Usuario user1) {
+		
+		
 
 		/*
 		 * Actualizamos/Inicializamos variables
@@ -91,6 +93,21 @@ public class VentanaPrincipal extends JFrame {
 		lblLigaFantasyFlex.setFont(new Font("Monospaced", Font.BOLD, 38 ));
 		panel_Top.add(lblLigaFantasyFlex, "cell 1 0,alignx center,aligny center");
 		panel_Top.add(cerrarsesion, "cell 2 0,alignx center,aligny center");
+		cerrarsesion.addActionListener(new ActionListener() {
+			 
+			
+			
+			
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				VentanaInicio a = new VentanaInicio();
+				Usuario u = new Usuario();
+				 u  = null;
+				 a.setVisible(true);
+			}
+		});
 
 		/*
 		 * Panel User
@@ -154,7 +171,9 @@ public class VentanaPrincipal extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				BD.cerrarConnection();
-				Main.GuardarProterties();
+				Main.guardaProperties(user);	
+					
+				
 			}
 
 		});
