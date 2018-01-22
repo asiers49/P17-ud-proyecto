@@ -44,7 +44,7 @@ public class Main {
 	private static Properties properties;
 
 	/**
-	 * Carga del fichero properties el usuario y contrase�a que estaban
+	 * Carga del fichero properties el usuario y contrasenya que estaban
 	 * registrados cuando se cerro la aplicacion por ultima vez
 	 * 
 	 * @throws IOException

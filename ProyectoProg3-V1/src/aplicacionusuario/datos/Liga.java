@@ -48,6 +48,6 @@ public class Liga {
 	
 	public void entrarLiga(Usuario u) {
 		listausuarios.add(u);
-		u.setMiEquipo(new Equipo());
+		
 	}
 }

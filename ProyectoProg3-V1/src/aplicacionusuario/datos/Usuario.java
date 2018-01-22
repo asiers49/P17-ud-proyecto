@@ -4,7 +4,6 @@ public class Usuario {
 	private String nombre;
 	private String contraseña;
 	private String email;
-	private Equipo miEquipo;
 	private Liga liga;
 	private long dinero;
 	private int puntos;
@@ -18,7 +17,6 @@ public class Usuario {
 		this.setNombre(nombre);
 		this.setContraseña(contraseña);
 		this.email = email;
-		this.setMiEquipo(null);
 		this.setLiga(null);
 	}
 	
@@ -56,14 +54,6 @@ public class Usuario {
 			}
 		}
 
-	}
-
-	public Equipo getMiEquipo() {
-		return miEquipo;
-	}
-
-	public void setMiEquipo(Equipo miEquipo) {
-		this.miEquipo = miEquipo;
 	}
 
 	public Liga getLiga() {

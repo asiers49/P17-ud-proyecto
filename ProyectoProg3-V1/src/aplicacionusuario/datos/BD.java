@@ -274,7 +274,7 @@ public class BD {
 			Statement stmt = conn.createStatement();
 			if (buscarLiga(liga1)) {
 				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre()
-						+ "', dinero=15000000 WHERE nombre ='" + u.getNombre() + "'");
+						+ "', puntos=0, puntosjornada=0, dinero=15000000 WHERE nombre ='" + u.getNombre() + "'");
 			} else {
 				JOptionPane.showMessageDialog(null, "La liga no es correcta");
 			}
@@ -415,6 +415,58 @@ public class BD {
 
 	/**
 	 * 
+	 */
+
+	public static void calcularPuntos() {
+		ArrayList<String> nomusuarios = new ArrayList<>();
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT nombre from usuarios ");
+			while (rs.next()) {
+				nomusuarios.add(rs.getString(1));
+			}
+			for (String nombre : nomusuarios) {
+				ArrayList<Integer> ptsjugadores = new ArrayList<>();
+				ResultSet rs2 = stmt.executeQuery(
+						"SELECT  public.jugador.puntosjornada FROM public.jugador INNER JOIN public.relacion ON (public.jugador.cod_jugador = public.relacion.codjugador)	WHERE public.relacion.nomusuario = '"
+								+ nombre + "' AND public.relacion.titular=true");
+
+				while (rs2.next()) {
+					ptsjugadores.add(rs2.getInt(1));
+				}
+				int puntos = calcPuntosUsuario(ptsjugadores, 0);
+				stmt.executeUpdate("UPDATE USUARIOS SET puntos=puntos +" + puntos + ", puntosJornada=" + puntos
+						+ ", dinero=dinero +" + (puntos * 100000) + " WHERE nombre ='" + nombre + "'");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Metodo recursivo
+	 * 
+	 * @param ptosjugadores
+	 * @param i
+	 * @return
+	 */
+
+	public static int calcPuntosUsuario(ArrayList<Integer> ptosjugadores, int i) {
+		int puntos = 0;
+		int s;
+
+		if (i < ptosjugadores.size()) {
+			s = calcPuntosUsuario(ptosjugadores, i + 1);
+			puntos = s + ptosjugadores.get(i);
+		}
+		return puntos;
+
+	}
+
+	/**
+	 * 
 	 * @param u
 	 * @return
 	 */
@@ -506,16 +558,20 @@ public class BD {
 
 		try {
 			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("Delete from mercado");
 			ResultSet rs = stmt.executeQuery("SELECT nomliga from ligas");
 			while (rs.next()) {
 				nomligas.add(rs.getString(1));
 			}
 			for (String l : nomligas) {
-				ResultSet rs2 = stmt.executeQuery(
+				Statement stmt2 = conn.createStatement();
+				ResultSet rs2 = stmt2.executeQuery(
 						"SELECT cod_jugador FROM public.jugador WHERE cod_jugador in (Select cod_jugador from relacion WHERE nomusuario IS NULL AND nomliga='"
 								+ l + "') ORDER BY RANDOM() LIMIT 10");
+
 				while (rs2.next()) {
-					stmt.executeUpdate("INSERT INTO MERCADO VALUES(" + rs.getInt(1) + ", '" + l + "'");
+					System.out.println(rs2.getInt(1));
+					stmt.executeUpdate("INSERT INTO MERCADO VALUES(" + rs2.getInt(1) + ", '" + l + "')");
 
 				}
 			}
@@ -535,24 +591,36 @@ public class BD {
 	 */
 	public static void sacarOfertas() {
 		ArrayList<String> nomligas = new ArrayList<>();
+		ArrayList<Integer> codjugadores;
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT DISTINCT nomliga from Ofertas ");
 			while (rs.next()) {
 				nomligas.add(rs.getString(1));
 			}
+			rs.close();
 			for (String a : nomligas) {
-				ResultSet rs2 = stmt.executeQuery("SELECT DISTINCT COD_JUGADOR FROM OFERTAS WHERE nomliga='" + a + "'");
+				Statement stmt2 = conn.createStatement();
+				ResultSet rs2 = stmt2.executeQuery("SELECT DISTINCT CODJUGADOR FROM OFERTAS WHERE nomliga='" + a + "'");
+				codjugadores = new ArrayList<>();
 				while (rs2.next()) {
-					ResultSet rs3 = stmt.executeQuery(
+					codjugadores.add(rs2.getInt(1));
+				}
+				for (int cod : codjugadores) {
+
+					Statement stmt3 = conn.createStatement();
+					ResultSet rs3 = stmt3.executeQuery(
 							"SELECT * FROM OFERTAS WHERE VALOR IN (SELECT MAX(VALOR) FROM OFERTAS WHERE nomliga='" + a
-									+ "' AND codjugador=" + rs.getInt(1) + ")");
+									+ "' AND codjugador=" + cod + ")");
 					while (rs3.next()) {
-						comprarJugador(rs.getString(1), rs.getInt(2), rs.getString(3));
+						System.out.println(rs3.getString(1)+" "+ rs3.getInt(2)+"  "+rs3.getString(3));
+						comprarJugador(rs3.getString(1), rs3.getInt(2), rs3.getInt(3), rs3.getString(4));
 
 					}
 				}
+
 			}
+			stmt.executeUpdate("Delete from Ofertas");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -578,12 +646,12 @@ public class BD {
 	 * @param j
 	 */
 
-	public static void comprarJugador(String u, int j, String l) {
+	public static void comprarJugador(String u, int j, int precio, String l) {
 		try {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(
 					"UPDATE RELACION SET NOMUSUARIO='" + u + "' WHERE nomliga='" + l + "' AND CODJUGADOR=" + j + "");
-
+			stmt.executeUpdate("UPDATE USUARIOS SET dinero=dinero -" + precio + " WHERE nombre ='" + u + "'");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -626,5 +694,13 @@ public class BD {
 		}
 
 	}
+
+	// public static void main(String[] args) {
+	// ArrayList<Integer> numeros=new ArrayList<>();
+	// numeros.add(10);
+	// numeros.add(3);
+	// numeros.add(5);
+	// System.out.println(calcPuntosUsuario(numeros, 0));
+	// }
 
 }
