@@ -37,13 +37,13 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel lblNomUsuario2;
 	private JPanel panel_User;
 	private JLabel lblLigaFantasyFlex;
-	
+
 	private ArrayList<Jugador> equipo;
 	private JLabel lblNomUsuario;
 	private JLabel lblNomLiga;
 	private JLabel lblDinero;
 	private JLabel lblNomLiga2;
-	private JLabel lblDinero2;
+	JLabel lblDinero2;
 	private JTabbedPane tabbedPane;
 	private JPanel panel;
 	ArrayList<BotonJugador> botones;
@@ -57,8 +57,6 @@ public class VentanaPrincipal extends JFrame {
 	 * @param listaJugadores
 	 */
 	public VentanaPrincipal(Usuario user1) {
-		
-		
 
 		/*
 		 * Actualizamos/Inicializamos variables
@@ -88,25 +86,23 @@ public class VentanaPrincipal extends JFrame {
 		panel_Top.setBackground(new Color(29, 101, 171));
 		contentPane.add(panel_Top, BorderLayout.NORTH);
 		panel_Top.setLayout(new MigLayout("", "[200][grow][]", "[100px,grow]"));
-		cerrarsesion=new JButton("Cerrar Sesion");
+		cerrarsesion = new JButton("Cerrar Sesion");
+		cerrarsesion.setBackground(new Color(229, 124, 80));
+		cerrarsesion.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		lblLigaFantasyFlex = new JLabel("LIGA FANTASY FLEX");
-		lblLigaFantasyFlex.setFont(new Font("Monospaced", Font.BOLD, 38 ));
+		lblLigaFantasyFlex.setFont(new Font("Monospaced", Font.BOLD, 38));
 		panel_Top.add(lblLigaFantasyFlex, "cell 1 0,alignx center,aligny center");
 		panel_Top.add(cerrarsesion, "cell 2 0,alignx center,aligny center");
 		cerrarsesion.addActionListener(new ActionListener() {
-			 
-			
-			
-			
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				VentanaInicio a = new VentanaInicio();
 				Usuario u = new Usuario();
-				 u  = null;
-				 a.setVisible(true);
-				 VentanaPrincipal.this.dispose();
+				u = null;
+				a.setVisible(true);
+				VentanaPrincipal.this.dispose();
 			}
 		});
 
@@ -172,9 +168,8 @@ public class VentanaPrincipal extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				BD.cerrarConnection();
-				Main.guardaProperties(user);	
-					
-				
+				Main.guardaProperties(user);
+
 			}
 
 		});
@@ -204,7 +199,7 @@ public class VentanaPrincipal extends JFrame {
 				txtpnBienvenidos.setText(
 						"Bienvenidos a la Liga Fantasy Flex. Para ingresar o crear una liga pulse el boton de abajo.\r\nUna vez que ya tenga una liga se le asignara un equipo con el que buscara ganar su Liga.\r\n\r\nDesde el equipo detras de esta Liga Fantasy esperemos que disfrute.\r\n\r\n\t\t\t\t\t\t\t\t\tMucha suerte!!!");
 				PanelLigas.this.add(txtpnBienvenidos, "cell 1 1,alignx center,grow");
-				JButton anadirLiga1 = new JButton("Aï¿½adir Ligas");
+				JButton anadirLiga1 = new JButton("Añadir Ligas");
 				anadirLiga1.setFont(new Font("Monospaced", Font.PLAIN, 22));
 				anadirLiga1.setBounds(0, 0, 300, 150);
 				anadirLiga1.setBackground(new Color(255, 255, 255));
@@ -221,7 +216,7 @@ public class VentanaPrincipal extends JFrame {
 				});
 				PanelLigas.this.add(anadirLiga1, "cell 1 2,alignx center,aligny top");
 
-			} else { 
+			} else {
 				listaUsuarios = BD.sacarUsuariosLiga(user);
 				PanelLigas.this.setLayout(new MigLayout("", "[30px][650px][grow]", "[45px][][][][]"));
 				JPanel paneltitulo = new JPanel();
@@ -320,6 +315,18 @@ public class VentanaPrincipal extends JFrame {
 				if (i == 0) {
 					btn.setPosicionNumero("Portero", 1);
 					panel_Portero.add(btn);
+					for (Jugador j : equipo) {
+						if (j.getPosicion().equals("Portero") && j.isTitular()) {
+							for (BotonJugador boton : botones) {
+								if (boton.getJugador() == j) {
+									seleccionado = true;
+								}
+							}
+							if (!seleccionado) {
+								btn.setJugador(j);
+							}
+						}
+					}
 				} else if (i < 5) {
 					btn.setPosicionNumero("Defensa", i);
 					for (Jugador j : equipo) {
@@ -405,7 +412,7 @@ public class VentanaPrincipal extends JFrame {
 			JLabel posicion;
 			JPanel listajugadores = new JPanel();
 			listajugadores.setLayout(new MigLayout("", "[75px][grow]", "[][][][][][][]"));
-			listajugadores.setBackground(new Color(255, 255,255));
+			listajugadores.setBackground(new Color(255, 255, 255));
 			JScrollPane scrollPane = new JScrollPane(listajugadores);
 			scrollPane.setViewportBorder(null);
 			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -445,7 +452,7 @@ public class VentanaPrincipal extends JFrame {
 						} else if (precio >= j.getValor()) {
 							BD.hacerPuja(user, j, precio);
 							JLabel confirmacion = new JLabel(" Puja hecha: " + precio);
-							confirmacion.setFont(new Font("Monospaced", Font.ITALIC, 17));
+							confirmacion.setFont(new Font("Monospaced", Font.ITALIC, 12));
 							PanelJugador.add(confirmacion, "cell 2 0");
 						} else {
 							JOptionPane.showInternalMessageDialog(VentanaPrincipal.this,

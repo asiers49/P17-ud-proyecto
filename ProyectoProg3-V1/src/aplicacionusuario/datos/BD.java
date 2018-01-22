@@ -631,8 +631,8 @@ public class BD {
 	public static void hacerPuja(Usuario u, Jugador j, int valor) {
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO OFERTAS VALUES('" + u.getNombre() + "'," + j.getCod_jugador() + ", " + valor
-					+ ", " + u.getLiga().getNombre() + ")");
+			stmt.executeUpdate("INSERT INTO OFERTAS VALUES ('" + u.getNombre() + "'," + j.getCod_jugador() + ", " + valor
+					+ ", '" + u.getLiga().getNombre() + "')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

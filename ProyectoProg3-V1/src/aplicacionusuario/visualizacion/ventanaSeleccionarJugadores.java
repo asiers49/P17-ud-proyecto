@@ -190,7 +190,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 						if (opcion==0) {
 							BD.venderJugador(u, j, precio);
 							equipo.remove(j);
-							ventana.user.setDinero(u.getDinero()+precio);
+							ventana.lblDinero2.setText(""+(u.getDinero()+precio));
 					};
 				}
 			});
