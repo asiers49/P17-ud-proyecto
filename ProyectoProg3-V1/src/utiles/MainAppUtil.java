@@ -14,7 +14,7 @@ import org.quartz.impl.StdSchedulerFactory;
 
 import aplicacionusuario.datos.BD;
 
-public class Main {
+public class MainAppUtil {
 	
 	/**
 	 * Clase main que ejecuta el crawler, resuelve ofertas, da el dinero y saca el mercado de cada liga
