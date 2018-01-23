@@ -23,7 +23,7 @@ public class Usuario {
 	public Usuario(String nombre, int puntos, int puntosJornada) {
 		this.nombre=nombre;
 		this.puntos=puntos;
-		this.puntosJornada=puntosJornada;
+		this.setPuntosJornada(puntosJornada);
 	}
 	public String getNombre() {
 		return nombre;
@@ -79,5 +79,15 @@ public class Usuario {
 	public void setPuntos(int puntos) {
 		this.puntos = puntos;
 	}
+
+	public int getPuntosJornada() {
+		return puntosJornada;
+	}
+
+	public void setPuntosJornada(int puntosJornada) {
+		this.puntosJornada = puntosJornada;
+	}
+
+	
 
 }

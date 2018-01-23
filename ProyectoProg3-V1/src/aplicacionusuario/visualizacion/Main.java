@@ -22,7 +22,7 @@ public class Main {
 	 */
 
 	public static void main(String[] args) {
-		// Properties
+		//Si existe archivo properties abre directamente la ventana principal, sino abre ventana inicio.
 		Main m = new Main();
 		u = new Usuario();
 		try {
@@ -66,7 +66,7 @@ public class Main {
 	}
 
 	/**
-	 * Guarda en fichero el usuario y la contrase�a
+	 * Guarda en fichero el usuario y la contrasenya
 	 */
 
 	public static void guardaProperties(Usuario u) {

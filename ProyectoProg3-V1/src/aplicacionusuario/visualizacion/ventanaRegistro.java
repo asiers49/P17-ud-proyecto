@@ -36,11 +36,11 @@ public class ventanaRegistro extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
-	private static String correo;
 
 	/**
 	 * Launch the application.
 	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -57,6 +57,7 @@ public class ventanaRegistro extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+
 	public ventanaRegistro(VentanaInicio ventanaanterior) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(150, 150, 524, 303);
@@ -93,16 +94,16 @@ public class ventanaRegistro extends JFrame {
 		btnHasOlvidadoLa.addActionListener(new ActionListener() {
 
 			/*
-			 * (non-Javadoc)
+			 * LLama al metodo de base de datos que comprueba si existe el mail y devuelve
+			 * la contraseña
 			 * 
-			 * @see
-			 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+			 * Luego llama al metodo enviarCorreo
 			 */
 
-			public void actionPerformed(ActionEvent arg0) {	// Falta
+			public void actionPerformed(ActionEvent arg0) {
 				String mail = JOptionPane.showInputDialog("Escribe tu mail");
 				String pass = BD.olvidarContra(mail);
-				
+
 				enviarCorreo(pass, mail);
 			}
 		});
@@ -122,14 +123,13 @@ public class ventanaRegistro extends JFrame {
 		panel_1.setLayout(new MigLayout("", "[180px][63px][95px][150]", "[23px]"));
 
 		JButton btnVolver = new JButton("Volver");
-		btnVolver.setBackground(new Color(6, 50,113));
+		btnVolver.setBackground(new Color(6, 50, 113));
 		btnVolver.setForeground(new Color(255, 255, 255));
 		panel_1.add(btnVolver, "cell 1 0,alignx left,aligny top");
 		btnVolver.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				ventanaRegistro.this.setVisible(false);
 				ventanaanterior.setVisible(true);
 			}
@@ -142,10 +142,9 @@ public class ventanaRegistro extends JFrame {
 		btnIniciarSesion.addActionListener(new ActionListener() {
 
 			/*
-			 * (non-Javadoc)
+			 * Boton iniciar sesion Comprueba en la base de datos si existe el usuario, si
+			 * existe llama a la ventana principal sino mensaje de error
 			 * 
-			 * @see
-			 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 			 */
 
 			@Override
@@ -211,5 +210,5 @@ public class ventanaRegistro extends JFrame {
 		}
 
 	}
-	
+
 }

@@ -18,6 +18,7 @@ public class BD {
 	private static Connection conn;
 
 	/**
+	 * Metodo que establece conexion con la base de datos
 	 * 
 	 * @throws SQLException
 	 */
@@ -33,6 +34,7 @@ public class BD {
 	}
 
 	/**
+	 * Inserta un jugador nuevo en la base de datos
 	 * 
 	 * @param Jugador
 	 *            j
@@ -58,11 +60,12 @@ public class BD {
 	}
 
 	/**
+	 * Actualiza los valores en la base de datos de cada jugador
 	 * 
 	 * @param j
 	 */
 
-	public static void actualizarJugador(Jugador j) { // FALTA
+	public static void actualizarJugador(Jugador j) {
 		String nombre = j.getNombre();
 		String equipo = j.getEquipo();
 		String posicion = j.getPosicion();
@@ -90,8 +93,10 @@ public class BD {
 	}
 
 	/**
+	 * inserta en la tabla relacion los codigos de los jugadores de esa liga
 	 * 
 	 * @param l
+	 *            liga nueva.
 	 */
 
 	public static void nuevaLiga(Liga l) {
@@ -102,13 +107,11 @@ public class BD {
 			ResultSet rs = stmt.executeQuery("SELECT cod_jugador FROM JUGADOR");
 			while (rs.next()) {
 				codigos.add(rs.getInt(1));
-				System.out.println("jugador sacado " + (i + 1));
 				i++;
 			}
 			for (int h = 0; h < codigos.size(); h++) {
 				stmt.executeUpdate("INSERT INTO RELACION (codjugador, nomliga) VALUES (" + codigos.get(h) + ", '"
 						+ l.getNombre() + "')");
-				System.out.println("Jugador insertado " + h);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -136,9 +139,12 @@ public class BD {
 	}
 
 	/**
+	 * Busca el usuario que entra como parametro en la base de datos y si esta en la
+	 * base de datos saca todos sus atributos
 	 * 
 	 * @param u
-	 * @return
+	 *            usuario
+	 * @return usuario
 	 */
 
 	public static Usuario buscarUsuario(Usuario u) {
@@ -173,8 +179,8 @@ public class BD {
 	}
 
 	/**
+	 * Busca un mail en la base de datos y devuelve la contraseña de ese usuario
 	 * 
-	 * @param usuario
 	 * @param mail
 	 * @return
 	 */
@@ -198,23 +204,21 @@ public class BD {
 	}
 
 	/**
+	 * Saca una clave aleatoria para cada liga
 	 * 
-	 * @return
+	 * @return String contrasenya
 	 */
 
 	public static String contrasenyaAleatoria() {
-		String cal = UUID.randomUUID().toString().substring(28); // String
-																	// aleatoria
-																	// de 8
-																	// alfanumerics
-																	// chars
+		String cal = UUID.randomUUID().toString().substring(28);
 		return cal;
 	}
 
 	/**
+	 * Comprueba si una liga esta en la base de datos
 	 * 
 	 * @param liga
-	 * @return
+	 * @return boolean true si esta, false si no esta
 	 */
 
 	private static boolean buscarLiga(Liga liga) {
@@ -238,9 +242,12 @@ public class BD {
 	}
 
 	/**
+	 * Inserta en la tabla ligas una nueva liga, y actualiza atributos en el usuario
 	 * 
 	 * @param u
+	 *            usuario
 	 * @param nombre
+	 *            de la liga
 	 */
 
 	public static void crearliga(Usuario u, String nombre) {
@@ -286,9 +293,11 @@ public class BD {
 	}
 
 	/**
+	 * Saca los usuarios que pertenecen a una liga
 	 * 
 	 * @param u
-	 * @return
+	 *            usario que pertenece a esa liga
+	 * @return lista de usuarios
 	 */
 
 	public static ArrayList<Usuario> sacarUsuariosLiga(Usuario u) {
@@ -313,9 +322,14 @@ public class BD {
 	}
 
 	/**
+	 * Crea un nuevo equipo, utiliza un algoritmo que calcula el valor de equipo y
+	 * va sacando aleatoriamente jugadores de la base de datos hasta que el valor de
+	 * equipo sea de alrededor 28 millones
 	 * 
 	 * @param u
+	 *            usuario al que se le crea el equipo
 	 * @param l
+	 *            liga a la que pertenece
 	 */
 
 	private static void crearEquipo(Usuario u, Liga l) {
@@ -446,10 +460,12 @@ public class BD {
 	}
 
 	/**
-	 * Metodo recursivo
+	 * Metodo recursivo que calcula los puntos de jornada de ese usuario
 	 * 
 	 * @param ptosjugadores
+	 *            de los jugadores del usuario que son titulares
 	 * @param i
+	 *            indice
 	 * @return
 	 */
 
@@ -481,7 +497,6 @@ public class BD {
 			while (rs.next()) {
 				Jugador j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5),
 						rs.getInt(6), rs.getInt(7), rs.getBoolean(8));
-				System.out.println(j.getNombre() + " " + j.getPosicion() + " " + j.getCod_jugador());
 				equipo.add(j);
 			}
 		} catch (SQLException e) {
@@ -492,9 +507,12 @@ public class BD {
 	}
 
 	/**
+	 * Hace a un jugador titular, actualizando la tabla relacion
 	 * 
 	 * @param u
+	 *            usuario
 	 * @param Cod_Jugador
+	 *            del jugador
 	 */
 
 	public static void hacerTitular(Usuario u, int Cod_Jugador) {
@@ -510,9 +528,12 @@ public class BD {
 	}
 
 	/**
+	 * Hace a un jugador suplente, actualizando la tabla relacion
 	 * 
 	 * @param u
+	 *            usuario
 	 * @param Cod_Jugador
+	 *            del jugador
 	 */
 
 	public static void hacerSuplente(Usuario u, int Cod_Jugador) {
@@ -528,9 +549,12 @@ public class BD {
 	}
 
 	/**
+	 * Coge de la tabla mercado, los jugadores que estan en el mercado
+	 * correpondiente a esa liga
 	 * 
 	 * @param l
-	 * @return
+	 *            liga
+	 * @return lista de jugadores
 	 */
 	public static ArrayList<Jugador> actualizarMercado(Liga l) {
 		ArrayList<Jugador> listamercado = new ArrayList<>();
@@ -553,6 +577,10 @@ public class BD {
 		return listamercado;
 	}
 
+	/**
+	 * Inserta en la tabla mercado 10 jugadores aleatorios por cada liga
+	 */
+
 	public static void sacarJugadoresMercado() {
 		ArrayList<String> nomligas = new ArrayList<>();
 
@@ -570,7 +598,6 @@ public class BD {
 								+ l + "') ORDER BY RANDOM() LIMIT 10");
 
 				while (rs2.next()) {
-					System.out.println(rs2.getInt(1));
 					stmt.executeUpdate("INSERT INTO MERCADO VALUES(" + rs2.getInt(1) + ", '" + l + "')");
 
 				}
@@ -613,7 +640,7 @@ public class BD {
 							"SELECT * FROM OFERTAS WHERE VALOR IN (SELECT MAX(VALOR) FROM OFERTAS WHERE nomliga='" + a
 									+ "' AND codjugador=" + cod + ")");
 					while (rs3.next()) {
-						System.out.println(rs3.getString(1)+" "+ rs3.getInt(2)+"  "+rs3.getString(3));
+						System.out.println(rs3.getString(1) + " " + rs3.getInt(2) + "  " + rs3.getString(3));
 						comprarJugador(rs3.getString(1), rs3.getInt(2), rs3.getInt(3), rs3.getString(4));
 
 					}
@@ -628,11 +655,22 @@ public class BD {
 
 	}
 
+	/**
+	 * Inserta en la tabla ofertas, una nueva puja por un jugador
+	 * 
+	 * @param u
+	 *            usuario que realiza la puja
+	 * @param j
+	 *            jugador que se quiere comprar
+	 * @param valor
+	 *            de la puja
+	 */
+
 	public static void hacerPuja(Usuario u, Jugador j, int valor) {
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO OFERTAS VALUES ('" + u.getNombre() + "'," + j.getCod_jugador() + ", " + valor
-					+ ", '" + u.getLiga().getNombre() + "')");
+			stmt.executeUpdate("INSERT INTO OFERTAS VALUES ('" + u.getNombre() + "'," + j.getCod_jugador() + ", "
+					+ valor + ", '" + u.getLiga().getNombre() + "')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -641,6 +679,7 @@ public class BD {
 	}
 
 	/**
+	 * Actualiza la tabla relacion cuando un usuario compra un jugador
 	 * 
 	 * @param u
 	 * @param j
@@ -659,7 +698,7 @@ public class BD {
 	}
 
 	/**
-	 * 
+	 * Actualiza las tablas relacion y usuarios cuando un usuario vende a un jugador
 	 * @param u
 	 * @param j
 	 */
