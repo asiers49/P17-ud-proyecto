@@ -1,12 +1,9 @@
 package aplicacionusuario.visualizacion;
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import aplicacionusuario.datos.BD;
-import aplicacionusuario.datos.Liga;
 import aplicacionusuario.datos.Usuario;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
@@ -15,11 +12,6 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JSeparator;
@@ -45,26 +37,12 @@ public class VentanaCrearLiga extends JFrame {
 	private JButton btnAceptar1;
 
 	/**
-	 * Launch the application.
+	 * Ventana que te da varias opciones para ingresar en una liga, o crear una
+	 * nueva liga o ingresar en una ya creada .
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaCrearLiga frame = new VentanaCrearLiga(null, null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the frame.
-	 */
-	public VentanaCrearLiga(VentanaPrincipal ventanaanterior, Usuario user1) { // Cuando se crea una liga se inicia la
-		user=user1;																		// base de datos.
+	public VentanaCrearLiga(VentanaPrincipal ventanaanterior, Usuario user1) {
+		user = user1;
 		setFont(new Font("Monospaced", Font.PLAIN, 16));
 		setType(Type.UTILITY);
 		setTitle("Crear Liga");
@@ -74,7 +52,8 @@ public class VentanaCrearLiga extends JFrame {
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("", "[100px][300px][]", "[30px][15px][20px][15px][30px][10px][15px][30px][15px][20px][15px][20px][15px][30px][30px]"));
+		contentPane.setLayout(new MigLayout("", "[100px][300px][]",
+				"[30px][15px][20px][15px][30px][10px][15px][30px][15px][20px][15px][20px][15px][30px][30px]"));
 
 		lblCrearLiga = new JLabel("CREAR UNA  LIGA:");
 		lblCrearLiga.setFont(new Font("Monospaced", Font.PLAIN, 16));
@@ -95,11 +74,11 @@ public class VentanaCrearLiga extends JFrame {
 		btnAceptar1.setBackground(new Color(0, 102, 204));
 		contentPane.add(btnAceptar1, "cell 1 4");
 		btnAceptar1.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String nombre=textField_nombre.getText();
+				// Crea una nueva liga
+				String nombre = textField_nombre.getText();
 				JOptionPane.showMessageDialog(VentanaCrearLiga.this, "La liga se esta creando");
 				BD.crearliga(user1, nombre);
 				VentanaPrincipal vP = new VentanaPrincipal(user);
@@ -119,9 +98,9 @@ public class VentanaCrearLiga extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String nombre=textField_nombre2.getText();
-				String clave=textField_Password.getText();
+				// LLama a la bd de unirse a la liga
+				String nombre = textField_nombre2.getText();
+				String clave = textField_Password.getText();
 				BD.unirseaLiga(user1, nombre, clave);
 				VentanaPrincipal vP = new VentanaPrincipal(user);
 				vP.setVisible(true);
@@ -150,7 +129,7 @@ public class VentanaCrearLiga extends JFrame {
 		contentPane.add(textField_Password, "cell 1 11,growx");
 		textField_Password.setColumns(10);
 		btnAceptar2.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		
+
 		JButton btnNewButton = new JButton("Volver");
 		btnNewButton.setForeground(Color.WHITE);
 		btnNewButton.setBackground(new Color(0, 102, 204));

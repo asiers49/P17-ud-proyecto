@@ -5,18 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -103,8 +99,6 @@ public class VentanaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				VentanaInicio a = new VentanaInicio();
-				Usuario u = new Usuario();
-				u = null;
 				a.setVisible(true);
 				VentanaPrincipal.this.dispose();
 			}
@@ -144,6 +138,11 @@ public class VentanaPrincipal extends JFrame {
 		lblNomLiga2.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		panel.setLayout(new BorderLayout(0, 0));
 
+		/*
+		 * Tabbed Pane en el que crea un menu con 4 opciones, Clasificacion, Mi Equipo,
+		 * Mercado y Ajustes
+		 */
+
 		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 		panel.add(tabbedPane);
 		tabbedPane.setForeground(Color.WHITE);
@@ -154,7 +153,7 @@ public class VentanaPrincipal extends JFrame {
 		tabbedPane.add("Mi Equipo", new PanelMiEquipo());
 		tabbedPane.add("Mercado", new PanelMercado());
 		tabbedPane.add("Ajustes", new PanelAjustes());
-		JLabel lab = new JLabel("Mi Liga");
+		JLabel lab = new JLabel("Clasificacion");
 		lab.setPreferredSize(new Dimension(160, 40));
 		lab.setFont(new Font("Monospaced", Font.BOLD, 16));
 		lab.setForeground(new Color(255, 255, 255));
@@ -175,6 +174,11 @@ public class VentanaPrincipal extends JFrame {
 		tabbedPane.setTabComponentAt(2, lab3);
 		tabbedPane.setTabComponentAt(3, lab4);
 
+		/*
+		 * Al cerrar la ventana se guarda el usuario en el archivo properties y se
+		 * cierra la conexion con la bd
+		 */
+
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				BD.cerrarConnection();
@@ -185,6 +189,13 @@ public class VentanaPrincipal extends JFrame {
 		});
 
 	}
+
+	/**
+	 * Panel Ligas donde aparece la clasificacion total de esa liga
+	 * 
+	 * @author Asier Salazar
+	 *
+	 */
 
 	private class PanelLigas extends JPanel {
 
@@ -201,6 +212,11 @@ public class VentanaPrincipal extends JFrame {
 			PanelLigas.this.setLayout(new MigLayout("", "[60px][grow][]", "[100px][grow][350][]"));
 			PanelLigas.this.setVisible(false);
 
+			/*
+			 * Si el usuario no tiene una liga aparece esta ventana en la que le da la
+			 * opcion de ingresar en una liga
+			 */
+
 			if (user.getLiga() == null) {
 
 				txtpnBienvenidos = new JTextPane();
@@ -209,7 +225,7 @@ public class VentanaPrincipal extends JFrame {
 				txtpnBienvenidos.setText(
 						"Bienvenidos a la Liga Fantasy Flex. Para ingresar o crear una liga pulse el boton de abajo.\r\nUna vez que ya tenga una liga se le asignara un equipo con el que buscara ganar su Liga.\r\n\r\nDesde el equipo detras de esta Liga Fantasy esperemos que disfrute.\r\n\r\n\t\t\t\t\t\t\t\t\tMucha suerte!!!");
 				PanelLigas.this.add(txtpnBienvenidos, "cell 1 1,alignx center,grow");
-				JButton anadirLiga1 = new JButton("Añadir Ligas");
+				JButton anadirLiga1 = new JButton("Ingresar en liga");
 				anadirLiga1.setFont(new Font("Monospaced", Font.PLAIN, 22));
 				anadirLiga1.setBounds(0, 0, 300, 150);
 				anadirLiga1.setBackground(new Color(255, 255, 255));
@@ -217,7 +233,7 @@ public class VentanaPrincipal extends JFrame {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
+						// Crea ventana donde ingresar en una liga
 						VentanaPrincipal.this.setVisible(false);
 						VentanaCrearLiga vCL = new VentanaCrearLiga(VentanaPrincipal.this, user);
 						vCL.setVisible(true);
@@ -227,6 +243,12 @@ public class VentanaPrincipal extends JFrame {
 				PanelLigas.this.add(anadirLiga1, "cell 1 2,alignx center,aligny top");
 
 			} else {
+
+				/*
+				 * Si existe liga, se crea un panel en el que aparece una lista con la
+				 * clasificacion de cada jugador
+				 */
+
 				listaUsuarios = BD.sacarUsuariosLiga(user);
 				PanelLigas.this.setLayout(new MigLayout("", "[30px][650px][grow]", "[45px][][][][]"));
 				JPanel paneltitulo = new JPanel();
@@ -237,28 +259,8 @@ public class VentanaPrincipal extends JFrame {
 				lbltitulo.setForeground(new Color(229, 124, 8));
 				lbltitulo.setFont(new Font("Monospaced", Font.BOLD, 24));
 				paneltitulo.add(lbltitulo);
-				JCheckBox opcion = new JCheckBox("Ordenar por Puntos en esta Jornada");
-				opcion.setFont(new Font("Monospaced", Font.PLAIN, 18));
-				opcion.setBackground(new Color(255, 255, 255));
-				paneltitulo.add(opcion);
-				opcion.addItemListener(new ItemListener() {
 
-					@Override
-					public void itemStateChanged(ItemEvent e) {
-						// TODO Auto-generated method stub
-						if (opcion.isSelected()) {
-							Collections.sort(listaUsuarios, new Comparator<Usuario>() {
-								public int compare(Usuario u1, Usuario u2) {
-									Integer i1 = new Integer(u1.getPuntosJornada());
-									Integer i2 = new Integer(u2.getPuntosJornada());
-									return i2.compareTo(i1);
-								}
-							});
-
-						}
-					}
-				});
-
+				// Ordena el arraylist de jugadores por los puntos que tienen
 				Collections.sort(listaUsuarios, new Comparator<Usuario>() {
 					public int compare(Usuario u1, Usuario u2) {
 						Integer i1 = new Integer(u1.getPuntos());
@@ -266,6 +268,10 @@ public class VentanaPrincipal extends JFrame {
 						return i2.compareTo(i1);
 					}
 				});
+
+				/*
+				 * Bucle en el que crea los paneles con los usuarios ya ordenados
+				 */
 
 				for (int i = 0; i < listaUsuarios.size(); i++) {
 					JPanel panel1 = new JPanel();
@@ -282,6 +288,9 @@ public class VentanaPrincipal extends JFrame {
 					JLabel labelpuntos = new JLabel("Puntos Totales: " + listaUsuarios.get(i).getPuntos());
 					labelpuntos.setFont(new Font("Monospaced", Font.PLAIN, 18));
 					panel_Jugador.add(labelpuntos, "cell 3 0, grow");
+					JLabel puntosjornada = new JLabel("Puntos Jornada: " + listaUsuarios.get(i).getPuntosJornada());
+					puntosjornada.setFont(new Font("Monospaced", Font.PLAIN, 18));
+					panel_Jugador.add(puntosjornada, "cell 3 1, grow");
 					JPanel panelpos = new JPanel();
 					panelpos.setLayout(new MigLayout("", "[50px]", "[70px]"));
 					panelpos.setBackground(new Color(229, 124, 80));
@@ -299,6 +308,7 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	/**
+	 * Panel correspondiente a la pagina del equipo.
 	 * 
 	 * @author Asier Salazar
 	 *
@@ -338,7 +348,11 @@ public class VentanaPrincipal extends JFrame {
 			PanelMiEquipo.this.add(panel_Delanteros, "cell 0 4,growx,aligny center");
 			panel_Delanteros.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			panel_Delanteros.setBackground(Color.WHITE);
-
+			
+			/*
+			 * Crea los botones de cada Jugador, utilizando la alineacion 4-3-3
+			 */
+			
 			for (int i = 0; i < 11; i++) {
 				BotonJugador btn = new BotonJugador(null, "");
 				btn.setBackground(new Color(13, 135, 188));
@@ -425,6 +439,7 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	/**
+	 * Panel correspondiente al mercado
 	 * 
 	 * @author Asier Salazar
 	 *
@@ -520,7 +535,11 @@ public class VentanaPrincipal extends JFrame {
 		private JLabel contrasenya;
 		private JLabel clave;
 		private JPanel panel;
-
+		
+		/*
+		 *Crea el panel 
+		 */
+		
 		public PanelAjustes() {
 			PanelAjustes.this.setBackground(new Color(255, 255, 255));
 			PanelAjustes.this.setLayout(new BorderLayout(35, 20));

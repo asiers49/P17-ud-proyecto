@@ -1,24 +1,18 @@
 package aplicacionusuario.visualizacion;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import aplicacionusuario.datos.BD;
 import aplicacionusuario.datos.Usuario;
-
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -36,22 +30,6 @@ public class VentanaCrearUsuario extends JFrame {
 	private JPasswordField passwordField;
 	private JTextField textField_email;
 	private Usuario user;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaCrearUsuario frame = new VentanaCrearUsuario(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -126,7 +104,7 @@ public class VentanaCrearUsuario extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				// Registra el usuario en la Base de Datos
 				String usuario = textField_usuario.getText();
 				String password = String.valueOf(passwordField.getPassword());
 				String email = textField_email.getText();

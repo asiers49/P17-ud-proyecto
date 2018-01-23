@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.TreeMap;
 import java.util.UUID;
 
 import javax.swing.JOptionPane;
@@ -101,13 +100,11 @@ public class BD {
 
 	public static void nuevaLiga(Liga l) {
 		ArrayList<Integer> codigos = new ArrayList<>();
-		int i = 0;
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT cod_jugador FROM JUGADOR");
 			while (rs.next()) {
 				codigos.add(rs.getInt(1));
-				i++;
 			}
 			for (int h = 0; h < codigos.size(); h++) {
 				stmt.executeUpdate("INSERT INTO RELACION (codjugador, nomliga) VALUES (" + codigos.get(h) + ", '"
@@ -611,11 +608,10 @@ public class BD {
 	}
 
 	/**
-	 * 
-	 * @param u
-	 * @param j
-	 * @param valor
+	 * Obtiene las ofertas de cada jugador y selecciona la mas alta, a continuacion
+	 * llama al metodo comprarJugador
 	 */
+	
 	public static void sacarOfertas() {
 		ArrayList<String> nomligas = new ArrayList<>();
 		ArrayList<Integer> codjugadores;
@@ -640,7 +636,6 @@ public class BD {
 							"SELECT * FROM OFERTAS WHERE VALOR IN (SELECT MAX(VALOR) FROM OFERTAS WHERE nomliga='" + a
 									+ "' AND codjugador=" + cod + ")");
 					while (rs3.next()) {
-						System.out.println(rs3.getString(1) + " " + rs3.getInt(2) + "  " + rs3.getString(3));
 						comprarJugador(rs3.getString(1), rs3.getInt(2), rs3.getInt(3), rs3.getString(4));
 
 					}
@@ -699,8 +694,10 @@ public class BD {
 
 	/**
 	 * Actualiza las tablas relacion y usuarios cuando un usuario vende a un jugador
-	 * @param u
-	 * @param j
+	 * 
+	 * @param u usuario
+	 * @param j jugador
+	 * @param precio 
 	 */
 
 	public static void venderJugador(Usuario u, Jugador j, int precio) {
@@ -719,7 +716,7 @@ public class BD {
 	}
 
 	/**
-	 * 
+	 * Cierra la conexion con la base de datos
 	 */
 
 	public static void cerrarConnection() {
@@ -734,12 +731,5 @@ public class BD {
 
 	}
 
-	// public static void main(String[] args) {
-	// ArrayList<Integer> numeros=new ArrayList<>();
-	// numeros.add(10);
-	// numeros.add(3);
-	// numeros.add(5);
-	// System.out.println(calcPuntosUsuario(numeros, 0));
-	// }
 
 }

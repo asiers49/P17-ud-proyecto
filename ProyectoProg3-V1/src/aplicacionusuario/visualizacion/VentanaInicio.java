@@ -1,22 +1,19 @@
 package aplicacionusuario.visualizacion;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import aplicacionusuario.datos.BD;
-
+import java.awt.Color;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import net.miginfocom.swing.MigLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import aplicacionusuario.datos.BD;
+import net.miginfocom.swing.MigLayout;
 
 public class VentanaInicio extends JFrame {
 
@@ -28,25 +25,9 @@ public class VentanaInicio extends JFrame {
 	
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaInicio frame = new VentanaInicio();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public VentanaInicio() {				//Al iniciar se actualiza la base de datos
+	public VentanaInicio() {				//Al iniciar se establece conexion con la base de datos
 		try {
 			BD.getConnection();
 		} catch (SQLException e1) {

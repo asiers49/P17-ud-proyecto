@@ -6,6 +6,10 @@ import aplicacionusuario.datos.Jugador;
 
 public class BotonJugador extends JButton {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String posicion;
 	private Jugador jugador;
 	private int numero;

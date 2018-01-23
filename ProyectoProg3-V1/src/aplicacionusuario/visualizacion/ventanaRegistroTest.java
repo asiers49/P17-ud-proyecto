@@ -23,7 +23,6 @@ public class ventanaRegistroTest {
 		try {
 			BD.getConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Usuario u1 = BD.buscarUsuario(user1);

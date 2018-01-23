@@ -1,37 +1,24 @@
 package aplicacionusuario.visualizacion;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-
 import aplicacionusuario.datos.BD;
 import aplicacionusuario.datos.Jugador;
 import aplicacionusuario.datos.Usuario;
-
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-
 import javax.swing.JScrollPane;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JSeparator;
 import javax.swing.ScrollPaneConstants;
 
 public class ventanaSeleccionarJugadores extends JFrame {
@@ -54,6 +41,7 @@ public class ventanaSeleccionarJugadores extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * Ventana que permite cambiar los jugadores y venderlos
 	 */
 	public ventanaSeleccionarJugadores(ArrayList<Jugador> listaequipo, String Posicion, Usuario user,
 			VentanaPrincipal vp, BotonJugador btn) {
@@ -109,7 +97,11 @@ public class ventanaSeleccionarJugadores extends JFrame {
 			}
 		});
 	}
-
+	
+	/*
+	 * Metodo que refresca la ventana cuando hay algun cambio
+	 */
+	
 	private void refresh() {
 		suplentes.removeAll();
 		titular.removeAll();
