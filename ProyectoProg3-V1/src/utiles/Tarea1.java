@@ -7,6 +7,10 @@ import org.quartz.JobExecutionException;
 import aplicacionusuario.datos.BD;
 
 public class Tarea1 implements Job {
+	
+	/**
+	 * Tarea 1 que resuelve las ofertas y saca el mercado
+	 */
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
