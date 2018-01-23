@@ -79,7 +79,7 @@ public class VentanaCrearLiga extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Crea una nueva liga
 				String nombre = textField_nombre.getText();
-				JOptionPane.showMessageDialog(VentanaCrearLiga.this, "La liga se esta creando");
+
 				BD.crearliga(user1, nombre);
 				VentanaPrincipal vP = new VentanaPrincipal(user);
 				vP.setVisible(true);

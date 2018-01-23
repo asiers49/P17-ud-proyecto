@@ -253,6 +253,7 @@ public class BD {
 			Statement stmt = conn.createStatement();
 			if (!buscarLiga(liga1)) {
 				liga1.setClave(contrasenyaAleatoria());
+				u.setLiga(liga1);
 				stmt.executeUpdate("INSERT INTO LIGAS VALUES('" + liga1.getNombre() + "','" + liga1.getClave() + "')");
 				stmt.executeUpdate("UPDATE USUARIOS SET nomliga='" + liga1.getNombre()
 						+ "' , dinero=15000000  WHERE nombre ='" + u.getNombre() + "'");
