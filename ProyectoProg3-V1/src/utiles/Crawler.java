@@ -39,6 +39,7 @@ public class Crawler implements Job {
 		ProcesadoLaLiga pLaLiga = new ProcesadoLaLiga();
 		String urlLaLiga = "http://www.comuniazo.com/comunio/jugadores";
 		procesaWeb(urlLaLiga, pLaLiga);
+		System.out.println("Actualizacion bd acabada");
 
 	}
 

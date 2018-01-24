@@ -83,7 +83,7 @@ public class BD {
 			rs.close();
 			stm2.close();
 
-			System.out.println("Record is updated to  table!");
+			System.out.println("Record (Jugador: "+j.getNombre()+") is updated to  table!");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
