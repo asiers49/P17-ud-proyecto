@@ -477,6 +477,8 @@ public class VentanaPrincipal extends JFrame {
 					Jugador j = jugadoresmercado.get(i);
 					nombre = new JLabel();
 					nombre.setFont(new Font("Monospaced", Font.PLAIN, 20));
+					JLabel confirmacion = new JLabel("");
+					confirmacion.setFont(new Font("Monospaced", Font.ITALIC, 12));
 					valor = new JLabel();
 					puntos = new JLabel();
 					posicion = new JLabel();
@@ -494,6 +496,7 @@ public class VentanaPrincipal extends JFrame {
 					PanelJugador.add(valor, "cell 0 1");
 					PanelJugador.add(puntos, "cell 1 0");
 					PanelJugador.add(posicion, "cell 1 1");
+					PanelJugador.add(confirmacion, "cell 2 0");
 					listajugadores.add(PanelJugador, "cell 1 " + i);
 					fichar.addActionListener(new ActionListener() {
 
@@ -507,9 +510,8 @@ public class VentanaPrincipal extends JFrame {
 										"No tienes suficiente dinero para hacer esta puja");
 							} else if (precio >= j.getValor()) {
 								BD.hacerPuja(user, j, precio);
-								JLabel confirmacion = new JLabel(" Puja hecha: " + precio);
-								confirmacion.setFont(new Font("Monospaced", Font.ITALIC, 12));
-								PanelJugador.add(confirmacion, "cell 2 0");
+								confirmacion.setText(" Puja hecha: " + precio);
+
 							} else {
 								JOptionPane.showInternalMessageDialog(VentanaPrincipal.this,
 										"La puja tiene que ser como minimo igual al valor del jugador");

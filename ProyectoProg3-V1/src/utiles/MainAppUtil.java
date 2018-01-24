@@ -46,7 +46,7 @@ public class MainAppUtil {
 		
 		//Trigger 1 que ejecuta el codigo cada dia a la 1am
 		Trigger trigger1 = TriggerBuilder.newTrigger().withIdentity("trigger1")
-				.withSchedule(CronScheduleBuilder.cronSchedule("0 45 20 * * ?")).build();
+				.withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ?")).build();
 		//Trigger 2 que ejecuta el codigo martes y viernes a la 1am	
 		Trigger trigger2 = TriggerBuilder.newTrigger().withIdentity("trigger2")
 				.withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * 2,5 ?")).build();

@@ -101,6 +101,10 @@ public class ventanaSeleccionarJugadores extends JFrame {
 	/*
 	 * Metodo que refresca la ventana cuando hay algun cambio
 	 */
+	JLabel nombretit = null;
+	JLabel valortit;
+	JLabel puntostit;
+	JLabel puntosJornadatit;
 	
 	private void refresh() {
 		suplentes.removeAll();
@@ -109,23 +113,22 @@ public class ventanaSeleccionarJugadores extends JFrame {
 		JLabel valor;
 		JLabel puntos;
 		JLabel puntosJornada;
-
+		
 		if (botonseleccionado.getJugador() != null) {
-			nombre = new JLabel();
-			nombre.setFont(new Font("Monospaced", Font.PLAIN, 18));
-			valor = new JLabel();
-			puntos = new JLabel();
-			puntosJornada = new JLabel();
+			nombretit = new JLabel();
+			nombretit.setFont(new Font("Monospaced", Font.PLAIN, 18));
+			valortit = new JLabel();
+			puntostit = new JLabel();
+			puntosJornadatit = new JLabel();
 			jtitular = botonseleccionado.getJugador();
-			System.out.println(jtitular.getNombre());
-			nombre.setText(jtitular.getNombre());
-			valor.setText("Valor: " + jtitular.getValor());
-			puntos.setText("Puntos Totales: " + jtitular.getPuntos());
-			puntosJornada.setText("Puntos Jornada: " + jtitular.getPuntosJornada());
-			titular.add(nombre, "cell 0 0");
-			titular.add(valor, " cell 0 1");
-			titular.add(puntos, "cell 1 0");
-			titular.add(puntosJornada, "cell 1 1");
+			nombretit.setText(jtitular.getNombre());
+			valortit.setText("Valor: " + jtitular.getValor());
+			puntostit.setText("Puntos Totales: " + jtitular.getPuntos());
+			puntosJornadatit.setText("Puntos Jornada: " + jtitular.getPuntosJornada());
+			titular.add(nombretit, "cell 0 0");
+			titular.add(valortit, " cell 0 1");
+			titular.add(puntostit, "cell 1 0");
+			titular.add(puntosJornadatit, "cell 1 1");
 			for (Jugador j : equipo) {
 				if (j != jtitular && !estaseleccionado(j) && j.getPosicion().equals(posicion)) {
 					jSuplentes.add(j);
@@ -168,7 +171,10 @@ public class ventanaSeleccionarJugadores extends JFrame {
 					// TODO Auto-generated method stub
 					hacerTitular(j);
 					refresh();
-
+					nombretit.setText(jtitular.getNombre());
+					valortit.setText("Valor: " + jtitular.getValor());
+					puntostit.setText("Puntos Totales: " + jtitular.getPuntos());
+					puntosJornadatit.setText("Puntos Jornada: " + jtitular.getPuntosJornada());
 				}
 
 			});

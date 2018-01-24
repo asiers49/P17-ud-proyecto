@@ -42,6 +42,7 @@ public class VentanaCrearLiga extends JFrame {
 	 */
 
 	public VentanaCrearLiga(VentanaPrincipal ventanaanterior, Usuario user1) {
+		VP=ventanaanterior;
 		user = user1;
 		setFont(new Font("Monospaced", Font.PLAIN, 16));
 		setType(Type.UTILITY);
