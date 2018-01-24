@@ -513,7 +513,7 @@ public class VentanaPrincipal extends JFrame {
 								confirmacion.setText(" Puja hecha: " + precio);
 
 							} else {
-								JOptionPane.showInternalMessageDialog(VentanaPrincipal.this,
+								JOptionPane.showMessageDialog(VentanaPrincipal.this,
 										"La puja tiene que ser como minimo igual al valor del jugador");
 							}
 						}
